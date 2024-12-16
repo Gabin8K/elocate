@@ -4,10 +4,13 @@
     "slug": "elocate",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/app/icon.png",
     "scheme": "elocate",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "splash": {
+      "backgroundColor": "#1DA445"
+    },
     "ios": {
       "bundleIdentifier": "com.elocate",
       "supportsTablet": true
@@ -15,9 +18,9 @@
     "android": {
       "package": "com.elocate",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "backgroundColor": "#1DA445"
+      },
+      "googleServicesFile": "./google-services.json"
     },
     "plugins": [
       "expo-router"
