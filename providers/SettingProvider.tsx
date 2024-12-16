@@ -1,9 +1,8 @@
-import { Fragment, FunctionComponent, PropsWithChildren, createContext, useCallback, useEffect, useState } from "react";
+import { FunctionComponent, PropsWithChildren, createContext, useCallback, useEffect, useState } from "react";
 import { useFonts } from "expo-font";
 import { fonts } from "@/theme/typography";
 import { defaultLocale } from "@/locale/i18n";
 import { AsyncStorageGetItem, AsyncStorageSetItem } from "@/utils";
-import { StatusBar } from "@/components/ui";
 
 
 export interface Setting {
@@ -73,18 +72,15 @@ const SettingProvider: FunctionComponent<PropsWithChildren> = ({ children }) => 
 
 
   return (
-    <Fragment>
-      <StatusBar />
-      <SettingContext.Provider
-        value={{
-          ...setting,
-          setLocale,
-          setMode,
-        }}
-      >
-        {children}
-      </SettingContext.Provider>
-    </Fragment>
+    <SettingContext.Provider
+      value={{
+        ...setting,
+        setLocale,
+        setMode,
+      }}
+    >
+      {children}
+    </SettingContext.Provider>
   )
 }
 

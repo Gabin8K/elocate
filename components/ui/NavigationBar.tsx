@@ -1,6 +1,6 @@
 import { FC, memo, useEffect } from "react";
 import * as  ExpoNavigationBar from "expo-navigation-bar";
-import { useTheme } from "@/hooks";
+import { useTheme } from "@/hooks/useTheme";
 import { Theme } from "@/theme";
 import { Platform } from "react-native";
 

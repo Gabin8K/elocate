@@ -1,4 +1,5 @@
 import { palette } from "./palette";
+export * from './typography';
 
 
 const light = {

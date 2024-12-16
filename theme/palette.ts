@@ -14,8 +14,8 @@ export const common = {
 export const palette = {
   light: {
     ...common,
-    primary: '#700CBF',
-    primary_light: "#C29AE1",
+    primary: '#1DA445',
+    primary_light: "#ECF5EC",
     background: '#F8F8F8',
     card: '#FFFFFF',
     shadow: '#A1A1A1',
@@ -23,8 +23,8 @@ export const palette = {
   },
   dark: {
     ...common,
-    primary: '#700CBF',
-    primary_light: "#C29AE1",
+    primary: '#1DA445',
+    primary_light: "#ECF5EC",
     background: '#1F1F1F',
     card: '#2A2A2A',
     shadow: '#1B1B1B',

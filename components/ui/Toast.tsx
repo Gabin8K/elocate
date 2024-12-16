@@ -1,15 +1,18 @@
 import React, { FC, memo, useEffect } from 'react'
-import Animated, { Easing, SlideInRight, SlideOutRight } from 'react-native-reanimated'
+import Animated, { Easing, SlideInDown, SlideOutDown } from 'react-native-reanimated'
 import { StyleSheet } from 'react-native';
-import { Text } from './Text';
-import { useToast } from '@/hooks';
+import { useToast } from '@/hooks/useToast';
 import { spacing } from '@/theme/spacing';
-
+import { Text } from './Text';
+import { component } from '@/theme/reusables';
+import { useTheme } from '@/hooks';
 
 
 
 const Toast: FC = memo(function Toast() {
+
   const { state, cancel } = useToast();
+  const { colors } = useTheme();
 
   useEffect(() => {
     const subscribe = setTimeout(() => cancel(), 5000);
@@ -19,16 +22,19 @@ const Toast: FC = memo(function Toast() {
   return (
     <Animated.View
       entering={
-        SlideInRight
+        SlideInDown
           .springify()
           .damping(50)
       }
       exiting={
-        SlideOutRight
+        SlideOutDown
           .duration(1000)
           .easing(Easing.ease)
       }
-      style={styles.toast}
+      style={[
+        styles.toast,
+        { backgroundColor: colors.background }
+      ]}
     >
       <Text
         variant={'body1_m'}
@@ -56,12 +62,13 @@ export const Toaster: FC = memo(function Toaster() {
 
 const styles = StyleSheet.create({
   toast: {
-    zIndex: 10000,
-    top: 250,
+    zIndex: 100,
+    left: spacing.m,
     right: spacing.m,
-    width: 800,
+    bottom: spacing.l,
+    padding:spacing.s,
+    ...component.shadow,
     position: 'absolute',
-    borderRadius: spacing.l,
-    flexDirection: 'row',
+    borderRadius: spacing.s,
   }
 })

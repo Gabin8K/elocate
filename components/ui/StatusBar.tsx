@@ -1,7 +1,7 @@
 import { FC, memo } from "react";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
-import { useTheme } from "@/hooks";
 import { Theme } from "@/theme";
+import { useTheme } from "@/hooks";
 
 type Props = React.ComponentProps<typeof ExpoStatusBar> & {
   color?: keyof Theme['colors']

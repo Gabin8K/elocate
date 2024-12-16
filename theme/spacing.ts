@@ -1,8 +1,14 @@
+import { Dimensions } from "react-native"
+
+const { width, height } = Dimensions.get('window');
+
 export const spacing = {
-  s: 10,
-  m: 25,
-  l: 50,
-  lg: 100,
-  xl: 200,
-  xxl: 40,
+  s: 8,
+  m: 16,
+  l: 24,
+  lg: 32,
+  xl: 40,
+  xxl: 50,
+  width,
+  height,
 }

@@ -1,7 +1,6 @@
-import { useTheme } from "@/hooks";
-import { Theme } from "@/theme";
-import { typography } from "@/theme/typography";
 import { FC, memo } from "react";
+import { useTheme } from "@/hooks";
+import { Theme, typography } from "@/theme";
 import { Text as RNText, TextProps } from "react-native";
 
 type Props = TextProps & {
@@ -10,7 +9,7 @@ type Props = TextProps & {
 }
 
 export const Text: FC<Props> = memo(function Text(props) {
-  const { variant = 'body1_b', color = 'text', style, ...rest } = props;
+  const { variant = 'body1', color = 'text', style, ...rest } = props;
 
   const { colors } = useTheme();
 

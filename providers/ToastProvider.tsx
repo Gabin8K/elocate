@@ -4,7 +4,7 @@ import { createContext, FunctionComponent, PropsWithChildren, ReactNode, useStat
 
 export type ToastCtx = {
   state: ToastState;
-  show: (message: ReactNode, color: Color) => void;
+  show: (message: ReactNode, color?: Color) => void;
   cancel: () => void;
 }
 

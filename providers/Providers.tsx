@@ -5,7 +5,7 @@ import ThemeProvider from './ThemeProvider';
 import ToastProvider from './ToastProvider';
 import AuthProvider from './AuthProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Toaster } from '@/components/ui';
+import { Toaster } from '@/components/ui/Toast';
 import 'react-native-reanimated';
 import '@/locale/i18n';
 
