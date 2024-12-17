@@ -6,6 +6,7 @@ import ToastProvider from './ToastProvider';
 import AuthProvider from './AuthProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Toaster } from '@/components/ui/Toast';
+import PortalProvider from './PortalProvider';
 import 'react-native-reanimated';
 import '@/locale/i18n';
 
@@ -18,8 +19,10 @@ const Providers: FunctionComponent<PropsWithChildren> = ({ children }) => {
           <SettingProvider>
             <ThemeProvider>
               <ToastProvider>
+                <PortalProvider>
                   {children}
-                <Toaster />
+                  <Toaster />
+                </PortalProvider>
               </ToastProvider>
             </ThemeProvider>
           </SettingProvider>

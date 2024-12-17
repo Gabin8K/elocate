@@ -1,6 +1,8 @@
 import { useTheme } from '@/hooks';
-import React, { FC, PropsWithChildren, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Dimensions, Modal, Pressable, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { Portal } from '@/providers/PortalProvider';
+import { spacing } from '@/theme/spacing';
+import React, { FC, PropsWithChildren, memo, useCallback, useEffect, useMemo } from 'react';
+import { Pressable, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { interpolate, runOnJS, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 
@@ -30,7 +32,7 @@ const defaultConfig: ModalConfig = {
 
 
 const AnimatedTouchablePressable = Animated.createAnimatedComponent(Pressable);
-const { height } = Dimensions.get('window');
+const height = spacing.height;
 
 
 export const ModalSheet: FC<ModalSheetProps> = memo(function ModalSheet(props) {
@@ -44,7 +46,6 @@ export const ModalSheet: FC<ModalSheetProps> = memo(function ModalSheet(props) {
   }
 
   const { colors } = useTheme();
-  const [show, setShow] = useState(open);
 
   const translateY = useSharedValue(height);
 
@@ -52,7 +53,7 @@ export const ModalSheet: FC<ModalSheetProps> = memo(function ModalSheet(props) {
     return (
       Gesture
         .Pan()
-        .activeOffsetY([-20, 20])
+        .activeOffsetY([-5, 5])
         .onChange(e => {
           const y = Math.abs(e.translationY);
           if (y <= config.offsetHeight) {
@@ -64,7 +65,6 @@ export const ModalSheet: FC<ModalSheetProps> = memo(function ModalSheet(props) {
             translateY.value = withTiming(height, { duration: config.animationDuration }, (finished) => {
               if (finished) {
                 runOnJS(onClose)();
-                runOnJS(setShow)(false);
               };
             });
           } else {
@@ -93,7 +93,6 @@ export const ModalSheet: FC<ModalSheetProps> = memo(function ModalSheet(props) {
     translateY.value = withTiming(height, { duration: config.animationDuration }, (finished) => {
       if (finished && onClose) {
         runOnJS(onClose)();
-        runOnJS(setShow)(false);
       };
     });
   }, []);
@@ -101,26 +100,23 @@ export const ModalSheet: FC<ModalSheetProps> = memo(function ModalSheet(props) {
 
   useEffect(() => {
     if (open && translateY.value === height) {
-      setShow(true);
       translateY.value = withSpring(0, { damping: 20 });
     } else if (!open) {
       translateY.value = withTiming(height, { duration: config.animationDuration }, (finished) => {
         if (finished && onClose) {
           runOnJS(onClose)();
-          runOnJS(setShow)(false);
         };
       });
     }
   }, [open]);
 
 
+  if (!open) return null;
+
+
   return (
-    <Modal
-      transparent
-      statusBarTranslucent
-      visible={show}
-      onRequestClose={onRequestClose}
-      animationType={'none'}
+    <Portal
+      name={'modal-sheet'}
     >
       <GestureHandlerRootView
         style={[
@@ -135,7 +131,7 @@ export const ModalSheet: FC<ModalSheetProps> = memo(function ModalSheet(props) {
             style={[
               uasBackground,
               styles.clickAwayListener,
-              { backgroundColor: colors.text }
+              { backgroundColor: colors.gray4 }
             ]}
           /> :
           null
@@ -153,7 +149,7 @@ export const ModalSheet: FC<ModalSheetProps> = memo(function ModalSheet(props) {
           </Animated.View>
         </GestureDetector>
       </GestureHandlerRootView>
-    </Modal>
+    </Portal>
   )
 });
 

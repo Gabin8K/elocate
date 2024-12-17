@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Elocate",
+    "name": "Elocate CMR",
     "slug": "elocate",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -9,24 +9,43 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
+      "image": "./assets/app/splash.png",
+      "resizeMode": "contain",
       "backgroundColor": "#1DA445"
     },
     "ios": {
-      "bundleIdentifier": "com.elocate",
+      "bundleIdentifier": "com.dnfg.elocate",
+      "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true
     },
     "android": {
-      "package": "com.elocate",
+      "package": "com.dnfg.elocate",
       "adaptiveIcon": {
         "backgroundColor": "#1DA445"
       },
       "googleServicesFile": "./google-services.json"
     },
     "plugins": [
-      "expo-router"
+      "@react-native-google-signin/google-signin",
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth",
+      "expo-router",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b5dfbff6-3d7a-4b35-89c2-88b4524079e9"
+      }
     }
   }
 }

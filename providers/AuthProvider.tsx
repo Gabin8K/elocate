@@ -1,12 +1,12 @@
-
-import { AsyncStorageGetItem, AsyncStorageRemoveItem, AsyncStorageSetItem } from "@/utils";
-import { createContext, FunctionComponent, PropsWithChildren, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, FunctionComponent, PropsWithChildren, useContext, useEffect, useState } from "react";
+import firebaseAuth from '@react-native-firebase/auth';
+import { Auth } from "@/services/types";
 
 
 type AuthCtx = {
   auth: Auth | null;
   loading: boolean;
-  setAuth: (auth: Auth | null) => void;
+  setAuth: (auth: any) => void;
 }
 
 export const AuthContext = createContext<AuthCtx>({
@@ -26,31 +26,16 @@ export const useAuth = () => {
 
 
 const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
-  const [auth, _setAuth] = useState<Auth | null>(null)
+  const [auth, setAuth] = useState<AuthCtx['auth']>(null)
   const [loading, setLoading] = useState(true)
 
-  const setAuth = useCallback((auth: Auth | null) => {
-    if (auth) {
-      AsyncStorageSetItem('auth', auth)
-    } else {
-      AsyncStorageRemoveItem('auth')
-    }
-    _setAuth(auth)
-  }, [])
 
   useEffect(() => {
-    const findSession = async () => {
-      try {
-        const auth = await AsyncStorageGetItem<Auth>('auth')
-        if (auth) {
-          setAuth(auth)
-          return;
-        }
-      } finally {
-        setLoading(false)
-      }
-    }
-    findSession()
+    const subscriber = firebaseAuth().onAuthStateChanged(auth => {
+      setAuth(auth as AuthCtx['auth']);
+      setLoading(false);
+    });
+    return subscriber;
   }, [])
 
 

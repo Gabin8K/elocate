@@ -1,22 +1,19 @@
 import { Button, IconButton } from "@/components/Buttons";
 import { Text } from "@/components/ui/Text";
-import { useToast } from "@/hooks";
-
-
-export default function Index(){
-  const toast = useToast()
+import { auth } from "@/services";
+export default function Index() {
 
   return (
     <>
-    <Text>
-      Hello World
-    </Text>
-    <IconButton  />
-    <Button
-      onPress={() => toast.show('Hello World')}
-    >
-      Heey
-    </Button>
+      <Text>
+        Hello World
+      </Text>
+      <IconButton />
+      <Button
+        onPress={() => auth.onGoogleSignin()}
+      >
+        Heey
+      </Button>
     </>
   )
 }
