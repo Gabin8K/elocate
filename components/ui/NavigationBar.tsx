@@ -6,12 +6,13 @@ import { Platform } from "react-native";
 
 type Props = {
   color?: keyof Theme['colors'],
+  staticColor?: string,
   visility?: 'hidden' | 'visible',
   transparent?: boolean
 };
 
 export const NavigationBar: FC<Props> = memo(function StatusBar(props) {
-  const { color = 'background', visility, transparent } = props
+  const { color = 'background', staticColor, visility, transparent } = props
   const { colors } = useTheme()
 
   useEffect(() => {
@@ -23,7 +24,7 @@ export const NavigationBar: FC<Props> = memo(function StatusBar(props) {
         return
       }
       await ExpoNavigationBar.setBackgroundColorAsync(
-        transparent ? "#ffffff01" : colors[color]
+        transparent ? "#ffffff01" : staticColor ? staticColor : colors[color]
       )
     }
     setNavigationBar()
