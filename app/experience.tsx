@@ -7,7 +7,7 @@ export default function Page() {
     <View
       style={reusableStyle.fullCenter}
     >
-      <Text>Home</Text>
+      <Text>User experience</Text>
     </View>
   )
 }
