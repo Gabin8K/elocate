@@ -1,22 +1,23 @@
 import { FC, memo, useCallback, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
-import { useTheme } from "@/hooks";
 import { ButtonTab } from "./ButtonTab";
 import { spacing } from "@/theme/spacing";
 import Animated, { useAnimatedStyle, withSpring } from "react-native-reanimated";
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs/src/types';
-import { Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/theme";
-import { LinearGradient } from 'expo-linear-gradient';
-import { palette } from "@/theme/palette";
 import { useDrawer } from "../drawer";
+import { SvgProps } from "react-native-svg";
+import MapSvg from "@/assets/svg/map.svg";
+import VoteSvg from "@/assets/svg/vote.svg";
+import MenuSvg from "@/assets/svg/menu.svg";
+import { palette } from "@/theme/palette";
 
 
 type Route = {
   key: string;
   color: keyof Theme['colors'];
   name: 'index' | 'maps' | 'menu';
-  iconName: keyof typeof Ionicons.glyphMap
+  Icon: FC<SvgProps>;
 }
 
 const routes: Route[] = [
@@ -24,33 +25,29 @@ const routes: Route[] = [
     key: 'index',
     color: 'primary',
     name: 'index',
-    iconName: 'location'
+    Icon: MapSvg
   },
   {
     key: 'maps',
-    color: 'gray1',
+    color: 'text',
     name: 'maps',
-    iconName: 'add-circle'
+    Icon: VoteSvg
   },
   {
     key: 'menu',
-    color: 'gray1',
+    color: 'text',
     name: 'menu',
-    iconName: 'menu'
+    Icon: MenuSvg
   }
 ]
 
 
-const { width } = spacing;
-export const backgroundColor = 'rgba(29, 164, 69, .3)';
+const width = spacing.width * 0.8;
 
 
 
 export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout({ state, insets, navigation }) {
-
-  const { colors, mode } = useTheme();
   const { open, setOpen } = useDrawer();
-
 
   const tabs = useMemo<Route[]>(() => {
     return routes.map((route, index) => {
@@ -63,13 +60,13 @@ export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout(
       else if (open) {
         return {
           ...route,
-          color: 'gray1'
+          color: 'text'
         }
       }
       else {
         return {
           ...route,
-          color: state.index === index ? 'primary' : 'gray1'
+          color: state.index === index ? 'primary' : 'text'
         }
       }
     })
@@ -105,20 +102,10 @@ export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout(
         { paddingBottom: insets.bottom }
       ]}
     >
-      <LinearGradient
-        style={styles.background}
-        colors={[
-          backgroundColor,
-          mode === 'light' ? 'rgba(255, 255,255, .1)' : 'rgba(0, 0, 0, .1)'
-        ]}
-        start={[.5, 1]}
-        end={[.5, .3]}
-      />
       <Animated.View
         style={[
           uas,
-          styles.indicator,
-          { backgroundColor: colors.primary },
+          styles.indicator
         ]}
       />
       {tabs.map((route) => (
@@ -126,12 +113,16 @@ export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout(
           key={route.name}
           onPress={onPress(route)}
         >
-          <Ionicons
-            name={route.iconName}
-            size={30}
-            color={colors[route.color]}
-            style={styles.icon}
-          />
+          <View
+            style={[
+              styles.icon,
+              { backgroundColor: 'white', elevation: 2 }
+            ]}
+          >
+            <route.Icon
+              fill={palette.light[route.color]}
+            />
+          </View>
         </ButtonTab>
       ))}
     </View>
@@ -142,32 +133,31 @@ export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout(
 
 const styles = StyleSheet.create({
   container: {
-    zIndex: 2,
-    bottom: 0,
+    width,
+    zIndex: 1,
+    bottom: spacing.m,
+    overflow: 'hidden',
     position: 'absolute',
     paddingTop: spacing.s,
     flexDirection: 'row',
+    alignSelf: 'center',
     alignItems: 'center',
   },
   indicator: {
+    zIndex: 1,
     top: 4,
     height: 4,
     width: 12,
-    borderRadius: 4,
     position: 'absolute',
+    borderRadius: spacing.s,
+    backgroundColor: palette.light.primary,
+    boxShadow: `0px 4px 4px ${palette.common.gray3}`,
   },
   icon: {
-    borderRadius: spacing.l,
-    elevation: 4,
-    shadowColor: palette.light.primary,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-  },
-  background: {
-    ...StyleSheet.absoluteFillObject,
+    width: 35,
+    height: 35,
+    borderRadius: 35,
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 })

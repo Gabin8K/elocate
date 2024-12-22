@@ -1,16 +1,17 @@
 
 export const common = {
-  divider: '#BFBFBF',
+  divider: '#e5e5e5',
   error: '#ED5858',
   disabled: '#E5E5E5',
   gray1: '#FFFFFF',
   gray2: '#E5E5E5',
   gray3: '#A1A1A1',
-  gray4: '#C4C4C4',
+  gray4: '#b0b2b0',
   transparent: 'transparent',
 }
 
 export const palette = {
+  common,
   light: {
     ...common,
     primary: '#1DA445',

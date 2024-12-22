@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { backgroundColor, TabsBarLayout } from "@/components/layout/tabs";
+import { TabsBarLayout } from "@/components/layout/tabs";
 import { Tabs } from "expo-router";
 import { NavigationBar } from "@/components/ui";
 import { DrawerLayout, DrawerProvider } from "@/components/layout/drawer";
@@ -19,7 +19,7 @@ export default function TabsLayout() {
   return (
     <Fragment>
       <NavigationBar
-        staticColor={backgroundColor}
+        transparent
       />
       <DrawerProvider>
         <DrawerLayout />
@@ -27,9 +27,6 @@ export default function TabsLayout() {
           tabBar={(props) => <TabsBarLayout {...props} />}
           screenOptions={{
             headerShown: false,
-            sceneStyle: {
-              backgroundColor: 'transparent'
-            }
           }}
         >
           {tabs.map(tab => (

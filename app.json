@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Elocate CMR",
-    "slug": "elocate",
+    "slug": "elocate-cmr",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/app/icon.png",
@@ -11,6 +11,12 @@
     "splash": {
       "image": "./assets/app/splash.png",
       "resizeMode": "contain",
+      "backgroundColor": "#1DA445"
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#1DA445"
+    },
+    "androidNavigationBar": {
       "backgroundColor": "#1DA445"
     },
     "ios": {

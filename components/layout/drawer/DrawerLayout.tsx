@@ -1,7 +1,7 @@
-import { FC, memo, useEffect } from "react";
-import Animated, { Easing, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+import { FC, memo, useEffect, useMemo } from "react";
+import Animated, { Easing, interpolate, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 import { Portal } from "@/providers/PortalProvider";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { spacing } from "@/theme/spacing";
 import { useTheme } from "@/hooks";
 import { component } from "@/theme/reusables";
@@ -12,26 +12,11 @@ import { DrawerContent } from "./DrawerContent";
 
 const height = spacing.height * 0.7;
 const width = spacing.width * 0.75;
-const right = spacing.width / 3 - (spacing.width / 3) / 2;
+const right = spacing.s;
 
 const velocity = 300;
-const duration = 500;
-
-const originX = spacing.width;
-
-const enteringAnim = (args: any) => {
-  'worklet';
-  const animations = {
-    originX: withTiming(args.targetOriginX, { duration, easing: Easing.in(Easing.bezierFn(0.25, 0.1, 0, 1.02)) }),
-  }
-  const initialValues = {
-    originX,
-  }
-  return {
-    animations,
-    initialValues
-  }
-}
+const duration = 400;
+const easing = Easing.in(Easing.bezierFn(0.25, 0.1, 0, 1.02))
 
 
 
@@ -42,7 +27,7 @@ export const DrawerLayout: FC = memo(function DrawerLayout() {
 
   const translateX = useSharedValue(0);
 
-  const gesture = Gesture.Pan()
+  const gesture = useMemo(() => Gesture.Pan()
     .onChange(e => {
       if (e.translationX >= 0) {
         translateX.value = e.translationX;
@@ -58,27 +43,35 @@ export const DrawerLayout: FC = memo(function DrawerLayout() {
       } else {
         translateX.value = withTiming(0);
       }
-    });
+    }), [setOpen]);
 
 
   const uas = useAnimatedStyle(() => {
     return {
-      zIndex: 99,
       transform: [
         { translateX: translateX.value }
       ]
     }
-  });
+  }, []);
+
+
+  const uasSwip = useAnimatedStyle(() => {
+    return {
+      transform: [
+        { scaleY: interpolate(translateX.value, [0, width], [1, 2]) }
+      ]
+    }
+  }, []);
 
 
   useEffect(() => {
     if (open && translateX.value !== 0) {
-      translateX.value = withTiming(0, { duration });
+      translateX.value = withTiming(0, { duration, easing });
+    } else if (!open) {
+      translateX.value = withTiming(width + right, { duration });
     }
   }, [open])
 
-
-  if (!open) return null;
 
 
   return (
@@ -89,15 +82,17 @@ export const DrawerLayout: FC = memo(function DrawerLayout() {
         gesture={gesture}
       >
         <Animated.View
-          entering={enteringAnim}
           style={[
-            styles.container,
-            { backgroundColor: colors.background },
             uas,
+            styles.container,
+            { backgroundColor: colors.background, },
           ]}
         >
-          <View
-            style={styles.swip}
+          <Animated.View
+            style={[
+              uasSwip,
+              styles.swip,
+            ]}
           />
           <DrawerContent />
         </Animated.View>
@@ -109,9 +104,8 @@ export const DrawerLayout: FC = memo(function DrawerLayout() {
 
 const styles = StyleSheet.create({
   container: {
-    zIndex: 99,
+    zIndex: 9,
     position: 'absolute',
-    padding: spacing.m,
     width,
     height,
     right,

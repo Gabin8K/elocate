@@ -29,19 +29,19 @@ export const typography = StyleSheet.create({
     lineHeight: 45,
   },
   subtitle_eb: {
-    fontSize: 30,
+    fontSize: 24,
     fontFamily: 'WsEb',
-    lineHeight: 30,
+    lineHeight: 24,
   },
   subtitle_b: {
-    fontSize: 30,
+    fontSize: 24,
     fontFamily: 'WsB',
-    lineHeight: 30,
+    lineHeight: 24,
   },
   subtitle_m: {
-    fontSize: 30,
+    fontSize: 24,
     fontFamily: 'WsSb',
-    lineHeight: 30,
+    lineHeight: 24,
   },
   subtitle: {
     fontSize: 30,

@@ -8,7 +8,7 @@ type Props = React.ComponentProps<typeof ExpoStatusBar> & {
 };
 
 export const StatusBar: FC<Props> = memo(function StatusBar(props) {
-  const { color = 'background', ...rest } = props
+  const { color = 'transparent', ...rest } = props
   const { colors, mode } = useTheme()
 
   return (

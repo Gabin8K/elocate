@@ -25,7 +25,10 @@ const component = StyleSheet.create({
 
 
 const reusableStyle = StyleSheet.create({
-  fullCenter:{
+  full:{
+    flex: 1
+  },
+  fullCenter: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center"

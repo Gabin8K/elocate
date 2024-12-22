@@ -1,13 +1,14 @@
 import { useTheme } from '@/hooks/useTheme';
 import { Theme } from '@/theme';
-import React, { memo } from 'react'
-import { Ionicons } from '@expo/vector-icons';
+import React, { FC, memo } from 'react'
 import { Pressable, PressableProps, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import Animated, { LinearTransition, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { SvgProps } from 'react-native-svg';
 
 
 type Props = PressableProps & {
-  name?: keyof typeof Ionicons.glyphMap;
+  Icon?: FC<SvgProps>;
+  iconProps?: SvgProps;
   variant?: keyof Theme['colors'];
   style?: StyleProp<ViewStyle>;
   styleContainer?: StyleProp<ViewStyle>;
@@ -17,7 +18,7 @@ type Props = PressableProps & {
 
 
 export const IconButton = memo(function IconButton(props: Props) {
-  const { name = 'locate', loading, styleContainer, variant = 'primary', style: _style, layout, ...rest } = props;
+  const { Icon = null, iconProps, loading, styleContainer, variant = 'primary', style: _style, layout, ...rest } = props;
 
   const { colors } = useTheme();
   const active = useSharedValue(false);
@@ -37,17 +38,19 @@ export const IconButton = memo(function IconButton(props: Props) {
         onPressOut={() => (active.value = false)}
         disabled={loading}
         android_ripple={{
-          color: colors.ripple,
+          color: colors.primary_light,
           radius: 100
         }}
         style={[styles.container, _style]}
         {...rest}
       >
-        <Ionicons
-          name={name}
-          size={24}
-          color={colors[loading ? 'disabled' : variant]}
-        />
+        {Icon ?
+          <Icon
+            color={colors[loading ? 'disabled' : variant]}
+            {...iconProps}
+          /> :
+          null
+        }
       </Pressable>
     </Animated.View>
   )
@@ -56,9 +59,9 @@ export const IconButton = memo(function IconButton(props: Props) {
 const styles = StyleSheet.create({
   overflow: {
     overflow: 'hidden',
-    borderRadius: 40,
-    width: 40,
-    height: 40,
+    borderRadius: 35,
+    width: 35,
+    height: 35,
   },
   container: {
     width: '100%',
