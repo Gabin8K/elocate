@@ -1,23 +1,13 @@
+import { Map } from "@/components/Map";
 import { reusableStyle } from "@/theme/reusables";
-import { StyleSheet, View } from "react-native";
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { View } from "react-native";
 
 export default function Page() {
   return (
     <View
       style={reusableStyle.fullCenter}
     >
-      <MapView
-        provider={PROVIDER_GOOGLE}
-        style={styles.map}
-      />
+      <Map/>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  map: {
-    width: "100%",
-    height: "100%"
-  }
-})

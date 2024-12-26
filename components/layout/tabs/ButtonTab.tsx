@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
+import { common } from '@/theme/palette';
 import { Pressable, PressableProps, StyleSheet } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { palette } from '@/theme/palette';
 
 
 const AnimatedTouchale = Animated.createAnimatedComponent(Pressable);
@@ -22,7 +22,7 @@ export const ButtonTab = memo<PressableProps>(function ButtonTab(props) {
       onPressOut={() => (active.value = false)}
       style={[
         uas,
-        styles.conteiner,
+        styles.container,
         style
       ]}
       {...rest}
@@ -34,9 +34,9 @@ export const ButtonTab = memo<PressableProps>(function ButtonTab(props) {
 
 
 const styles = StyleSheet.create({
-  conteiner: {
+  container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: palette.common.transparent,
+    backgroundColor: common.transparent,
   }
 })

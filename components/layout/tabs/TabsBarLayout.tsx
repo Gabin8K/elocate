@@ -2,22 +2,21 @@ import { FC, memo, useCallback, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 import { ButtonTab } from "./ButtonTab";
 import { spacing } from "@/theme/spacing";
-import Animated, { useAnimatedStyle, withSpring } from "react-native-reanimated";
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs/src/types';
 import { Theme } from "@/theme";
 import { useDrawer } from "../drawer";
-import { SvgProps } from "react-native-svg";
-import MapSvg from "@/assets/svg/map.svg";
-import VoteSvg from "@/assets/svg/vote.svg";
-import MenuSvg from "@/assets/svg/menu.svg";
-import { palette } from "@/theme/palette";
+import { common, palette } from "@/theme/palette";
+import { useTheme } from "@/hooks";
+import { component, reusableStyle } from "@/theme/reusables";
+import Animated, { useAnimatedStyle, withSpring } from "react-native-reanimated";
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs/src/types';
+import { Ionicons } from "@expo/vector-icons";
 
 
 type Route = {
   key: string;
   color: keyof Theme['colors'];
   name: 'index' | 'maps' | 'menu';
-  Icon: FC<SvgProps>;
+  icon: keyof typeof Ionicons.glyphMap;
 }
 
 const routes: Route[] = [
@@ -25,28 +24,30 @@ const routes: Route[] = [
     key: 'index',
     color: 'primary',
     name: 'index',
-    Icon: MapSvg
+    icon: 'map',
   },
   {
     key: 'maps',
     color: 'text',
     name: 'maps',
-    Icon: VoteSvg
+    icon: 'location'
   },
   {
     key: 'menu',
     color: 'text',
     name: 'menu',
-    Icon: MenuSvg
+    icon: 'menu'
   }
 ]
 
 
-const width = spacing.width * 0.8;
+const width = spacing.width;
 
 
 
 export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout({ state, insets, navigation }) {
+
+  const { colors } = useTheme();
   const { open, setOpen } = useDrawer();
 
   const tabs = useMemo<Route[]>(() => {
@@ -60,12 +61,14 @@ export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout(
       else if (open) {
         return {
           ...route,
+          icon: `${route.icon}-outline` as Route['icon'],
           color: 'text'
         }
       }
       else {
         return {
           ...route,
+          icon: (state.index === index ? route.icon : `${route.icon}-outline`) as Route['icon'],
           color: state.index === index ? 'primary' : 'text'
         }
       }
@@ -99,7 +102,10 @@ export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout(
     <View
       style={[
         styles.container,
-        { paddingBottom: insets.bottom }
+        {
+          paddingBottom: insets.bottom,
+          backgroundColor: colors.card,
+        }
       ]}
     >
       <Animated.View
@@ -113,16 +119,11 @@ export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout(
           key={route.name}
           onPress={onPress(route)}
         >
-          <View
-            style={[
-              styles.icon,
-              { backgroundColor: 'white', elevation: 2 }
-            ]}
-          >
-            <route.Icon
-              fill={palette.light[route.color]}
-            />
-          </View>
+          <Ionicons
+            name={route.icon}
+            size={38}
+            color={palette.light[route.color]}
+          />
         </ButtonTab>
       ))}
     </View>
@@ -134,14 +135,9 @@ export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout(
 const styles = StyleSheet.create({
   container: {
     width,
-    zIndex: 1,
-    bottom: spacing.m,
-    overflow: 'hidden',
-    position: 'absolute',
-    paddingTop: spacing.s,
-    flexDirection: 'row',
-    alignSelf: 'center',
-    alignItems: 'center',
+    paddingTop: spacing.m,
+    ...reusableStyle.row,
+    ...component.shadow
   },
   indicator: {
     zIndex: 1,
@@ -151,13 +147,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     borderRadius: spacing.s,
     backgroundColor: palette.light.primary,
-    boxShadow: `0px 4px 4px ${palette.common.gray3}`,
-  },
-  icon: {
-    width: 35,
-    height: 35,
-    borderRadius: 35,
-    alignItems: 'center',
-    justifyContent: 'center',
+    boxShadow: `0px 4px 4px ${common.gray3}`,
   }
 })

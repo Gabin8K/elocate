@@ -1,15 +1,15 @@
 import { Text } from "@/components/ui";
-import { palette } from "@/theme/palette";
+import { common,  } from "@/theme/palette";
 import { reusableStyle } from "@/theme/reusables";
 import { spacing } from "@/theme/spacing";
+import { Ionicons } from "@expo/vector-icons";
 import { Href, router } from "expo-router";
 import { FC, memo, ReactNode } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
-import { SvgProps } from "react-native-svg";
 
 
 export type DrawerButtonProps = {
-  icon?: FC<SvgProps>;
+  icon: keyof typeof Ionicons.glyphMap;
   href?: Href;
   children: ReactNode;
 }
@@ -31,10 +31,10 @@ export const DrawerButton: FC<DrawerButtonProps> = memo(function DrawerLayout(pr
       style={styles.container}
     >
       <View style={styles.row}>
-        {Icon ?
-          <Icon /> :
-          null
-        }
+        <Ionicons
+          name={Icon}
+          size={24}
+        />
         <Text
           variant={'body1_m'}
         >
@@ -54,12 +54,11 @@ const styles = StyleSheet.create({
   row:{
     ...reusableStyle.row,
     columnGap: spacing.s,
-    paddingTop: spacing.m,
   },
   divider: {
     height: 1,
     width: "100%",
-    marginTop: spacing.m,
-    backgroundColor: palette.common.divider,
+    marginTop: spacing.s,
+    backgroundColor: common.divider,
   }
 })

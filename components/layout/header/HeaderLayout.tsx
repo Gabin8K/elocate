@@ -5,7 +5,6 @@ import { component, reusableStyle } from "@/theme/reusables";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconButton } from "@/components/Buttons";
 import { Text } from "@/components/ui";
-import ArrowLeftSvg from "@/assets/svg/arrow-left.svg";
 import { spacing } from "@/theme/spacing";
 import { useTheme } from "@/hooks";
 
@@ -35,11 +34,11 @@ export const HeaderLayout: FC<NativeStackHeaderProps> = memo(function HeaderLayo
     >
       <IconButton
         onPress={onPress}
-        Icon={ArrowLeftSvg}
+        icon={'arrow-back'}
       >
       </IconButton>
       <Text
-        variant={'subtitle_m'}
+        variant={'title_m'}
       >
         {options.title}
       </Text>

@@ -2,14 +2,10 @@ import { Text } from "@/components/ui";
 import { reusableStyle } from "@/theme/reusables";
 import { FC, memo } from "react";
 import { StyleSheet, View } from "react-native";
-import MapOutlineSvg from "@/assets/svg/map-outline.svg";
 import { palette } from "@/theme/palette";
 import { DrawerButton, DrawerButtonProps } from "./DrawerButton";
 import { spacing } from "@/theme/spacing";
-import AddPlaceSvg from "@/assets/svg/add-place.svg";
-import SettingSvg from "@/assets/svg/setting.svg";
-import ProfileSvg from "@/assets/svg/profile.svg";
-import ExperienceSvg from "@/assets/svg/experience.svg";
+import { Ionicons } from "@expo/vector-icons";
 
 
 
@@ -19,24 +15,19 @@ export const DrawerContent: FC = memo(function DrawerLayout() {
 
   const buttons: DrawerButtonProps[] = [
     {
-      children: "Ajouter une place",
-      href: '/place',
-      icon: AddPlaceSvg,
-    },
-    {
       children: "Profile",
       href: '/profile',
-      icon: ProfileSvg,
+      icon: 'person-outline',
     },
     {
       children: "Expereinces",
       href: '/experience',
-      icon: ExperienceSvg,
+      icon: 'book-outline',
     },
     {
       children: "Settings",
       href: '/setting',
-      icon: SettingSvg,
+      icon: 'settings-outline',
     }
   ];
 
@@ -52,14 +43,16 @@ export const DrawerContent: FC = memo(function DrawerLayout() {
         ]}
       >
         <Text
-          variant={'subtitle_b'}
+          variant={'title_b'}
         >
           EL
         </Text>
-        <MapOutlineSvg
-          stroke={palette.light.primary}
+        <Ionicons
+          name={'location-outline'}
+          size={24}
+          color={palette.light.primary}
         />
-        <Text variant={'subtitle_b'}>
+        <Text variant={'title_b'}>
           CATE
         </Text>
       </View>

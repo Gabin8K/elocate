@@ -14,7 +14,6 @@ const component = StyleSheet.create({
     elevation: 3
   },
   card: {
-    backgroundColor: "#fff",
     borderRadius: 10,
     padding: 10,
     margin: 10,
@@ -26,7 +25,9 @@ const component = StyleSheet.create({
 
 const reusableStyle = StyleSheet.create({
   full:{
-    flex: 1
+    flex: 1,
+    width: "100%",
+    height: "100%",
   },
   fullCenter: {
     flex: 1,

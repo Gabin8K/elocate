@@ -11,13 +11,12 @@ export const common = {
 }
 
 export const palette = {
-  common,
   light: {
     ...common,
     primary: '#1DA445',
     primary_light: "#BBEABB",
     background: '#F8F8F8',
-    card: '#FFFFFF',
+    card: '#fafafa',
     shadow: '#A1A1A1',
     text: '#000000'
   },

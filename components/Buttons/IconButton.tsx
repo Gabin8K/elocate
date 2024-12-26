@@ -1,14 +1,14 @@
+import React, { memo } from 'react';
 import { useTheme } from '@/hooks/useTheme';
 import { Theme } from '@/theme';
-import React, { FC, memo } from 'react'
+import { Ionicons } from '@expo/vector-icons';
 import { Pressable, PressableProps, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import Animated, { LinearTransition, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { SvgProps } from 'react-native-svg';
 
 
 type Props = PressableProps & {
-  Icon?: FC<SvgProps>;
-  iconProps?: SvgProps;
+  icon: keyof typeof Ionicons.glyphMap;
+  iconProps?: React.ComponentProps<typeof Ionicons>;
   variant?: keyof Theme['colors'];
   style?: StyleProp<ViewStyle>;
   styleContainer?: StyleProp<ViewStyle>;
@@ -18,7 +18,7 @@ type Props = PressableProps & {
 
 
 export const IconButton = memo(function IconButton(props: Props) {
-  const { Icon = null, iconProps, loading, styleContainer, variant = 'primary', style: _style, layout, ...rest } = props;
+  const { icon, iconProps, loading, styleContainer, variant = 'text', style: _style, layout, ...rest } = props;
 
   const { colors } = useTheme();
   const active = useSharedValue(false);
@@ -31,26 +31,29 @@ export const IconButton = memo(function IconButton(props: Props) {
   return (
     <Animated.View
       layout={layout ? LinearTransition : undefined}
-      style={[uas, styles.overflow, styleContainer]}
+      style={[
+        uas,
+        styles.overflow,
+        styleContainer
+      ]}
     >
       <Pressable
         onPressIn={() => (active.value = true)}
         onPressOut={() => (active.value = false)}
         disabled={loading}
         android_ripple={{
-          color: colors.primary_light,
+          color: colors.gray2,
           radius: 100
         }}
         style={[styles.container, _style]}
         {...rest}
       >
-        {Icon ?
-          <Icon
-            color={colors[loading ? 'disabled' : variant]}
-            {...iconProps}
-          /> :
-          null
-        }
+        <Ionicons
+          color={colors[loading ? 'disabled' : variant]}
+          size={24}
+          name={icon}
+          {...iconProps}
+        />
       </Pressable>
     </Animated.View>
   )
@@ -59,9 +62,9 @@ export const IconButton = memo(function IconButton(props: Props) {
 const styles = StyleSheet.create({
   overflow: {
     overflow: 'hidden',
-    borderRadius: 35,
-    width: 35,
-    height: 35,
+    borderRadius: 40,
+    width: 40,
+    height: 40,
   },
   container: {
     width: '100%',

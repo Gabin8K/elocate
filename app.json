@@ -43,6 +43,12 @@
             "useFrameworks": "static"
           }
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Elocate to use your location."
+        }
       ]
     ],
     "experiments": {
