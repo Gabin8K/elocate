@@ -105,6 +105,7 @@ export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout(
         {
           paddingBottom: insets.bottom,
           backgroundColor: colors.card,
+          boxShadow: `0 4 4 ${colors.shadow}, 0 -4 4 ${colors.shadow}`,
         }
       ]}
     >
@@ -137,7 +138,6 @@ const styles = StyleSheet.create({
     width,
     paddingTop: spacing.m,
     ...reusableStyle.row,
-    boxShadow: `0 4 4 ${palette.light.gray2}, 0 -4 4 ${palette.light.gray2}`,
   },
   indicator: {
     zIndex: 1,
@@ -147,6 +147,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     borderRadius: spacing.s,
     backgroundColor: palette.light.primary,
-    boxShadow: `0px 4px 4px ${common.gray3}`,
+    boxShadow: `0 4 4 ${common.gray3}`,
   }
 })

@@ -1,5 +1,5 @@
 import React, { FC, memo, useEffect } from 'react'
-import Animated, { Easing, SlideInDown, SlideOutDown } from 'react-native-reanimated'
+import Animated, { Easing, SlideInUp, SlideOutUp } from 'react-native-reanimated'
 import { StyleSheet } from 'react-native';
 import { useToast } from '@/hooks/useToast';
 import { spacing } from '@/theme/spacing';
@@ -22,12 +22,12 @@ const Toast: FC = memo(function Toast() {
   return (
     <Animated.View
       entering={
-        SlideInDown
+        SlideInUp
           .springify()
           .damping(50)
       }
       exiting={
-        SlideOutDown
+        SlideOutUp
           .duration(1000)
           .easing(Easing.ease)
       }
@@ -37,7 +37,6 @@ const Toast: FC = memo(function Toast() {
       ]}
     >
       <Text
-        variant={'body1_m'}
         color={state.color}
       >
         {state.message}
@@ -63,9 +62,9 @@ export const Toaster: FC = memo(function Toaster() {
 const styles = StyleSheet.create({
   toast: {
     zIndex: 100,
+    top: spacing.xl,
     left: spacing.m,
     right: spacing.m,
-    bottom: spacing.l,
     padding:spacing.s,
     ...component.shadow,
     position: 'absolute',

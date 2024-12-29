@@ -17,7 +17,7 @@ export const palette = {
     primary_light: "#BBEABB",
     background: '#F8F8F8',
     card: '#fafafa',
-    shadow: '#A1A1A1',
+    shadow: 'rgba(0, 0, 0, 0.1)',
     text: '#000000'
   },
   dark: {
@@ -26,7 +26,7 @@ export const palette = {
     primary_light: "#BBEABB",
     background: '#1F1F1F',
     card: '#2A2A2A',
-    shadow: '#1B1B1B',
+    shadow: 'rgba(255, 255, 255, 0.1)',
     text: '#FFFFFF'
   }
 };

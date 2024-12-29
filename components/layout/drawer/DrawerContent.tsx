@@ -1,23 +1,27 @@
 import { Text } from "@/components/ui";
 import { reusableStyle } from "@/theme/reusables";
-import { FC, memo } from "react";
+import { FC, Fragment, memo, useCallback } from "react";
 import { StyleSheet, View } from "react-native";
 import { palette } from "@/theme/palette";
 import { DrawerButton, DrawerButtonProps } from "./DrawerButton";
 import { spacing } from "@/theme/spacing";
 import { Ionicons } from "@expo/vector-icons";
-
+import { useAuth } from "@/providers/AuthProvider";
+import { Button } from "@/components/Buttons";
+import { authService } from "@/services";
 
 
 
 
 export const DrawerContent: FC = memo(function DrawerLayout() {
+  const { auth } = useAuth();
 
   const buttons: DrawerButtonProps[] = [
     {
       children: "Profile",
       href: '/profile',
-      icon: 'person-outline',
+      ...auth ? { image_url: auth.photoURL } :
+        { icon: 'person-outline' },
     },
     {
       children: "Expereinces",
@@ -31,55 +35,77 @@ export const DrawerContent: FC = memo(function DrawerLayout() {
     }
   ];
 
+  const onLogout = useCallback(() => {
+    authService.onGoogleSignout();
+  }, []);
+
 
   return (
-    <View
-      style={styles.container}
-    >
+    <Fragment>
       <View
-        style={[
-          reusableStyle.row,
-          {marginHorizontal: spacing.m}
-        ]}
+        style={styles.container}
       >
-        <Text
-          variant={'title_b'}
+        <View
+          style={[
+            reusableStyle.row,
+            { marginHorizontal: spacing.m }
+          ]}
         >
-          EL
-        </Text>
-        <Ionicons
-          name={'location-outline'}
-          size={24}
-          color={palette.light.primary}
-        />
-        <Text variant={'title_b'}>
-          CATE
-        </Text>
-      </View>
-      <View
-        style={styles.content}
-      >
-        {buttons.map((button, index) => (
-          <DrawerButton
-            key={index}
-            {...button}
+          <Text
+            variant={'title_b'}
+          >
+            EL
+          </Text>
+          <Ionicons
+            name={'location-outline'}
+            size={24}
+            color={palette.light.primary}
           />
-        ))}
+          <Text variant={'title_b'}>
+            CATE
+          </Text>
+        </View>
+        <View
+          style={styles.content}
+        >
+          {buttons.map((button, index) => (
+            <DrawerButton
+              key={index}
+              {...button}
+            />
+          ))}
+        </View>
       </View>
-    </View>
+      {auth ?
+        <Button
+          variant={'text'}
+          onPress={onLogout}
+          style={styles.button}
+        >
+          Se Deconnecter
+        </Button> :
+        null
+      }
+    </Fragment>
   );
 })
 
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     paddingVertical: spacing.m,
   },
   content: {
-    left:0,
+    left: 0,
     width: "100%",
     position: "absolute",
     paddingTop: spacing.l,
     top: spacing.height * .07,
   },
+  button: {
+    width: '90%',
+    position: 'absolute',
+    bottom: spacing.m,
+    alignSelf: 'center',
+  }
 })

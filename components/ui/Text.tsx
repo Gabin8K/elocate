@@ -9,7 +9,7 @@ type Props = TextProps & {
 }
 
 export const Text: FC<Props> = memo(function Text(props) {
-  const { variant = 'body1', color = 'text', style, ...rest } = props;
+  const { variant = 'body2', color = 'text', style, ...rest } = props;
 
   const { colors } = useTheme();
 

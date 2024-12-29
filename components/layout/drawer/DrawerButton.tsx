@@ -1,21 +1,22 @@
 import { Text } from "@/components/ui";
-import { common,  } from "@/theme/palette";
+import { common, } from "@/theme/palette";
 import { reusableStyle } from "@/theme/reusables";
 import { spacing } from "@/theme/spacing";
 import { Ionicons } from "@expo/vector-icons";
 import { Href, router } from "expo-router";
 import { FC, memo, ReactNode } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 
 
 export type DrawerButtonProps = {
-  icon: keyof typeof Ionicons.glyphMap;
+  icon?: keyof typeof Ionicons.glyphMap;
+  image_url?: string;
   href?: Href;
   children: ReactNode;
 }
 
 export const DrawerButton: FC<DrawerButtonProps> = memo(function DrawerLayout(props) {
-  const { icon: Icon, href, children } = props;
+  const { icon: Icon, image_url, href, children } = props;
 
   const onPress = () => {
     if (!href) return;
@@ -31,10 +32,16 @@ export const DrawerButton: FC<DrawerButtonProps> = memo(function DrawerLayout(pr
       style={styles.container}
     >
       <View style={styles.row}>
-        <Ionicons
-          name={Icon}
-          size={24}
-        />
+        {image_url ?
+          <Image
+            source={{ uri: image_url }}
+            style={styles.image}
+          /> :
+          <Ionicons
+            name={Icon}
+            size={24}
+          />
+        }
         <Text
           variant={'body1_m'}
         >
@@ -52,9 +59,16 @@ const styles = StyleSheet.create({
     paddingTop: spacing.m,
     paddingHorizontal: spacing.m,
   },
-  row:{
+  row: {
     ...reusableStyle.row,
     columnGap: spacing.s,
+  },
+  image: {
+    width: 25,
+    height: 25,
+    borderRadius: 25,
+    borderWidth: 2,
+    borderColor: common.divider,
   },
   divider: {
     height: 1,

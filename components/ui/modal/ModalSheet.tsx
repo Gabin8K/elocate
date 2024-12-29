@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: spacing.width,
-    paddingTop: spacing.m,
+    padding: spacing.m,
     paddingHorizontal: spacing.s,
     borderTopLeftRadius: spacing.m,
     borderTopRightRadius: spacing.m,

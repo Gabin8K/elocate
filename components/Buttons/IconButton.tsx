@@ -7,7 +7,7 @@ import Animated, { LinearTransition, useAnimatedStyle, useSharedValue, withTimin
 
 
 type Props = PressableProps & {
-  icon: keyof typeof Ionicons.glyphMap;
+  icon?: keyof typeof Ionicons.glyphMap;
   iconProps?: React.ComponentProps<typeof Ionicons>;
   variant?: keyof Theme['colors'];
   style?: StyleProp<ViewStyle>;
@@ -18,7 +18,7 @@ type Props = PressableProps & {
 
 
 export const IconButton = memo(function IconButton(props: Props) {
-  const { icon, iconProps, loading, styleContainer, variant = 'text', style: _style, layout, ...rest } = props;
+  const { children, icon, iconProps, loading, styleContainer, variant = 'text', style: _style, layout, ...rest } = props;
 
   const { colors } = useTheme();
   const active = useSharedValue(false);
@@ -48,12 +48,15 @@ export const IconButton = memo(function IconButton(props: Props) {
         style={[styles.container, _style]}
         {...rest}
       >
-        <Ionicons
-          color={colors[loading ? 'disabled' : variant]}
-          size={24}
-          name={icon}
-          {...iconProps}
-        />
+        {icon ?
+          <Ionicons
+            color={colors[loading ? 'disabled' : variant]}
+            size={24}
+            name={icon}
+            {...iconProps}
+          /> :
+          children
+        }
       </Pressable>
     </Animated.View>
   )

@@ -4,7 +4,7 @@ import Animated, { LinearTransition, useAnimatedStyle, useSharedValue, withTimin
 import { Text } from '../ui';
 import { useTheme } from '@/hooks';
 import { Theme } from '@/theme';
-import { component } from '@/theme/reusables';
+import { component, reusableStyle } from '@/theme/reusables';
 import { spacing } from '@/theme/spacing';
 
 export interface ButtonProps extends PressableProps {
@@ -13,6 +13,8 @@ export interface ButtonProps extends PressableProps {
   colorIndicator?: keyof Theme['colors'];
   colorDisabled?: keyof Theme['colors'];
   full?: boolean;
+  endIcon?: ReactNode;
+  starIcon?: ReactNode;
   textStyle?: React.ComponentProps<typeof Text>;
   style?: StyleProp<ViewStyle>;
   children: ReactNode;
@@ -56,6 +58,7 @@ export const Button = memo<ButtonProps>(function Button({ style: _style, ...prop
         /> :
         null
       }
+      {props.starIcon}
       <Text
         color={'gray1'}
         variant={'body2_eb'}
@@ -63,18 +66,19 @@ export const Button = memo<ButtonProps>(function Button({ style: _style, ...prop
       >
         {props.children}
       </Text>
-
+      {props.endIcon}
     </AnimatedPressable>
   );
 })
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 100,
+    borderRadius: spacing.s,
     paddingVertical: spacing.s,
     paddingHorizontal: spacing.l,
-    alignItems: 'center',
     justifyContent: 'center',
+    columnGap: spacing.s,
+    ...reusableStyle.row,
     ...component.shadow
   },
   indicator: {

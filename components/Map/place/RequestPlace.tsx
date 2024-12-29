@@ -50,7 +50,7 @@ export const RequestPlace: FC = memo(function RequestPlace() {
             style={reusableStyle.row}
           >
             <Text
-              variant={'body1_m'}
+              variant={'body2_m'}
             >
               Voulez-vous ajouter se lieu
             </Text>
@@ -64,7 +64,7 @@ export const RequestPlace: FC = memo(function RequestPlace() {
                 />
               ))}
             </View>
-            <Text variant={'body1_m'}>?</Text>
+            <Text variant={'body2_m'}>?</Text>
           </View>
           <View
             style={styles.buttons}
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     position: 'absolute',
     paddingVertical: spacing.m,
-    paddingHorizontal: spacing.l,
+    paddingHorizontal: spacing.m,
     borderRadius: spacing.s,
     rowGap: spacing.m,
     ...component.shadow,

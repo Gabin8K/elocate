@@ -35,7 +35,7 @@ async function onGoogleSignout() {
 }
 
 
-export const auth = {
+export const authService = {
   onGoogleSignin,
   onGoogleSignout
 }
