@@ -6,7 +6,7 @@ import { Theme } from "@/theme";
 import { useDrawer } from "../drawer";
 import { common, palette } from "@/theme/palette";
 import { useTheme } from "@/hooks";
-import { component, reusableStyle } from "@/theme/reusables";
+import { reusableStyle } from "@/theme/reusables";
 import Animated, { useAnimatedStyle, withSpring } from "react-native-reanimated";
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs/src/types';
 import { Ionicons } from "@expo/vector-icons";
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     width,
     paddingTop: spacing.m,
     ...reusableStyle.row,
-    ...component.shadow
+    boxShadow: `0 4 4 ${palette.light.gray2}, 0 -4 4 ${palette.light.gray2}`,
   },
   indicator: {
     zIndex: 1,

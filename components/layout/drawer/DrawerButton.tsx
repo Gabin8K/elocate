@@ -49,6 +49,7 @@ export const DrawerButton: FC<DrawerButtonProps> = memo(function DrawerLayout(pr
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+    paddingTop: spacing.m,
     paddingHorizontal: spacing.m,
   },
   row:{
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     width: "100%",
-    marginTop: spacing.s,
+    marginTop: spacing.m,
     backgroundColor: common.divider,
   }
 })

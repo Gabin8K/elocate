@@ -1,13 +1,19 @@
-import { Map } from "@/components/Map";
-import { reusableStyle } from "@/theme/reusables";
-import { View } from "react-native";
+import { Map, MapProvider } from "@/components/Map";
+import { RequestPlace } from "@/components/Map/place";
+import { MarkerPlace } from "@/components/Map/place/MarkerPlace";
+import { RequestPlaceModal } from "@/components/Map/place/RequestPlaceModal";
+import PortalProvider from "@/providers/PortalProvider";
 
 export default function Page() {
   return (
-    <View
-      style={reusableStyle.fullCenter}
-    >
-      <Map/>
-    </View>
+    <PortalProvider>
+      <MapProvider>
+        <Map>
+          <MarkerPlace />
+        </Map>
+        <RequestPlace />
+        <RequestPlaceModal />
+      </MapProvider>
+    </PortalProvider>
   )
 }

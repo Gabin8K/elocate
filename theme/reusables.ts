@@ -4,14 +4,7 @@ import { palette } from "./palette";
 
 const component = StyleSheet.create({
   shadow: {
-    shadowColor: palette.light.shadow,
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3
+    boxShadow: `0 4 4 ${palette.light.gray2}`,
   },
   card: {
     borderRadius: 10,

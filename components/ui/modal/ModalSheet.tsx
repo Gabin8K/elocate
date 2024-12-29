@@ -1,15 +1,16 @@
 import { useTheme } from '@/hooks';
 import { Portal } from '@/providers/PortalProvider';
+import { palette } from '@/theme/palette';
+import { component } from '@/theme/reusables';
 import { spacing } from '@/theme/spacing';
 import React, { FC, PropsWithChildren, memo, useCallback, useEffect, useMemo } from 'react';
-import { Pressable, StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
-import Animated, { interpolate, runOnJS, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
+import { Pressable, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Animated, { Easing, interpolate, ReduceMotion, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 
 type ModalConfig = {
   top: number;
-  offsetHeight: number;
   velocityHeight: number;
   animationDuration: number;
 }
@@ -25,22 +26,36 @@ interface ModalSheetProps extends PropsWithChildren {
 
 const defaultConfig: ModalConfig = {
   top: 0,
-  offsetHeight: 100,
-  velocityHeight: 1500,
+  velocityHeight: 1200,
   animationDuration: 400
 }
 
 
-const AnimatedTouchablePressable = Animated.createAnimatedComponent(Pressable);
 const height = spacing.height;
 
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export const ModalSheet: FC<ModalSheetProps> = memo(function ModalSheet(props) {
-  const { open, onClose, children, containerStyle, style, ...rest } = props;
+export const ModalSheet: FC<ModalSheetProps> = (props: ModalSheetProps) => {
+  const { open } = props;
+
+  return (
+    <Portal
+      name={'modal-sheet'}
+    >
+      {open ?
+        <RenderModalSheet {...props} /> :
+        null
+      }
+    </Portal>
+  );
+}
+
+
+const RenderModalSheet: FC<ModalSheetProps> = memo(function RenderModalSheet(props) {
+  const { onClose, children, containerStyle, style, ...rest } = props;
 
   const config: ModalConfig = {
     top: rest.config?.top ?? defaultConfig.top,
-    offsetHeight: rest.config?.offsetHeight ?? defaultConfig.offsetHeight,
     velocityHeight: rest.config?.velocityHeight ?? defaultConfig.velocityHeight,
     animationDuration: rest.config?.animationDuration ?? defaultConfig.animationDuration
   }
@@ -53,10 +68,8 @@ export const ModalSheet: FC<ModalSheetProps> = memo(function ModalSheet(props) {
     return (
       Gesture
         .Pan()
-        .activeOffsetY([-5, 5])
         .onChange(e => {
-          const y = Math.abs(e.translationY);
-          if (y <= config.offsetHeight) {
+          if (e.translationY >= 0) {
             translateY.value = e.translationY;
           }
         })
@@ -68,7 +81,7 @@ export const ModalSheet: FC<ModalSheetProps> = memo(function ModalSheet(props) {
               };
             });
           } else {
-            translateY.value = withSpring(0, { damping: 10 });
+            translateY.value = withTiming(0, { duration: config.animationDuration });
           }
         })
     )
@@ -77,17 +90,22 @@ export const ModalSheet: FC<ModalSheetProps> = memo(function ModalSheet(props) {
 
   const uas = useAnimatedStyle(() => {
     return {
+      backgroundColor: colors.card,
       transform: [
         { translateY: translateY.value + config.top }
       ]
     }
-  }, []);
+  }, [colors]);
+
 
   const uasBackground = useAnimatedStyle(() => {
     return {
+      backgroundColor: colors.text,
       opacity: interpolate(translateY.value, [0, height], [.4, 0], 'clamp')
     }
-  }, [height])
+  }, [height, colors]);
+
+
 
   const onRequestClose = useCallback(() => {
     translateY.value = withTiming(height, { duration: config.animationDuration }, (finished) => {
@@ -95,76 +113,79 @@ export const ModalSheet: FC<ModalSheetProps> = memo(function ModalSheet(props) {
         runOnJS(onClose)();
       };
     });
-  }, []);
+  }, [onClose])
 
 
   useEffect(() => {
-    if (open && translateY.value === height) {
-      translateY.value = withSpring(0, { damping: 20 });
-    } else if (!open) {
-      translateY.value = withTiming(height, { duration: config.animationDuration }, (finished) => {
-        if (finished && onClose) {
-          runOnJS(onClose)();
-        };
-      });
-    }
-  }, [open]);
+    translateY.value = withTiming(0, {
+      duration: 1000,
+      easing: Easing.inOut(Easing.quad),
+      reduceMotion: ReduceMotion.System,
+    });
+  }, [])
 
-
-  if (!open) return null;
 
 
   return (
-    <Portal
-      name={'modal-sheet'}
+    <GestureDetector
+      gesture={gestureHandler}
     >
-      <GestureHandlerRootView
-        style={[
-          styles.gesture,
-          style,
-          styles.flex
-        ]}
+      <View
+        style={styles.full}
       >
-        {typeof onClose === 'function' ?
-          <AnimatedTouchablePressable
-            onPress={onRequestClose}
-            style={[
-              uasBackground,
-              styles.clickAwayListener,
-              { backgroundColor: colors.gray4 }
-            ]}
-          /> :
-          null
-        }
-        <GestureDetector
-          gesture={gestureHandler}
+        <AnimatedPressable
+          onPress={onRequestClose}
+          style={[
+            uasBackground,
+            styles.pressable,
+          ]}
+        />
+        <Animated.View
+          style={[
+            uas,
+            styles.container,
+            containerStyle,
+          ]}
         >
-          <Animated.View
-            style={[
-              uas,
-              containerStyle
-            ]}
-          >
-            {children}
-          </Animated.View>
-        </GestureDetector>
-      </GestureHandlerRootView>
-    </Portal>
+          <View
+            style={styles.swip}
+          />
+          {children}
+        </Animated.View>
+      </View>
+    </GestureDetector>
   )
 });
 
 
+
 const styles = StyleSheet.create({
-  clickAwayListener: {
+  full: {
+    flex: 1,
+    ...StyleSheet.absoluteFillObject,
+  },
+  container: {
+    zIndex: 1,
     position: 'absolute',
-    width: '100%',
-    height: '100%'
+    bottom: 0,
+    width: spacing.width,
+    paddingTop: spacing.m,
+    paddingHorizontal: spacing.s,
+    borderTopLeftRadius: spacing.m,
+    borderTopRightRadius: spacing.m,
+    ...component.shadow,
   },
-  gesture: {
-    alignItems: 'center',
-    justifyContent: 'center',
+  swip: {
+    zIndex: 1,
+    position: 'absolute',
+    top: spacing.s,
+    left: spacing.width / 2 - 15,
+    width: 30,
+    height: 4,
+    borderRadius: 4,
+    backgroundColor: palette.light.gray2,
   },
-  flex: {
-    flex: 1
+  pressable: {
+    ...StyleSheet.absoluteFillObject,
   }
 });

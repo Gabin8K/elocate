@@ -22,12 +22,6 @@ export default function PagesLayout() {
         }}
       />
       <Stack.Screen
-        name={'place'}
-        options={{
-          title: 'Ajouter une place'
-        }}
-      />
-      <Stack.Screen
         name={'profile'}
         options={{
           title: 'Profile'

@@ -11,42 +11,42 @@ export const typography = StyleSheet.create({
   title_eb: {
     fontSize: 28,
     fontFamily: 'WsEb',
-    lineHeight: 64,
+    lineHeight: 28,
   },
   title_b: {
     fontSize: 28,
     fontFamily: 'WsB',
-    lineHeight: 64,
+    lineHeight: 28,
   },
   title_m: {
     fontSize: 28,
     fontFamily: 'WsSb',
-    lineHeight: 64,
+    lineHeight: 28,
   },
   title: {
     fontSize: 28,
     fontFamily: 'WsM',
-    lineHeight: 64,
+    lineHeight: 28,
   },
   body1_eb: {
     fontSize: 19,
     fontFamily: 'WsEb',
-    lineHeight: 55,
+    lineHeight: 19,
   },
   body1_b: {
     fontSize: 19,
     fontFamily: 'WsB',
-    lineHeight: 55,
+    lineHeight: 19,
   },
   body1_m: {
     fontSize: 19,
     fontFamily: 'WsSb',
-    lineHeight: 55,
+    lineHeight: 19,
   },
   body1: {
     fontSize: 19,
     fontFamily: 'WsM',
-    lineHeight: 55,
+    lineHeight: 19,
   },
   body2_eb: {
     fontSize: 14,
