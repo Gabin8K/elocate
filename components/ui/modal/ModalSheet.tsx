@@ -1,4 +1,5 @@
 import { useTheme } from '@/hooks';
+import useBackhandler from '@/hooks/useBackhandler';
 import { Portal } from '@/providers/PortalProvider';
 import { palette } from '@/theme/palette';
 import { component } from '@/theme/reusables';
@@ -52,7 +53,7 @@ export const ModalSheet: FC<ModalSheetProps> = (props: ModalSheetProps) => {
 
 
 const RenderModalSheet: FC<ModalSheetProps> = memo(function RenderModalSheet(props) {
-  const { onClose, children, containerStyle, style, ...rest } = props;
+  const { open, onClose, children, containerStyle, style, ...rest } = props;
 
   const config: ModalConfig = {
     top: rest.config?.top ?? defaultConfig.top,
@@ -106,6 +107,14 @@ const RenderModalSheet: FC<ModalSheetProps> = memo(function RenderModalSheet(pro
   }, [height, colors]);
 
 
+  const uasSwip = useAnimatedStyle(() => {
+    return {
+      transform: [
+        { scaleX: interpolate(translateY.value, [0, height], [1, 2]) }
+      ]
+    }
+  }, []);
+
 
   const onRequestClose = useCallback(() => {
     translateY.value = withTiming(height, { duration: config.animationDuration }, (finished) => {
@@ -114,6 +123,16 @@ const RenderModalSheet: FC<ModalSheetProps> = memo(function RenderModalSheet(pro
       };
     });
   }, [onClose])
+
+
+
+  useBackhandler(() => {
+    if (open) {
+      onRequestClose();
+      return true;
+    }
+    return false;
+  })
 
 
   useEffect(() => {
@@ -148,8 +167,11 @@ const RenderModalSheet: FC<ModalSheetProps> = memo(function RenderModalSheet(pro
             containerStyle,
           ]}
         >
-          <View
-            style={styles.swip}
+          <Animated.View
+            style={[
+              uasSwip,
+              styles.swip,
+            ]}
           />
           {children}
         </Animated.View>

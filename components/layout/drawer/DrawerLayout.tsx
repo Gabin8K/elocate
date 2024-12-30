@@ -9,6 +9,7 @@ import { useDrawer } from "./DrawerProvider";
 import { palette } from "@/theme/palette";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { DrawerContent } from "./DrawerContent";
+import useBackhandler from "@/hooks/useBackhandler";
 
 const height = spacing.height * 0.7;
 const width = spacing.width * 0.75;
@@ -62,6 +63,15 @@ export const DrawerLayout: FC = memo(function DrawerLayout() {
       ]
     }
   }, []);
+
+
+  useBackhandler(() => {
+    if (open) {
+      setOpen(false);
+      return true;
+    }
+    return false;
+  });
 
 
   useEffect(() => {

@@ -35,7 +35,6 @@ export const TextInput: FC<TextInputProps> = memo(function TextInput(props) {
       style={[
         uas,
         styles.container,
-        { backgroundColor: colors.background },
         style,
       ]}
       {...rest}
