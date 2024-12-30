@@ -69,24 +69,24 @@ export const typography = StyleSheet.create({
     lineHeight:16,
   },
   caption_eb: {
-    fontSize: 11,
+    fontSize: 12,
     fontFamily: 'WsEb',
-    lineHeight: 11,
+    lineHeight: 12,
   },
   caption_b: {
-    fontSize: 11,
+    fontSize: 12,
     fontFamily: 'WsB',
-    lineHeight: 11,
+    lineHeight: 12,
   },
   caption_m: {
-    fontSize: 11,
+    fontSize: 12,
     fontFamily: 'WsM',
-    lineHeight: 11,
+    lineHeight: 12,
   },
   caption: {
-    fontSize: 11,
+    fontSize: 12,
     fontFamily: 'WsR',
-    lineHeight: 11,
+    lineHeight: 12,
   }
 });
 

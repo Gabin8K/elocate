@@ -6,6 +6,7 @@
   ],
   "rules": {
     "react-hooks/exhaustive-deps": "off",
-    "import/export": "off"
+    "import/export": "off",
+    "@typescript-eslint/no-empty-object-type": "off"
   }
 }

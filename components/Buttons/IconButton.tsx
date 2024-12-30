@@ -8,7 +8,7 @@ import Animated, { LinearTransition, useAnimatedStyle, useSharedValue, withTimin
 
 type Props = PressableProps & {
   icon?: keyof typeof Ionicons.glyphMap;
-  iconProps?: React.ComponentProps<typeof Ionicons>;
+  iconProps?: Partial<React.ComponentProps<typeof Ionicons>>;
   variant?: keyof Theme['colors'];
   style?: StyleProp<ViewStyle>;
   styleContainer?: StyleProp<ViewStyle>;

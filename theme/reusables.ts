@@ -17,13 +17,17 @@ const component = StyleSheet.create({
 
 
 const reusableStyle = StyleSheet.create({
-  full:{
+  full: {
     flex: 1,
     width: "100%",
     height: "100%",
   },
   fullCenter: {
     flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  center: {
     justifyContent: "center",
     alignItems: "center"
   },

@@ -6,7 +6,7 @@ import { spacing } from '@/theme/spacing';
 import React, { FC, PropsWithChildren, memo, useCallback, useEffect, useMemo } from 'react';
 import { Pressable, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { Easing, interpolate, ReduceMotion, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { Easing, interpolate, LinearTransition, ReduceMotion, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 
 type ModalConfig = {
@@ -141,6 +141,7 @@ const RenderModalSheet: FC<ModalSheetProps> = memo(function RenderModalSheet(pro
           ]}
         />
         <Animated.View
+          layout={LinearTransition}
           style={[
             uas,
             styles.container,
