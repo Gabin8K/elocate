@@ -20,7 +20,7 @@ export const LoginContent: FC = memo(function LoginContent() {
     setLoading(true);
     authService
       .onGoogleSignin()
-      .then(() => setLoading(false))
+      .finally(() => setLoading(false))
       .catch((err) => toast.show(String(err || err.message)));
   }, []);
 

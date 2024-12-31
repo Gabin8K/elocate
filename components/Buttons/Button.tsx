@@ -30,7 +30,7 @@ export const Button = memo<ButtonProps>(function Button({ style: _style, ...prop
   const active = useSharedValue(false);
 
   const uas = useAnimatedStyle(() => ({
-    transform: [{ scale: withTiming(active.value ? .98 : 1) }],
+    transform: [{ scale: withTiming(active.value ? .97 : 1) }],
     backgroundColor: withTiming(loading || disabled ? colors[colorDisabled] : colors[variant]),
   }), [loading, disabled, colorDisabled, variant]);
 
@@ -40,6 +40,7 @@ export const Button = memo<ButtonProps>(function Button({ style: _style, ...prop
       style={_style}
     >
       <Pressable
+        unstable_pressDelay={100}
         onPressIn={() => (active.value = true)}
         onPressOut={() => (active.value = false)}
         disabled={loading || disabled}

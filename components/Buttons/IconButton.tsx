@@ -26,7 +26,7 @@ export const IconButton = memo(function IconButton(props: Props) {
 
   const uas = useAnimatedStyle(() => ({
     backgroundColor: withTiming(loading ? colors.disabled : colors['transparent']),
-    transform: [{ scale: withTiming(active.value ? .98 : 1) }],
+    transform: [{ scale: withTiming(active.value ? .97 : 1) }],
   }), [loading]);
 
   return (
@@ -35,10 +35,11 @@ export const IconButton = memo(function IconButton(props: Props) {
       style={[
         uas,
         styles.overflow,
-        styleContainer
+        styleContainer,
       ]}
     >
       <Pressable
+        unstable_pressDelay={100}
         onPressIn={() => (active.value = true)}
         onPressOut={() => (active.value = false)}
         disabled={loading}
