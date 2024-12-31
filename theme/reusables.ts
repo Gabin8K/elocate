@@ -17,6 +17,9 @@ const component = StyleSheet.create({
 
 
 const reusableStyle = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
   full: {
     flex: 1,
     width: "100%",

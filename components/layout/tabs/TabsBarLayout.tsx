@@ -103,8 +103,8 @@ export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout(
       style={[
         styles.container,
         {
-          paddingBottom: insets.bottom,
           backgroundColor: colors.card,
+          paddingBottom: insets.bottom + spacing.s,
           boxShadow: `0 4 4 ${colors.shadow}, 0 -4 4 ${colors.shadow}`,
         }
       ]}
@@ -121,8 +121,8 @@ export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout(
           onPress={onPress(route)}
         >
           <Ionicons
+            size={30}
             name={route.icon}
-            size={38}
             color={palette.light[route.color]}
           />
         </ButtonTab>

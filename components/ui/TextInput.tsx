@@ -1,9 +1,10 @@
 import { FC, memo } from "react";
-import { StyleSheet, TextInput as RNTextInput, TextInputProps as RNTextInputProps } from "react-native";
+import { StyleSheet, TextInputProps as RNTextInputProps } from "react-native";
 import { spacing } from "@/theme/spacing";
 import { typography } from "@/theme";
 import Animated, { LinearTransition, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 import { useTheme } from "@/hooks";
+import { TextInput as RNTextInput } from "react-native-gesture-handler";
 
 
 interface TextInputProps extends RNTextInputProps { };

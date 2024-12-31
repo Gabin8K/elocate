@@ -146,7 +146,6 @@ const RenderModalSheet: FC<ModalSheetProps> = memo(function RenderModalSheet(pro
 
 
   return (
-
     <View
       style={styles.full}
     >
