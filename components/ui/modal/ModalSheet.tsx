@@ -146,19 +146,20 @@ const RenderModalSheet: FC<ModalSheetProps> = memo(function RenderModalSheet(pro
 
 
   return (
-    <GestureDetector
-      gesture={gestureHandler}
+
+    <View
+      style={styles.full}
     >
-      <View
-        style={styles.full}
+      <AnimatedPressable
+        onPress={onRequestClose}
+        style={[
+          uasBackground,
+          styles.pressable,
+        ]}
+      />
+      <GestureDetector
+        gesture={gestureHandler}
       >
-        <AnimatedPressable
-          onPress={onRequestClose}
-          style={[
-            uasBackground,
-            styles.pressable,
-          ]}
-        />
         <Animated.View
           layout={LinearTransition}
           style={[
@@ -175,8 +176,8 @@ const RenderModalSheet: FC<ModalSheetProps> = memo(function RenderModalSheet(pro
           />
           {children}
         </Animated.View>
-      </View>
-    </GestureDetector>
+      </GestureDetector>
+    </View>
   )
 });
 
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   container: {
-    zIndex: 1,
+    zIndex: 2,
     position: 'absolute',
     bottom: 0,
     width: spacing.width,

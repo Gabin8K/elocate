@@ -6,7 +6,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { DropdownList } from "./DropdownList";
 import { reusableStyle } from "@/theme/reusables";
 import { DropdownProvider, useDropdown } from "./DropdownContext";
-import { Pressable, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
+import { Pressable } from "react-native-gesture-handler";
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 
 
@@ -21,9 +22,6 @@ export interface DropdownMenuProps {
   dropdownItems: DropdownItem[];
   onItemPress?: (item: DropdownItem) => void;
 }
-
-
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 
 export const DropdownMenu = memo(function DropdownMenu(props: DropdownMenuProps) {
@@ -73,31 +71,34 @@ const DropdownMenuContent: FC<DropdownMenuProps> = memo(function DropdownMenu(pr
 
 
   return (
-    <AnimatedPressable
+    <Pressable
       onPressIn={() => (active.value = withTiming(1))}
       onPressOut={() => (active.value = withTiming(0))}
       onPress={onPress}
-      style={[
-        uas,
-        styles.container
-      ]}
     >
-      <Text
-        variant={'body2'}
-        color={dropdown.item ? 'text' : 'gray3'}
-        {...placeholderStyle}
-      >
-        {dropdown.item ? dropdown.item.label : placeholder}
-      </Text>
       <Animated.View
-        style={[uasRotate]}
+        style={[
+          uas,
+          styles.container
+        ]}
       >
-        <Ionicons
-          name={'chevron-down'}
-          size={16}
-        />
+        <Text
+          variant={'body2'}
+          color={dropdown.item ? 'text' : 'gray3'}
+          {...placeholderStyle}
+        >
+          {dropdown.item ? dropdown.item.label : placeholder}
+        </Text>
+        <Animated.View
+          style={[uasRotate]}
+        >
+          <Ionicons
+            name={'chevron-down'}
+            size={16}
+          />
+        </Animated.View>
       </Animated.View>
-    </AnimatedPressable>
+    </Pressable>
   );
 });
 

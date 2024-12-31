@@ -24,7 +24,7 @@ export const DrawerContent: FC = memo(function DrawerLayout() {
         { icon: 'person-outline' },
     },
     {
-      children: "Expereinces",
+      children: "Experiences",
       href: '/experience',
       icon: 'book-outline',
     },
@@ -53,6 +53,7 @@ export const DrawerContent: FC = memo(function DrawerLayout() {
         >
           <Text
             variant={'title_b'}
+            style={styles.title}
           >
             EL
           </Text>
@@ -61,7 +62,10 @@ export const DrawerContent: FC = memo(function DrawerLayout() {
             size={24}
             color={palette.light.primary}
           />
-          <Text variant={'title_b'}>
+          <Text
+            variant={'title_b'}
+            style={styles.title}
+          >
             CATE
           </Text>
         </View>
@@ -94,6 +98,10 @@ export const DrawerContent: FC = memo(function DrawerLayout() {
 const styles = StyleSheet.create({
   container: {
     paddingVertical: spacing.m,
+  },
+  title: {
+    fontSize: 26,
+    lineHeight: 26,
   },
   content: {
     left: 0,

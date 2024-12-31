@@ -9,24 +9,24 @@ const fonts = {
 
 export const typography = StyleSheet.create({
   title_eb: {
-    fontSize: 28,
+    fontSize: 22,
     fontFamily: 'WsEb',
-    lineHeight: 28,
+    lineHeight: 22,
   },
   title_b: {
-    fontSize: 28,
+    fontSize: 22,
     fontFamily: 'WsB',
-    lineHeight: 28,
+    lineHeight: 22,
   },
   title_m: {
-    fontSize: 28,
+    fontSize: 22,
     fontFamily: 'WsM',
-    lineHeight: 28,
+    lineHeight: 22,
   },
   title: {
-    fontSize: 28,
+    fontSize: 22,
     fontFamily: 'WsR',
-    lineHeight: 28,
+    lineHeight: 22,
   },
   body1_eb: {
     fontSize: 19,

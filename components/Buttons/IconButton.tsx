@@ -2,7 +2,8 @@ import React, { memo } from 'react';
 import { useTheme } from '@/hooks/useTheme';
 import { Theme } from '@/theme';
 import { Ionicons } from '@expo/vector-icons';
-import { Pressable, PressableProps, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { Pressable, PressableProps } from 'react-native-gesture-handler';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import Animated, { LinearTransition, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 
@@ -45,18 +46,21 @@ export const IconButton = memo(function IconButton(props: Props) {
           color: colors.gray2,
           radius: 100
         }}
-        style={[styles.container, _style]}
         {...rest}
       >
-        {icon ?
-          <Ionicons
-            color={colors[loading ? 'disabled' : variant]}
-            size={24}
-            name={icon}
-            {...iconProps}
-          /> :
-          children
-        }
+        <Animated.View
+          style={[styles.container, _style]}
+        >
+          {icon ?
+            <Ionicons
+              color={colors[loading ? 'disabled' : variant]}
+              size={24}
+              name={icon}
+              {...iconProps}
+            /> :
+            children as any
+          }
+        </Animated.View>
       </Pressable>
     </Animated.View>
   )

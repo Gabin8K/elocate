@@ -37,6 +37,7 @@ const Toast: FC = memo(function Toast() {
       ]}
     >
       <Text
+        variant={'body2_m'}
         color={state.color}
       >
         {state.message}
@@ -65,9 +66,10 @@ const styles = StyleSheet.create({
     top: spacing.xl,
     left: spacing.m,
     right: spacing.m,
-    padding:spacing.s,
     ...component.shadow,
     position: 'absolute',
     borderRadius: spacing.s,
+    paddingVertical: spacing.m,
+    paddingHorizontal: spacing.s,
   }
 })
