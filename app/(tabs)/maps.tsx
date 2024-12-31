@@ -15,9 +15,7 @@ export default function Page() {
       ]}
     >
       <Text>Maps</Text>
-      <Slider
-        onChange={(value) => console.log(value)}
-      />
+      <Slider />
     </View>
   )
 }

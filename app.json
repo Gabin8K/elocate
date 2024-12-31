@@ -29,6 +29,9 @@
       "adaptiveIcon": {
         "backgroundColor": "#1DA445"
       },
+      "permissions": [
+        "android.permission.VIBRATE"
+      ],
       "googleServicesFile": "./google-services.json"
     },
     "plugins": [
