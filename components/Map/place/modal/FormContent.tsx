@@ -5,14 +5,10 @@ import { spacing } from "@/theme/spacing";
 import { DropdownMenu } from "@/components/ui/dropdown";
 import { ImageInput } from "@/components/ui/image-input";
 import { Button } from "@/components/Buttons";
-import { useTheme } from "@/hooks";
-import Animated, { LinearTransition } from "react-native-reanimated";
-
 
 
 
 export const FormContent: FC = memo(function FormContent() {
-  const { colors } = useTheme();
 
   return (
     <Fragment>
@@ -35,19 +31,11 @@ export const FormContent: FC = memo(function FormContent() {
             { label: 'item 5', value: 'item 5' },
           ]}
         />
-        <Animated.View
-          layout={LinearTransition}
-          style={[
-            styles.form,
-            { backgroundColor: colors.background }
-          ]}
-        >
-          <TextInput
-            multiline
-            placeholder={'Description...'}
-          />
-          <ImageInput />
-        </Animated.View>
+        <TextInput
+          multiline
+          placeholder={'Description...'}
+        />
+        <ImageInput />
         <Button
           layout
           style={styles.button}
@@ -62,10 +50,6 @@ export const FormContent: FC = memo(function FormContent() {
 
 const styles = StyleSheet.create({
   content: {
-    rowGap: spacing.s,
-  },
-  form: {
-    zIndex: 1,
     rowGap: spacing.s,
   },
   button: {

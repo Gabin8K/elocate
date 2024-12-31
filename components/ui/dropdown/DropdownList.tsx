@@ -1,12 +1,13 @@
 import { FC, memo, useCallback, useMemo } from "react";
 import { Text } from "../Text";
-import { ListRenderItemInfo, Platform, Pressable, StyleSheet } from "react-native";
 import { useDropdown } from "./DropdownContext";
 import { DropdownItem } from "./DropdownMenu";
 import { spacing } from "@/theme/spacing";
 import { FlatList } from "react-native-gesture-handler";
 import { common } from "@/theme/palette";
 import { useTheme } from "@/hooks";
+import Animated, { FadeIn } from "react-native-reanimated";
+import { ListRenderItemInfo, Platform, Pressable, StyleSheet } from "react-native";
 
 
 export interface DropdownListProps {
@@ -16,7 +17,7 @@ export interface DropdownListProps {
 
 type RenderItemProps = DropdownItem & {
   onItemPress?: (item: DropdownItem) => void;
-};
+}
 
 
 export const DropdownList: FC<DropdownListProps> = memo(function DropDownMenu(props) {
@@ -37,17 +38,21 @@ export const DropdownList: FC<DropdownListProps> = memo(function DropDownMenu(pr
   if (!dropdown.open) return;
 
   return (
-    <FlatList
-      data={items}
-      renderItem={renderItem}
-      style={[
-        styles.container,
-        {
-          backgroundColor: colors.card,
-          borderTopColor: colors.text,
-        }
-      ]}
-    />
+    <Animated.View
+      entering={FadeIn.delay(100)}
+    >
+      <FlatList
+        data={items}
+        renderItem={renderItem}
+        style={[
+          styles.container,
+          {
+            backgroundColor: colors.card,
+            borderTopColor: colors.text,
+          }
+        ]}
+      />
+    </Animated.View>
   );
 });
 

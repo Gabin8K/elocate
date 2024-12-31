@@ -2,7 +2,7 @@ import { FunctionComponent, PropsWithChildren, createContext, useCallback, useEf
 import { useFonts } from "expo-font";
 import { fonts } from "@/theme/typography";
 import { defaultLocale } from "@/locale/i18n";
-import { AsyncStorageGetItem, AsyncStorageSetItem } from "@/utils";
+import { AsyncStorageGetItem, AsyncStorageSetItem } from "@/utils/storage";
 
 
 export interface Setting {
