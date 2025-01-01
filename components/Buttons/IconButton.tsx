@@ -11,6 +11,8 @@ type Props = PressableProps & {
   icon?: keyof typeof Ionicons.glyphMap;
   iconProps?: Partial<React.ComponentProps<typeof Ionicons>>;
   variant?: keyof Theme['colors'];
+  backgroundColor?: keyof Theme['colors'];
+  shadow?: boolean;
   style?: StyleProp<ViewStyle>;
   styleContainer?: StyleProp<ViewStyle>;
   loading?: boolean;
@@ -19,15 +21,18 @@ type Props = PressableProps & {
 
 
 export const IconButton = memo(function IconButton(props: Props) {
-  const { children, icon, iconProps, loading, styleContainer, variant = 'text', style: _style, layout, ...rest } = props;
+  const {
+    children, icon, iconProps, shadow, loading, styleContainer, variant = 'text',
+    backgroundColor = 'transparent', style: _style, layout, ...rest
+  } = props;
 
   const { colors } = useTheme();
   const active = useSharedValue(false);
 
   const uas = useAnimatedStyle(() => ({
-    backgroundColor: withTiming(loading ? colors.disabled : colors['transparent']),
+    backgroundColor: withTiming(loading ? colors.disabled : colors[backgroundColor]),
     transform: [{ scale: withTiming(active.value ? .97 : 1) }],
-  }), [loading]);
+  }), [loading, backgroundColor]);
 
   return (
     <Animated.View
@@ -36,6 +41,7 @@ export const IconButton = memo(function IconButton(props: Props) {
         uas,
         styles.overflow,
         styleContainer,
+        { boxShadow: shadow ? `0 4 4 ${colors.shadow}, 0 -4 4 ${colors.shadow}` : undefined },
       ]}
     >
       <Pressable

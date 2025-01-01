@@ -15,7 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 type Route = {
   key: string;
   color: keyof Theme['colors'];
-  name: 'index' | 'maps' | 'menu';
+  name: 'index' | 'places' | 'menu';
   icon: keyof typeof Ionicons.glyphMap;
 }
 
@@ -27,9 +27,9 @@ const routes: Route[] = [
     icon: 'map',
   },
   {
-    key: 'maps',
+    key: 'places',
     color: 'text',
-    name: 'maps',
+    name: 'places',
     icon: 'location'
   },
   {

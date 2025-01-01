@@ -39,6 +39,7 @@ export const FormContent: FC = memo(function FormContent() {
         <Button
           layout
           style={styles.button}
+          containerStyle={styles.buttonContainer}
         >
           Soumettre
         </Button>
@@ -54,5 +55,8 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: spacing.m,
+  },
+  buttonContainer: {
+    paddingVertical: spacing.m,
   }
 })

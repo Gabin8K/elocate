@@ -7,6 +7,7 @@ import { IconButton } from "@/components/Buttons";
 import { Text } from "@/components/ui";
 import { spacing } from "@/theme/spacing";
 import { useTheme } from "@/hooks";
+import { useHeader } from "./HeaderContext";
 
 
 
@@ -14,6 +15,7 @@ export const HeaderLayout: FC<NativeStackHeaderProps> = memo(function HeaderLayo
 
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
+  const header = useHeader();
 
   const paddingTop = insets.top + 20;
 
@@ -35,13 +37,17 @@ export const HeaderLayout: FC<NativeStackHeaderProps> = memo(function HeaderLayo
       <IconButton
         onPress={onPress}
         icon={'arrow-back'}
+        styleContainer={styles.button}
       >
       </IconButton>
-      <Text
-        variant={'title_m'}
-      >
-        {options.title}
-      </Text>
+      <View>
+        <Text
+          variant={'title_m'}
+        >
+          {options.title}
+        </Text>
+        {header.child}
+      </View>
     </View>
   )
 })
@@ -54,5 +60,8 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.s,
     ...reusableStyle.row,
     ...component.shadow,
+  },
+  button: {
+    alignSelf: 'flex-start',
   }
 })

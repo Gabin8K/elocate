@@ -1,5 +1,5 @@
+import { HeaderChild } from "@/components/layout/header";
 import { Text } from "@/components/ui";
-import { Slider } from "@/components/ui/slider";
 import { reusableStyle } from "@/theme/reusables";
 import { View } from "react-native";
 
@@ -15,7 +15,11 @@ export default function Page() {
       ]}
     >
       <Text>Maps</Text>
-      <Slider />
+      <HeaderChild>
+        <Text>
+          Nombre de places: 0
+        </Text>
+      </HeaderChild>
     </View>
   )
 }

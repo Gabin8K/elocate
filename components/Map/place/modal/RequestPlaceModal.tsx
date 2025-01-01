@@ -44,6 +44,7 @@ const RequestPlaceModalContent: FC = memo(function RequestPlaceModalContent() {
 const styles = StyleSheet.create({
   container: {
     paddingTop: spacing.s,
+    paddingBottom: spacing.m,
     rowGap: spacing.m,
   }
 })
