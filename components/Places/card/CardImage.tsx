@@ -34,7 +34,7 @@ export const CardImage: FC<CardImageProps> = memo(function CardImage(props) {
 const styles = StyleSheet.create({
   image: {
     width: '100%',
-    objectFit: 'contain',
+    objectFit: 'cover',
     height: spacing.height * .15,
   }
 })

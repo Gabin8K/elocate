@@ -1,13 +1,11 @@
-import { Text } from "@/components/ui";
-import { reusableStyle } from "@/theme/reusables";
-import { View } from "react-native";
+import { HeaderSetting, SettingsList } from "@/components/Settings";
+import { Fragment } from "react";
 
 export default function Page() {
   return (
-    <View
-      style={reusableStyle.fullCenter}
-    >
-      <Text>Setting</Text>
-    </View>
+    <Fragment>
+      <HeaderSetting />
+      <SettingsList />
+    </Fragment>
   )
 }

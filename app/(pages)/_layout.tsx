@@ -22,12 +22,6 @@ export default function PagesLayout() {
             title: 'Setting'
           }}
         />
-        <Stack.Screen
-          name={'profile'}
-          options={{
-            title: 'Profile'
-          }}
-        />
       </Stack>
     </HeaderProvider>
   );
