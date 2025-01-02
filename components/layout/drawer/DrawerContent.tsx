@@ -3,7 +3,7 @@ import { reusableStyle } from "@/theme/reusables";
 import { FC, Fragment, memo, useCallback } from "react";
 import { StyleSheet, View } from "react-native";
 import { palette } from "@/theme/palette";
-import { DrawerButton, DrawerButtonProps } from "./DrawerButton";
+import { DrawerButton, DrawerButtonProps, DrawerUser } from "./DrawerButton";
 import { spacing } from "@/theme/spacing";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "@/providers/AuthProvider";
@@ -17,12 +17,6 @@ export const DrawerContent: FC = memo(function DrawerLayout() {
   const { auth } = useAuth();
 
   const buttons: DrawerButtonProps[] = [
-    {
-      children: "Profile",
-      href: '/profile',
-      ...auth ? { image_url: auth.photoURL } :
-        { icon: 'person-outline' },
-    },
     {
       children: "Experiences",
       href: '/experience',
@@ -72,6 +66,10 @@ export const DrawerContent: FC = memo(function DrawerLayout() {
         <View
           style={styles.content}
         >
+          <DrawerUser
+            uri={auth?.photoURL}
+            username={auth?.displayName}
+          />
           {buttons.map((button, index) => (
             <DrawerButton
               key={index}

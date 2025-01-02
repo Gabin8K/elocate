@@ -2,6 +2,7 @@ import { Text } from "@/components/ui";
 import { common, } from "@/theme/palette";
 import { reusableStyle } from "@/theme/reusables";
 import { spacing } from "@/theme/spacing";
+import { display } from "@/utils/formater";
 import { Ionicons } from "@expo/vector-icons";
 import { Href, router } from "expo-router";
 import { FC, memo, ReactNode } from "react";
@@ -10,13 +11,21 @@ import { Image, Pressable, StyleSheet, View } from "react-native";
 
 export type DrawerButtonProps = {
   icon?: keyof typeof Ionicons.glyphMap;
-  image_url?: string;
   href?: Href;
   children: ReactNode;
 }
 
+
+export type DrawerUserProps = {
+  uri?: string;
+  username?: string;
+}
+
+
+
+
 export const DrawerButton: FC<DrawerButtonProps> = memo(function DrawerLayout(props) {
-  const { icon: Icon, image_url, href, children } = props;
+  const { icon: Icon, href, children } = props;
 
   const onPress = () => {
     if (!href) return;
@@ -32,16 +41,10 @@ export const DrawerButton: FC<DrawerButtonProps> = memo(function DrawerLayout(pr
       style={styles.container}
     >
       <View style={styles.row}>
-        {image_url ?
-          <Image
-            source={{ uri: image_url }}
-            style={styles.image}
-          /> :
-          <Ionicons
-            name={Icon}
-            size={24}
-          />
-        }
+        <Ionicons
+          name={Icon}
+          size={24}
+        />
         <Text
           variant={'body1_m'}
         >
@@ -52,6 +55,40 @@ export const DrawerButton: FC<DrawerButtonProps> = memo(function DrawerLayout(pr
     </Pressable>
   );
 })
+
+
+
+
+export const DrawerUser: FC<DrawerUserProps> = (function DrawerUser(props) {
+  const { uri, username } = props;
+
+  return (
+    <View
+      style={styles.container}
+    >
+      <View style={styles.row}>
+        {uri ?
+          <Image
+            source={{ uri }}
+            style={styles.image}
+          /> :
+          <Ionicons
+            name={'person-outline'}
+            size={24}
+          />
+        }
+        <Text
+          variant={'body1_m'}
+        >
+          {display(username || 'Non connecté', 10)}
+        </Text>
+      </View>
+      <View style={styles.divider} />
+    </View>
+  )
+});
+
+
 
 const styles = StyleSheet.create({
   container: {
