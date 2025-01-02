@@ -20,7 +20,6 @@ export const Switch = memo<SwitchProps>(function Switch(props) {
   const { style, variant = 'primary' } = props;
 
   const { colors } = useTheme();
-
   const [checked, setChecked] = useState(props.checked ?? false);
 
   const onChecked = () => {
