@@ -1,16 +1,21 @@
 import { PlacesList } from "@/components/Places";
 import { HeaderPlace } from "@/components/Places/HeaderPlace";
 import { ImagePlace } from "@/components/Places/image";
-import PortalProvider from "@/providers/PortalProvider";
+import { PlacesModal } from "@/components/Places/modal";
+import { PlacesProvider } from "@/components/Places/PlacesContext";
+import { Fragment } from "react";
 
 
 export default function Page() {
 
   return (
-    <PortalProvider>
+    <Fragment>
       <HeaderPlace />
-      <PlacesList />
-      <ImagePlace />
-    </PortalProvider>
+      <PlacesProvider>
+        <PlacesList />
+        <ImagePlace />
+        <PlacesModal />
+      </PlacesProvider>
+    </Fragment>
   )
 }

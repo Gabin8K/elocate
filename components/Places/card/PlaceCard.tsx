@@ -1,15 +1,16 @@
-import { Button, IconButton } from "@/components/Buttons";
 import { Text } from "@/components/ui";
 import { useTheme } from "@/hooks";
 import { Place } from "@/services/types";
 import { common } from "@/theme/palette";
-import { component, reusableStyle } from "@/theme/reusables";
 import { spacing } from "@/theme/spacing";
 import { Ionicons } from "@expo/vector-icons";
-import { FC, memo } from "react";
+import { FC, memo, useCallback } from "react";
 import { StyleSheet, View } from "react-native";
 import { CardImage } from "./CardImage";
 import Animated, { FadeIn } from "react-native-reanimated";
+import { usePlaces } from "../PlacesContext";
+import { Button, IconButton } from "@/components/Buttons";
+import { component, reusableStyle } from "@/theme/reusables";
 
 
 export interface PlaceCardProps {
@@ -22,7 +23,16 @@ export interface PlaceCardProps {
 export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
   const { place, index } = props;
 
+  const places = usePlaces()
   const { colors } = useTheme();
+
+  const onGetItinerary = useCallback(() => {
+    places.setItinerary(place);
+  }, []);
+
+  const onShare = useCallback(() => {
+    places.setSharePlace(place);
+  }, []);
 
 
   return (
@@ -93,6 +103,7 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
         >
           <Button
             variant={'text'}
+            onPress={onGetItinerary}
             textStyle={{
               variant: 'caption_b',
             }}
@@ -108,6 +119,7 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
           </Button>
           <IconButton
             shadow
+            onPress={onShare}
             variant={'primary'}
             icon={'share-social'}
             backgroundColor={'card'}

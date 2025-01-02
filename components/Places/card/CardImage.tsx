@@ -1,4 +1,3 @@
-import { useTheme } from "@/hooks";
 import { spacing } from "@/theme/spacing";
 import { FC, memo, useCallback } from "react";
 import { Image, Pressable, StyleSheet } from "react-native";
@@ -13,10 +12,8 @@ type CardImageProps = {
 export const CardImage: FC<CardImageProps> = memo(function CardImage(props) {
   const { uri } = props;
 
-  const { mode } = useTheme();
-
   const onPress = useCallback(() => {
-    // setUri(uri);
+
   }, [uri]);
 
 
@@ -26,10 +23,7 @@ export const CardImage: FC<CardImageProps> = memo(function CardImage(props) {
     >
       <Image
         source={{ uri }}
-        style={[
-          styles.image,
-          { backgroundColor: mode === 'light' ? 'rgba(0,0,0,.05)' : 'rgba(255,255,255,.05)' }
-        ]}
+        style={styles.image}
       />
     </Pressable>
   )
