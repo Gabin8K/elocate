@@ -37,5 +37,6 @@ const styles = StyleSheet.create({
     rowGap: spacing.m,
     paddingTop: spacing.m,
     paddingBottom: spacing.xl,
+    paddingHorizontal: spacing.s,
   }
 })

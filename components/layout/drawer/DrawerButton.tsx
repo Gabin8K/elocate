@@ -80,7 +80,7 @@ export const DrawerUser: FC<DrawerUserProps> = (function DrawerUser(props) {
         <Text
           variant={'body1_m'}
         >
-          {display(username || 'Non connecté', 10)}
+          {display(username || 'Non connecté', 13)}
         </Text>
       </View>
       <View style={styles.divider} />
