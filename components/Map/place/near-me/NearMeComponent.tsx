@@ -1,7 +1,7 @@
 import { FC, Fragment, memo, useCallback } from "react";
 import { StyleSheet } from "react-native";
 import { spacing } from "@/theme/spacing";
-import { IconButton } from "@/components/Buttons";
+import { IconButton } from "@/components/ui/buttons";
 import { useTheme } from "@/hooks";
 import { NearMeProvider, useNearMe } from "./NearMeContext";
 import { NearMeSlider } from "./NearMeSlider";

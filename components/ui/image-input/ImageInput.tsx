@@ -4,7 +4,7 @@ import { Text } from "../Text";
 import useMediaFile from "./useMediaFile";
 import { useTheme, useToast } from "@/hooks";
 import { component, reusableStyle } from "@/theme/reusables";
-import { IconButton } from "../../Buttons/IconButton";
+import { IconButton } from "../buttons/IconButton";
 import { Image, StyleSheet, View } from "react-native";
 import Animated, { LinearTransition, useAnimatedStyle, useSharedValue, withTiming, ZoomIn, ZoomOut } from "react-native-reanimated";
 import { display } from "@/utils/formater";

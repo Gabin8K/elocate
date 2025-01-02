@@ -4,7 +4,7 @@ import { Image, StyleSheet, View } from "react-native";
 import { spacing } from "@/theme/spacing";
 import { Text } from "@/components/ui";
 import { reusableStyle } from "@/theme/reusables";
-import { IconButton } from "@/components/Buttons";
+import { IconButton } from "@/components/ui/buttons";
 import { common } from "@/theme/palette";
 import { IconApp } from "./IconApp";
 

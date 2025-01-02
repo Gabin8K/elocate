@@ -8,7 +8,7 @@ import { Text } from "@/components/ui";
 import { Portal } from "@/providers/PortalProvider";
 import Animated, { Easing, SlideInDown, SlideOutDown } from "react-native-reanimated";
 import { PointRipple, ripples } from "./PointRipple";
-import { Button } from "@/components/Buttons";
+import { Button } from "@/components/ui/buttons";
 
 
 

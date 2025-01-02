@@ -9,7 +9,7 @@ import { StyleSheet, View } from "react-native";
 import { CardImage } from "./CardImage";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { usePlaces } from "../PlacesContext";
-import { Button, IconButton } from "@/components/Buttons";
+import { Button, IconButton } from "@/components/ui/buttons";
 import { component, reusableStyle } from "@/theme/reusables";
 
 

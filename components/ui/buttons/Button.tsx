@@ -1,4 +1,4 @@
-import { Text } from '../ui';
+import { Text } from '..';
 import { useTheme } from '@/hooks';
 import { Theme } from '@/theme';
 import { spacing } from '@/theme/spacing';

@@ -7,7 +7,7 @@ import { DrawerButton, DrawerButtonProps, DrawerUser } from "./DrawerButton";
 import { spacing } from "@/theme/spacing";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "@/providers/AuthProvider";
-import { Button } from "@/components/Buttons";
+import { Button } from "@/components/ui/buttons";
 import { authService } from "@/services";
 
 

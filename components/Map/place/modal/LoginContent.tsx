@@ -3,7 +3,7 @@ import { Text } from "@/components/ui";
 import { StyleSheet } from "react-native";
 import { spacing } from "@/theme/spacing";
 import { common } from "@/theme/palette";
-import { Button } from "@/components/Buttons";
+import { Button } from "@/components/ui/buttons";
 import { Ionicons } from "@expo/vector-icons";
 import { authService } from "@/services/auth";
 import { useToast } from "@/hooks";
