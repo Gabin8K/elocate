@@ -1,5 +1,5 @@
 import { FC, memo, useEffect, useMemo } from "react";
-import Animated, { Easing, interpolate, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+import Animated, { Easing, interpolate, interpolateColor, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 import { Portal } from "@/providers/PortalProvider";
 import { StyleSheet } from "react-native";
 import { spacing } from "@/theme/spacing";
@@ -65,6 +65,14 @@ export const DrawerLayout: FC = memo(function DrawerLayout() {
   }, []);
 
 
+  const uasBackground = useAnimatedStyle(() => {
+    const backgroundColor = interpolateColor(translateX.value, [0, width], ['rgba(0,0,0,.5)', 'rgba(0,0,0,0)']);
+    return {
+      backgroundColor,
+    }
+  }, []);
+
+
   useBackhandler(() => {
     if (open) {
       setOpen(false);
@@ -88,6 +96,15 @@ export const DrawerLayout: FC = memo(function DrawerLayout() {
     <Portal
       name={'drawer'}
     >
+      {open ?
+        <Animated.View
+          style={[
+            uasBackground,
+            styles.full,
+          ]}
+        /> :
+        null
+      }
       <GestureDetector
         gesture={gesture}
       >
@@ -113,6 +130,12 @@ export const DrawerLayout: FC = memo(function DrawerLayout() {
 
 
 const styles = StyleSheet.create({
+  full: {
+    zIndex: 1,
+    position: 'absolute',
+    width: spacing.width,
+    height: spacing.height * 1.1,
+  },
   container: {
     zIndex: 9,
     position: 'absolute',

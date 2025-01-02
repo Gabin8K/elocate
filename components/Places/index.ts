@@ -1,2 +1,2 @@
-export * from './PlaceCard';
+export * from './card/PlaceCard';
 export * from './PlacesList';

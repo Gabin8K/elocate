@@ -15,7 +15,7 @@ export interface ButtonProps extends PressableProps {
   colorDisabled?: keyof Theme['colors'];
   full?: boolean;
   endIcon?: ReactNode;
-  starIcon?: ReactNode;
+  startIcon?: ReactNode;
   textStyle?: React.ComponentProps<typeof Text>;
   style?: StyleProp<ViewStyle>;
   containerStyle?: StyleProp<ViewStyle>;
@@ -65,7 +65,7 @@ export const Button = memo<ButtonProps>(function Button({ style: _style, ...prop
             /> :
             null
           }
-          {props.starIcon}
+          {props.startIcon}
           <Text
             color={'gray1'}
             variant={'body2_eb'}

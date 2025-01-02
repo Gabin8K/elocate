@@ -17,3 +17,11 @@ export interface Auth {
     enrolledFactors: any[],
   },
 }
+
+export interface Place {
+  id: string;
+  address?: string;
+  location: string;
+  description?: string;
+  image?: string;
+}

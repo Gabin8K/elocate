@@ -3,14 +3,14 @@ import { createContext, FC, FunctionComponent, PropsWithChildren, ReactNode, use
 
 
 
-interface MapContextType {
+interface HeaderContextType {
   offsetY: SharedValue<number>;
   child: ReactNode;
   setChild: (child: ReactNode) => void;
 }
 
 
-export const MapContext = createContext<MapContextType>({
+export const HeaderContext = createContext<HeaderContextType>({
   offsetY: {} as SharedValue<number>,
   child: null,
   setChild: () => { },
@@ -18,9 +18,9 @@ export const MapContext = createContext<MapContextType>({
 
 
 export const useHeader = () => {
-  const context = useContext(MapContext);
+  const context = useContext(HeaderContext);
   if (!context) {
-    throw new Error('useNearContext must be used within a MapProvider');
+    throw new Error('useHeader must be used within a HeaderProvider');
   }
   return context;
 }
@@ -50,7 +50,7 @@ export const HeaderProvider: FunctionComponent<PropsWithChildren> = ({ children 
 
 
   return (
-    <MapContext.Provider
+    <HeaderContext.Provider
       value={{
         offsetY,
         child,
@@ -58,6 +58,6 @@ export const HeaderProvider: FunctionComponent<PropsWithChildren> = ({ children 
       }}
     >
       {children}
-    </MapContext.Provider>
+    </HeaderContext.Provider>
   )
 }
