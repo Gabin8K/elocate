@@ -1,52 +1,77 @@
 import { FC, memo, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import Animated from "react-native-reanimated";
 import { Text } from "../ui";
 import { Slider } from "../ui/slider";
 import { spacing } from "@/theme/spacing";
-import { HeaderChild } from "../layout/header";
-
-
+import { HeaderChild, useHeader } from "../layout/header";
+import Animated, { interpolate, useAnimatedStyle } from "react-native-reanimated";
 
 
 export const HeaderPlace: FC = memo(function HeaderPlace() {
+  return (
+    <HeaderChild>
+      <HeaderPlaceContent />
+    </HeaderChild>
+  )
+})
 
+
+
+const HeaderPlaceContent: FC = memo(function HeaderPlaceContent() {
+
+  const { offsetY } = useHeader();
   const [value, setValue] = useState(0);
 
   const km = Math.floor(value / 5);
 
+  const uas = useAnimatedStyle(() => {
+    const height = interpolate(offsetY.value, [0, 100], [spacing.l + spacing.m, 0], 'clamp');
+    const opacity = interpolate(offsetY.value, [0, 50], [1, 0], 'clamp');
+
+    return {
+      height,
+      opacity,
+    }
+  }, []);
+
+
   return (
-    <HeaderChild>
-      <Animated.View
-        style={styles.container}
-      >
-        <View>
+    <View
+      style={styles.container}
+    >
+      <View>
+        <Text
+          style={styles.text}
+        >
+          Showing:{' '}
           <Text
-            style={styles.text}
+            variant={'body2_b'}
+            color={'primary'}
           >
-            Showing:{' '}
-            <Text
-              variant={'body2_b'}
-              color={'primary'}
-            >
-              0 locations
-            </Text>
+            0 locations
           </Text>
-          <Text>
-            Within:{' '}
-            <Text
-              variant={'body2_b'}
-              color={'primary'}
-            >
-              {km} km
-            </Text>
+        </Text>
+        <Text>
+          Within:{' '}
+          <Text
+            variant={'body2_b'}
+            color={'primary'}
+          >
+            {km} km
           </Text>
-        </View>
+        </Text>
+      </View>
+      <Animated.View
+        style={[
+          uas,
+          styles.slider,
+        ]}
+      >
         <Slider
           onChange={setValue}
         />
       </Animated.View>
-    </HeaderChild>
+    </View>
   )
 })
 
@@ -55,11 +80,16 @@ export const HeaderPlace: FC = memo(function HeaderPlace() {
 const styles = StyleSheet.create({
   container: {
     paddingTop: spacing.s,
-    paddingBottom: spacing.m,
-    rowGap: spacing.l,
   },
   text: {
     lineHeight: 22,
     paddingRight: spacing.lg,
+  },
+  slider: {
+    overflow: 'hidden',
+    justifyContent: 'center',
+    paddingLeft: spacing.m,
+    marginLeft: -spacing.m,
+    paddingRight: spacing.m,
   }
 })
