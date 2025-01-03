@@ -11,17 +11,19 @@ import { ListRenderItemInfo, Platform, Pressable, StyleSheet } from "react-nativ
 
 
 export interface DropdownListProps {
+  portal?: boolean;
   items: DropdownItem[];
   onItemPress?: (item: DropdownItem) => void;
 }
 
-type RenderItemProps = DropdownItem & {
+type RenderItemProps = {
+  item: DropdownItem;
   onItemPress?: (item: DropdownItem) => void;
 }
 
 
 export const DropdownList: FC<DropdownListProps> = memo(function DropDownMenu(props) {
-  const { items, onItemPress } = props;
+  const { portal, items, onItemPress } = props;
 
   const { colors } = useTheme();
   const dropdown = useDropdown();
@@ -29,13 +31,13 @@ export const DropdownList: FC<DropdownListProps> = memo(function DropDownMenu(pr
   const renderItem = useMemo(() => function renderItem({ item }: ListRenderItemInfo<DropdownItem>) {
     return (
       <RenderItem
-        {...item}
+        item={item}
         onItemPress={onItemPress}
       />
     );
   }, [items]);
 
-  if (!dropdown.open) return;
+  if (!dropdown.open && !portal) return;
 
   return (
     <Animated.View
@@ -44,6 +46,7 @@ export const DropdownList: FC<DropdownListProps> = memo(function DropDownMenu(pr
       <FlatList
         data={items}
         renderItem={renderItem}
+        nestedScrollEnabled
         style={[
           styles.container,
           {
@@ -61,7 +64,7 @@ export const DropdownList: FC<DropdownListProps> = memo(function DropDownMenu(pr
 
 
 const RenderItem: FC<RenderItemProps> = memo(function RenderItem(props) {
-  const { label, onItemPress } = props;
+  const { item, onItemPress } = props;
   const dropdown = useDropdown();
 
   const backgroundColor = Platform.select({
@@ -70,9 +73,9 @@ const RenderItem: FC<RenderItemProps> = memo(function RenderItem(props) {
   });
 
   const onPress = useCallback(() => {
-    dropdown.setIten(props);
-    onItemPress?.(props);
-  }, [dropdown.setIten, props]);
+    dropdown.setItem(item);
+    onItemPress?.(item);
+  }, [dropdown.setItem, props]);
 
   return (
     <Pressable
@@ -83,11 +86,11 @@ const RenderItem: FC<RenderItemProps> = memo(function RenderItem(props) {
       style={({ pressed }) => [
         styles.pressable,
         pressed ? { backgroundColor } : {},
-        { backgroundColor: dropdown.item?.value === props.value ? common.gray2 : common.transparent }
+        { backgroundColor: dropdown.item?.value === item.value ? common.gray2 : common.transparent }
       ]}
     >
       <Text>
-        {label}
+        {item.label}
       </Text>
     </Pressable>
   );

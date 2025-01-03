@@ -5,7 +5,7 @@ import { DropdownItem } from "./DropdownMenu";
 type DropdownContextType = {
   open: boolean;
   item?: DropdownItem;
-  setIten: (item: DropdownItem) => void;
+  setItem: (item: DropdownItem) => void;
   setOpen: (open: boolean) => void;
 }
 
@@ -18,7 +18,7 @@ type DropdownState = {
 export const DropdownContext = createContext<DropdownContextType>({
   open: false,
   setOpen: () => { },
-  setIten: () => { },
+  setItem: () => { },
 });
 
 
@@ -33,13 +33,14 @@ export const useDropdown = () => {
 
 
 export const DropdownProvider: FC<PropsWithChildren> = ({ children }) => {
+
   const [state, setState] = useState<DropdownState>({ open: false });
 
   const setOpen = (open: boolean) => {
     setState({ ...state, open });
   }
 
-  const setIten = (item: DropdownItem) => {
+  const setItem = (item: DropdownItem) => {
     setState({
       ...state,
       item,
@@ -53,7 +54,7 @@ export const DropdownProvider: FC<PropsWithChildren> = ({ children }) => {
         open: state.open,
         item: state.item,
         setOpen,
-        setIten
+        setItem
       }}
     >
       {children}

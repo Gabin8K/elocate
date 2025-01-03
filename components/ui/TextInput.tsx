@@ -7,7 +7,7 @@ import { useTheme } from "@/hooks";
 import { TextInput as RNTextInput } from "react-native-gesture-handler";
 
 
-interface TextInputProps extends RNTextInputProps { };
+export interface TextInputProps extends RNTextInputProps { };
 
 const AnimatedTextInput = Animated.createAnimatedComponent(RNTextInput);
 

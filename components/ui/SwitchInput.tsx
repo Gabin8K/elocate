@@ -7,7 +7,7 @@ import { Pressable, StyleSheet, ViewProps } from 'react-native';
 import Animated, { LinearTransition, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 
-export type SwitchProps = {
+export type SwitchInputProps = {
   variant?: keyof Theme['colors'];
   checked?: boolean;
   style?: ViewProps['style'];
@@ -16,7 +16,7 @@ export type SwitchProps = {
 
 
 
-export const Switch = memo<SwitchProps>(function Switch(props) {
+export const SwitchInput = memo<SwitchInputProps>(function SwitchInput(props) {
   const { style, variant = 'primary' } = props;
 
   const { colors } = useTheme();
@@ -61,7 +61,7 @@ export const Switch = memo<SwitchProps>(function Switch(props) {
         layout={LinearTransition}
         style={[
           uas,
-          styles.switch
+          styles.SwitchInput
         ]}
       />
     </Pressable>
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     ...component.shadow,
     borderRadius: spacing.lg,
   },
-  switch: {
+  SwitchInput: {
     width: spacing.m,
     height: spacing.m,
     ...component.shadow,

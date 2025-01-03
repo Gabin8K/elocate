@@ -5,10 +5,10 @@ import { spacing } from "@/theme/spacing";
 import { Ionicons } from "@expo/vector-icons";
 import { DropdownList } from "./DropdownList";
 import { reusableStyle } from "@/theme/reusables";
-import { DropdownProvider, useDropdown } from "./DropdownContext";
-import { StyleSheet } from "react-native";
 import { Pressable } from "react-native-gesture-handler";
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+import { LayoutChangeEvent, StyleSheet } from "react-native";
+import { DropdownProvider, useDropdown } from "./DropdownContext";
+import Animated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated";
 
 
 export type DropdownItem = {
@@ -21,6 +21,7 @@ export interface DropdownMenuProps {
   placeholderStyle?: React.ComponentProps<typeof Text>;
   dropdownItems: DropdownItem[];
   onItemPress?: (item: DropdownItem) => void;
+  onLayout?: (event: LayoutChangeEvent) => void;
 }
 
 
@@ -39,14 +40,13 @@ export const DropdownMenu = memo(function DropdownMenu(props: DropdownMenuProps)
 });
 
 
-const DropdownMenuContent: FC<DropdownMenuProps> = memo(function DropdownMenu(props) {
-  const { placeholder, placeholderStyle } = props;
+export const DropdownMenuContent: FC<DropdownMenuProps> = memo(function DropdownMenu(props) {
+  const { onLayout, placeholder, placeholderStyle } = props;
 
   const { colors } = useTheme();
   const dropdown = useDropdown();
 
   const active = useSharedValue(0);
-  const rotate = useSharedValue(0);
 
   const uas = useAnimatedStyle(() => {
     return {
@@ -55,25 +55,31 @@ const DropdownMenuContent: FC<DropdownMenuProps> = memo(function DropdownMenu(pr
   }, [colors]);
 
 
+  const rotate = useDerivedValue(() => {
+    return withTiming(dropdown.open ? -90 : 0);
+  }, [dropdown.open]);
+
+
   const uasRotate = useAnimatedStyle(() => {
     return {
       transform: [
         { rotate: `${rotate.value}deg` }
       ]
     }
-  }, []);
+  }, [dropdown.open]);
 
 
   const onPress = useCallback(() => {
-    rotate.value = withTiming(rotate.value === 0 ? -90 : 0);
     dropdown.setOpen(!dropdown.open);
   }, [dropdown]);
 
 
   return (
     <Pressable
+      unstable_pressDelay={100}
       onPressIn={() => (active.value = withTiming(1))}
       onPressOut={() => (active.value = withTiming(0))}
+      onLayout={onLayout}
       onPress={onPress}
     >
       <Animated.View

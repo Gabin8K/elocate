@@ -1,21 +1,24 @@
 import { FC, memo, } from "react";
-import { Text } from "@/components/ui";
 import { useTheme } from "@/hooks";
+import { Text } from "@/components/ui";
 import { spacing } from "@/theme/spacing";
 import { StyleSheet, View } from "react-native";
 import { reusableStyle } from "@/theme/reusables";
+import { CardSettingAction, CardSettingActionProps } from "./CardSettingAction";
+import { common } from "@/theme/palette";
+import Animated, { LinearTransition } from "react-native-reanimated";
 
 
-type CardSettingProps = {
+export interface CardSettingProps {
   title: string;
   value?: string;
-  children: React.ReactNode;
+  action: CardSettingActionProps;
 }
 
 
 
 export const CardSetting: FC<CardSettingProps> = memo(function CardSetting(props) {
-  const { title, value, children } = props;
+  const { title, value, action } = props;
 
   const { colors } = useTheme();
 
@@ -23,7 +26,10 @@ export const CardSetting: FC<CardSettingProps> = memo(function CardSetting(props
     <View
       style={styles.container}
     >
-      <Text>
+      <Text
+        variant={'body2_m'}
+        style={styles.title}
+      >
         {title}
       </Text>
       <View
@@ -32,10 +38,17 @@ export const CardSetting: FC<CardSettingProps> = memo(function CardSetting(props
           { backgroundColor: colors.card },
         ]}
       >
-        <Text>
-          {value}
-        </Text>
-        {children}
+        <Animated.View
+          layout={LinearTransition}
+          style={styles.value}
+        >
+          <Text>
+            {value}
+          </Text>
+        </Animated.View>
+        <CardSettingAction
+          {...action}
+        />
       </View>
     </View>
   )
@@ -45,12 +58,24 @@ export const CardSetting: FC<CardSettingProps> = memo(function CardSetting(props
 
 const styles = StyleSheet.create({
   container: {
-    rowGap: spacing.m,
+    rowGap: spacing.s,
+  },
+  title:{
+    paddingLeft: spacing.m,
   },
   content: {
     padding: spacing.m,
     ...reusableStyle.row,
+    columnGap: spacing.s,
     borderRadius: spacing.m,
     justifyContent: 'space-between',
+  },
+  value: {
+    flex: 1,
+    height: '100%',
+    borderRightWidth: 1,
+    ...reusableStyle.row,
+    marginRight: spacing.m,
+    borderColor: common.gray2,
   }
 })

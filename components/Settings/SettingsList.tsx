@@ -1,9 +1,10 @@
 import { FC, memo } from "react";
+import { CardSetting } from "./card";
 import { StyleSheet } from "react-native";
 import { spacing } from "@/theme/spacing";
-import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
-import { Switch } from "../ui";
+import { useSettingList } from "./useSettingList";
 import { useScrollAnimated } from "@/providers/ScrollAnimatedProvider";
+import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 
 
 export interface SettingsListProps {
@@ -14,19 +15,26 @@ export interface SettingsListProps {
 
 export const SettingsList: FC<SettingsListProps> = memo(function SettingsList() {
 
+  const list = useSettingList();
   const { offsetY } = useScrollAnimated();
 
   const scroll = useAnimatedScrollHandler((e) => {
     offsetY.value = e.contentOffset.y;
   });
 
+
   return (
     <Animated.ScrollView
       onScroll={scroll}
-      contentContainerStyle={styles.contentContainerStyle}
       showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.contentContainerStyle}
     >
-      <Switch />
+      {list.settings.map((props, index) => (
+        <CardSetting
+          key={index}
+          {...props}
+        />
+      ))}
     </Animated.ScrollView>
   )
 })
@@ -34,7 +42,7 @@ export const SettingsList: FC<SettingsListProps> = memo(function SettingsList() 
 
 const styles = StyleSheet.create({
   contentContainerStyle: {
-    rowGap: spacing.m,
+    rowGap: spacing.l,
     paddingTop: spacing.m,
     paddingBottom: spacing.xl,
     paddingHorizontal: spacing.s,
