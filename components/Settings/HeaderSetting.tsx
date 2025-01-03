@@ -2,9 +2,10 @@ import { FC, memo } from "react";
 import { StyleSheet } from "react-native";
 import { Text } from "../ui";
 import { spacing } from "@/theme/spacing";
-import { HeaderChild, useHeader } from "../layout/header";
+import { HeaderChild } from "../layout/header";
 import Animated, { interpolate, useAnimatedStyle } from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
+import { useScrollAnimated } from "@/providers/ScrollAnimatedProvider";
 
 
 export const HeaderSetting: FC = memo(function HeaderSetting() {
@@ -19,7 +20,7 @@ export const HeaderSetting: FC = memo(function HeaderSetting() {
 
 const HeaderSettingContent: FC = memo(function HeaderSettingContent() {
 
-  const { offsetY } = useHeader();
+  const { offsetY } = useScrollAnimated();
 
   const uas = useAnimatedStyle(() => {
     const height = interpolate(offsetY.value, [0, 100], [spacing.xl + spacing.m, 0], 'clamp');

@@ -2,8 +2,8 @@ import { FC, memo } from "react";
 import { StyleSheet } from "react-native";
 import { spacing } from "@/theme/spacing";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
-import { useHeader } from "../layout/header";
 import { Switch } from "../ui";
+import { useScrollAnimated } from "@/providers/ScrollAnimatedProvider";
 
 
 export interface SettingsListProps {
@@ -14,10 +14,10 @@ export interface SettingsListProps {
 
 export const SettingsList: FC<SettingsListProps> = memo(function SettingsList() {
 
-  const header = useHeader();
+  const { offsetY } = useScrollAnimated();
 
   const scroll = useAnimatedScrollHandler((e) => {
-    header.offsetY.value = e.contentOffset.y;
+    offsetY.value = e.contentOffset.y;
   });
 
   return (

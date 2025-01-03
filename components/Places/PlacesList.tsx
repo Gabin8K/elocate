@@ -4,7 +4,7 @@ import { PlaceCard } from "./card/PlaceCard";
 import { Place } from "@/services/types";
 import { spacing } from "@/theme/spacing";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
-import { useHeader } from "../layout/header";
+import { useScrollAnimated } from "@/providers/ScrollAnimatedProvider";
 
 
 export interface PlacesListProps {
@@ -15,10 +15,10 @@ export interface PlacesListProps {
 
 export const PlacesList: FC<PlacesListProps> = memo(function PlacesList() {
 
-  const header = useHeader();
+  const { offsetY } = useScrollAnimated();
 
   const scroll = useAnimatedScrollHandler((e) => {
-    header.offsetY.value = e.contentOffset.y;
+    offsetY.value = e.contentOffset.y;
   });
 
   const renderItem = useMemo(() => function renderItem({ item, index }: ListRenderItemInfo<Place>) {

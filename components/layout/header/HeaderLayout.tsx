@@ -13,9 +13,9 @@ import { useHeader } from "./HeaderContext";
 
 export const HeaderLayout: FC<NativeStackHeaderProps> = memo(function HeaderLayout({ navigation, options }) {
 
+  const header = useHeader();
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
-  const header = useHeader();
 
   const paddingTop = insets.top + 20;
 

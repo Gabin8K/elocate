@@ -1,17 +1,14 @@
-import { SharedValue, useSharedValue } from "react-native-reanimated";
 import { createContext, FC, FunctionComponent, PropsWithChildren, ReactNode, useContext, useEffect, useState } from "react";
 
 
 
 interface HeaderContextType {
-  offsetY: SharedValue<number>;
   child: ReactNode;
   setChild: (child: ReactNode) => void;
 }
 
 
 export const HeaderContext = createContext<HeaderContextType>({
-  offsetY: {} as SharedValue<number>,
   child: null,
   setChild: () => { },
 });
@@ -45,14 +42,12 @@ export const HeaderChild: FC<PropsWithChildren> = ({ children }) => {
 
 
 export const HeaderProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
-  const offsetY = useSharedValue(0);
   const [child, setChild] = useState<ReactNode>(null);
 
 
   return (
     <HeaderContext.Provider
       value={{
-        offsetY,
         child,
         setChild,
       }}

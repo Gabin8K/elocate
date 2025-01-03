@@ -9,24 +9,27 @@ import { Toaster } from '@/components/ui/Toast';
 import PortalProvider from './PortalProvider';
 import 'react-native-reanimated';
 import '@/locale/i18n';
+import ScrollAnimatedProvider from './ScrollAnimatedProvider';
 
 
 const Providers: FunctionComponent<PropsWithChildren> = ({ children }) => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <AuthProvider>
-          <SettingProvider>
-            <ThemeProvider>
-              <ToastProvider>
-                <PortalProvider>
-                  {children}
-                  <Toaster />
-                </PortalProvider>
-              </ToastProvider>
-            </ThemeProvider>
-          </SettingProvider>
-        </AuthProvider>
+        <ScrollAnimatedProvider>
+          <AuthProvider>
+            <SettingProvider>
+              <ThemeProvider>
+                <ToastProvider>
+                  <PortalProvider>
+                    {children}
+                    <Toaster />
+                  </PortalProvider>
+                </ToastProvider>
+              </ThemeProvider>
+            </SettingProvider>
+          </AuthProvider>
+        </ScrollAnimatedProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   )

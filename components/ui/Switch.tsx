@@ -29,8 +29,8 @@ export const Switch = memo<SwitchProps>(function Switch(props) {
 
 
   const uas = useAnimatedStyle(() => {
-    const backgroundColor = withTiming(checked ? colors[variant] : colors.gray4);
-    const borderColor = withTiming(checked ? colors[variant] : colors.gray4);
+    const backgroundColor = withTiming(checked ? colors[variant] : colors.text);
+    const borderColor = withTiming(checked ? colors[variant] : colors.text);
     return {
       borderColor,
       backgroundColor,

@@ -3,8 +3,9 @@ import { StyleSheet, View } from "react-native";
 import { Text } from "../ui";
 import { Slider } from "../ui/slider";
 import { spacing } from "@/theme/spacing";
-import { HeaderChild, useHeader } from "../layout/header";
+import { HeaderChild } from "../layout/header";
 import Animated, { interpolate, useAnimatedStyle } from "react-native-reanimated";
+import { useScrollAnimated } from "@/providers/ScrollAnimatedProvider";
 
 
 export const HeaderPlace: FC = memo(function HeaderPlace() {
@@ -19,7 +20,7 @@ export const HeaderPlace: FC = memo(function HeaderPlace() {
 
 const HeaderPlaceContent: FC = memo(function HeaderPlaceContent() {
 
-  const { offsetY } = useHeader();
+  const { offsetY } = useScrollAnimated();
   const [value, setValue] = useState(0);
 
   const km = Math.floor(value / 5);
