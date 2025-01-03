@@ -44,9 +44,7 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
       }
       style={[
         styles.container,
-        {
-          backgroundColor: colors.card,
-        }
+        { backgroundColor: colors.card }
       ]}
     >
       {place.image ?
@@ -56,7 +54,10 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
         null
       }
       <View
-        style={styles.content}
+        style={[
+          styles.content,
+          { marginTop: !place.image ? spacing.m : undefined }
+        ]}
       >
         <View>
           <Text>
@@ -118,9 +119,8 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
             Obtenir l'itinéraire
           </Button>
           <IconButton
-            shadow
             onPress={onShare}
-            variant={'primary'}
+            variant={'text'}
             icon={'share-social'}
             backgroundColor={'card'}
             styleContainer={styles.buttonShared}
@@ -139,9 +139,11 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
 const styles = StyleSheet.create({
   container: {
     rowGap: spacing.s,
+    overflow: 'hidden',
     ...component.shadow,
     marginTop: spacing.s,
     paddingBottom: spacing.m,
+    borderRadius: spacing.m,
   },
   content: {
     paddingHorizontal: spacing.m,

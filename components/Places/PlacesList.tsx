@@ -49,7 +49,7 @@ export const PlacesList: FC<PlacesListProps> = memo(function PlacesList() {
           address: 'Address 2',
           location: 'Location 2',
           description: 'Description 2',
-          image: 'https://via.placeholder.com/150',
+          // image: 'https://via.placeholder.com/150',
         },
         {
           id: '3',
@@ -83,5 +83,6 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     paddingTop: spacing.m,
     paddingBottom: spacing.xl,
+    paddingHorizontal: spacing.m,
   }
 })
