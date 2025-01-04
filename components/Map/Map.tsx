@@ -1,7 +1,7 @@
 import { useMap } from "./MapContext";
 import { useLocation } from "@/hooks/useLocation";
 import { reusableStyle } from "@/theme/reusables";
-import { FC, memo, useCallback, useRef } from "react";
+import { FC, memo, useCallback } from "react";
 import MapView, { Camera, LongPressEvent, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import { MarkerCurrentPosition, MarkerPlace } from "./marker";
 
@@ -9,8 +9,6 @@ import { MarkerCurrentPosition, MarkerPlace } from "./marker";
 
 
 export const Map: FC = memo(function Map() {
-
-  const mapRef = useRef<MapView>(null);
 
   const location = useLocation();
   const map = useMap();
@@ -33,7 +31,10 @@ export const Map: FC = memo(function Map() {
     zoom: 17,
   }
 
+
   const onLongPress = useCallback(({ nativeEvent }: LongPressEvent) => {
+    const { center, ...camera } = initialCamera;
+    map.mapRef.current?.animateCamera(camera, { duration: 500 });
     map.requestAddPlace({
       point: {
         x: nativeEvent.position.x,
@@ -44,7 +45,7 @@ export const Map: FC = memo(function Map() {
         longitude: nativeEvent.coordinate.longitude
       }
     });
-  }, [map]);
+  }, []);
 
 
   if (!location) return null;
@@ -52,7 +53,7 @@ export const Map: FC = memo(function Map() {
 
   return (
     <MapView
-      ref={mapRef}
+      ref={map.mapRef}
       showsBuildings
       camera={initialCamera}
       initialRegion={initialRegion}

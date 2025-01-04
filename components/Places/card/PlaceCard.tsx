@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     ...reusableStyle.row,
     paddingTop: spacing.s,
     borderStyle: 'dashed',
-    borderColor: common.gray2,
+    borderTopColor: common.gray2,
     justifyContent: 'space-between',
   },
   buttonShared: {

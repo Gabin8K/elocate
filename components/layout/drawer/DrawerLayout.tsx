@@ -59,7 +59,7 @@ export const DrawerLayout: FC = memo(function DrawerLayout() {
   const uasSwip = useAnimatedStyle(() => {
     return {
       transform: [
-        { scaleY: interpolate(translateX.value, [0, width], [1, 2]) }
+        { scaleY: interpolate(translateX.value, [0, width], [1, 2.5]) }
       ]
     }
   }, []);

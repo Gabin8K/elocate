@@ -1,4 +1,5 @@
-import { createContext, FunctionComponent, PropsWithChildren, useCallback, useContext, useState } from "react";
+import { createContext, FunctionComponent, PropsWithChildren, useCallback, useContext, useRef, useState } from "react";
+import MapView from "react-native-maps";
 
 export type Point = {
   x: number;
@@ -24,6 +25,7 @@ type MapState = {
 interface MapContextType {
   newPlace?: Place;
   openModal?: boolean;
+  mapRef: React.RefObject<MapView>;
   closePlace: () => void;
   closeModal: () => void;
   requestAddPlace: (place: Place) => void;
@@ -32,6 +34,7 @@ interface MapContextType {
 
 
 export const MapContext = createContext<MapContextType>({
+  mapRef: {} as MapContextType['mapRef'],
   requestAddPlace: () => { },
   closePlace: () => { },
   closeModal: () => { },
@@ -48,7 +51,10 @@ export const useMap = () => {
 }
 
 
+
 export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
+
+  const mapRef = useRef<MapView>(null);
   const [state, setState] = useState<MapState>({});
 
   const requestAddPlace = useCallback((newPlace: Place) => {
@@ -95,6 +101,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
   return (
     <MapContext.Provider
       value={{
+        mapRef,
         newPlace: state.newPlace,
         openModal: state.openModal,
         confirmRequestPlace,

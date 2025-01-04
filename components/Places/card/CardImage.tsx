@@ -1,3 +1,4 @@
+import { component } from "@/theme/reusables";
 import { spacing } from "@/theme/spacing";
 import { FC, memo, useCallback } from "react";
 import { Image, Pressable, StyleSheet } from "react-native";
@@ -35,6 +36,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     objectFit: 'cover',
+    ...component.shadow,
     height: spacing.height * .15,
   }
 })

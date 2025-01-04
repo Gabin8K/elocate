@@ -110,7 +110,7 @@ const RenderModalSheet: FC<ModalSheetProps> = memo(function RenderModalSheet(pro
   const uasSwip = useAnimatedStyle(() => {
     return {
       transform: [
-        { scaleX: interpolate(translateY.value, [0, height], [1, 2]) }
+        { scaleX: interpolate(translateY.value, [0, height], [1, 2.5]) }
       ]
     }
   }, []);
@@ -137,7 +137,7 @@ const RenderModalSheet: FC<ModalSheetProps> = memo(function RenderModalSheet(pro
 
   useEffect(() => {
     translateY.value = withTiming(0, {
-      duration: 1000,
+      duration: 800,
       easing: Easing.inOut(Easing.quad),
       reduceMotion: ReduceMotion.System,
     });
