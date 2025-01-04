@@ -7,6 +7,7 @@ export const common = {
   gray2: '#E5E5E5',
   gray3: '#A1A1A1',
   gray4: '#79797c',
+  gray5: '#000000',
   transparent: 'transparent',
 }
 

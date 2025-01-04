@@ -6,9 +6,9 @@ import { useTheme } from "@/hooks";
 import { useMap } from "../MapContext";
 import { Text } from "@/components/ui";
 import { Portal } from "@/providers/PortalProvider";
-import Animated, { Easing, SlideInDown, SlideOutDown } from "react-native-reanimated";
-import { PointRipple, ripples } from "./PointRipple";
 import { Button } from "@/components/ui/buttons";
+import { PointRipple, ripples } from "../marker";
+import Animated, { Easing, SlideInDown, SlideOutDown } from "react-native-reanimated";
 
 
 

@@ -1,5 +1,5 @@
 import { FC, Fragment, memo } from "react";
-import { PointRipple } from "@/components/Map/place/PointRipple";
+import { PointRipple } from "@/components/Map/marker";
 
 
 const ripples = [0, 1, 2];

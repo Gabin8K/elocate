@@ -1,26 +1,39 @@
 import { useMap } from "./MapContext";
 import { useLocation } from "@/hooks/useLocation";
 import { reusableStyle } from "@/theme/reusables";
-import { FC, memo, PropsWithChildren } from "react";
-import MapView, { LongPressEvent, PROVIDER_GOOGLE } from "react-native-maps";
+import { FC, memo, useCallback, useRef } from "react";
+import MapView, { Camera, LongPressEvent, PROVIDER_GOOGLE, Region } from "react-native-maps";
+import { MarkerCurrentPosition, MarkerPlace } from "./marker";
 
 
 
-export const Map: FC<PropsWithChildren> = memo(function Map({ children }) {
+
+export const Map: FC = memo(function Map() {
+
+  const mapRef = useRef<MapView>(null);
 
   const location = useLocation();
   const map = useMap();
 
-  if (!location) return null;
-
-  const initialRegion = {
-    latitude: location.coords.latitude,
-    longitude: location.coords.longitude,
+  const initialRegion: Region = {
+    latitude: location?.coords.latitude || 0,
+    longitude: location?.coords.longitude || 0,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   }
 
-  const onLongPress = ({ nativeEvent }: LongPressEvent) => {
+
+  const initialCamera: Camera = {
+    center: {
+      latitude: location?.coords.latitude || 0,
+      longitude: location?.coords.longitude || 0,
+    },
+    heading: 30,
+    pitch: 60,
+    zoom: 17,
+  }
+
+  const onLongPress = useCallback(({ nativeEvent }: LongPressEvent) => {
     map.requestAddPlace({
       point: {
         x: nativeEvent.position.x,
@@ -31,16 +44,29 @@ export const Map: FC<PropsWithChildren> = memo(function Map({ children }) {
         longitude: nativeEvent.coordinate.longitude
       }
     });
-  }
+  }, [map]);
+
+
+  if (!location) return null;
+
 
   return (
     <MapView
+      ref={mapRef}
+      showsBuildings
+      camera={initialCamera}
       initialRegion={initialRegion}
       onLongPress={onLongPress}
       provider={PROVIDER_GOOGLE}
       style={reusableStyle.full}
     >
-      {children}
+      <MarkerPlace
+        open={map.newPlace?.open}
+        coordinate={map.newPlace?.coordinate}
+      />
+      <MarkerCurrentPosition
+        coordinate={location.coords}
+      />
     </MapView>
   );
 });

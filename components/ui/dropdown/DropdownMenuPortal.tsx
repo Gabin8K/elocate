@@ -1,10 +1,9 @@
 import { DropdownList } from "./DropdownList";
-import Animated, { FadeOut } from "react-native-reanimated";
 import PortalProvider, { Portal } from "@/providers/PortalProvider";
 import { DropdownProvider, useDropdown } from "./DropdownContext";
 import { DropdownMenuContent, DropdownMenuProps } from "./DropdownMenu";
 import { FC, Fragment, memo, PropsWithChildren, useCallback, useState } from "react";
-import { LayoutChangeEvent, Pressable, StyleProp, StyleSheet, ViewStyle } from "react-native";
+import { LayoutChangeEvent, Pressable, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 
 
 type Point = {
@@ -60,8 +59,7 @@ export const DropdownMenuPortal: FC<DropdownMenuPortalProps> = memo(function Dro
       >
         {dropdown.open ?
           <Fragment>
-            <Animated.View
-              exiting={FadeOut}
+            <View
               style={[
                 styles.container,
                 stylePortal,
@@ -76,7 +74,7 @@ export const DropdownMenuPortal: FC<DropdownMenuPortalProps> = memo(function Dro
                 items={props.dropdownItems}
                 onItemPress={props.onItemPress}
               />
-            </Animated.View>
+            </View>
             <Pressable
               onPress={onClose}
               style={styles.full}

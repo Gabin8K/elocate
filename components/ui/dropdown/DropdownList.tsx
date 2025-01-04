@@ -6,7 +6,7 @@ import { spacing } from "@/theme/spacing";
 import { FlatList } from "react-native-gesture-handler";
 import { common } from "@/theme/palette";
 import { useTheme } from "@/hooks";
-import Animated, { FadeIn } from "react-native-reanimated";
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { ListRenderItemInfo, Platform, Pressable, StyleSheet } from "react-native";
 
 
@@ -41,7 +41,13 @@ export const DropdownList: FC<DropdownListProps> = memo(function DropDownMenu(pr
 
   return (
     <Animated.View
-      entering={FadeIn.delay(100)}
+      {...portal ?
+        {
+          entering: FadeIn,
+          exiting: FadeOut,
+        } :
+        { entering: FadeIn.delay(100) }
+      }
     >
       <FlatList
         data={items}
