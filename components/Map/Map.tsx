@@ -1,9 +1,10 @@
 import { useMap } from "./MapContext";
 import { useLocation } from "@/hooks/useLocation";
 import { reusableStyle } from "@/theme/reusables";
-import { FC, memo, useCallback } from "react";
+import { FC, Fragment, memo, useCallback } from "react";
 import MapView, { Camera, LongPressEvent, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import { MarkerCurrentPosition, MarkerPlace } from "./marker";
+import { UserLocationButton } from "./UserLocationButton";
 
 
 
@@ -52,22 +53,28 @@ export const Map: FC = memo(function Map() {
 
 
   return (
-    <MapView
-      ref={map.mapRef}
-      showsBuildings
-      camera={initialCamera}
-      initialRegion={initialRegion}
-      onLongPress={onLongPress}
-      provider={PROVIDER_GOOGLE}
-      style={reusableStyle.full}
-    >
-      <MarkerPlace
-        open={map.newPlace?.open}
-        coordinate={map.newPlace?.coordinate}
+    <Fragment>
+      <MapView
+        ref={map.mapRef}
+        showsBuildings
+        camera={initialCamera}
+        initialRegion={initialRegion}
+        onLongPress={onLongPress}
+        provider={PROVIDER_GOOGLE}
+        style={reusableStyle.full}
+      >
+        <MarkerPlace
+          open={map.newPlace?.open}
+          coordinate={map.newPlace?.coordinate}
+        />
+        <MarkerCurrentPosition
+          coordinate={location.coords}
+        />
+      </MapView>
+      <UserLocationButton
+        mapRef={map.mapRef}
+        camera={initialCamera}
       />
-      <MarkerCurrentPosition
-        coordinate={location.coords}
-      />
-    </MapView>
+    </Fragment>
   );
 });

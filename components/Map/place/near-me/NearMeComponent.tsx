@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
   buttonOpen: {
     zIndex: 2,
     position: 'absolute',
-    right: spacing.s,
+    right: spacing.m,
     bottom: spacing.height * .15,
   },
 })
