@@ -1,7 +1,7 @@
-import { FC, memo, useEffect, useMemo } from "react";
+import { FC, Fragment, memo, useCallback, useEffect, useMemo } from "react";
 import Animated, { Easing, interpolate, interpolateColor, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 import { Portal } from "@/providers/PortalProvider";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Pressable } from "react-native";
 import { spacing } from "@/theme/spacing";
 import { useTheme } from "@/hooks";
 import { component } from "@/theme/reusables";
@@ -10,6 +10,12 @@ import { palette } from "@/theme/palette";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { DrawerContent } from "./DrawerContent";
 import useBackhandler from "@/hooks/useBackhandler";
+
+
+type ContentProps = {
+  setOpen: (open: boolean) => void;
+}
+
 
 const height = spacing.height * 0.7;
 const width = spacing.width * 0.75;
@@ -20,13 +26,36 @@ const duration = 400;
 const easing = Easing.in(Easing.bezierFn(0.25, 0.1, 0, 1.02))
 
 
+const AnimatedPressble = Animated.createAnimatedComponent(Pressable);
+
+
 
 export const DrawerLayout: FC = memo(function DrawerLayout() {
+  const { open, setOpen } = useDrawer();
+  return (
+    <Portal
+      name={'drawer'}
+    >
+      {open ?
+        <DrawerLayoutContent
+          setOpen={setOpen}
+        /> :
+        null
+      }
+    </Portal>
+  )
+});
+
+
+
+
+
+export const DrawerLayoutContent: FC<ContentProps> = memo(function DrawerLayoutContent(props) {
+  const { setOpen } = props;
 
   const { colors } = useTheme();
-  const { open, setOpen } = useDrawer();
 
-  const translateX = useSharedValue(0);
+  const translateX = useSharedValue(width + right);
 
   const gesture = useMemo(() => Gesture.Pan()
     .onChange(e => {
@@ -73,38 +102,36 @@ export const DrawerLayout: FC = memo(function DrawerLayout() {
   }, []);
 
 
+  const onClose = useCallback(() => {
+    translateX.value = withTiming(width + right, { duration, easing }, (finished) => {
+      if (finished) {
+        runOnJS(setOpen)(false);
+      }
+    });
+  }, []);
+
+
   useBackhandler(() => {
-    if (open) {
-      setOpen(false);
-      return true;
-    }
-    return false;
+    setOpen(false);
+    return true;
   });
 
 
   useEffect(() => {
-    if (open && translateX.value !== 0) {
-      translateX.value = withTiming(0, { duration, easing });
-    } else if (!open) {
-      translateX.value = withTiming(width + right, { duration });
-    }
-  }, [open])
+    translateX.value = withTiming(0, { duration, easing });
+  }, []);
 
 
 
   return (
-    <Portal
-      name={'drawer'}
-    >
-      {open ?
-        <Animated.View
-          style={[
-            uasBackground,
-            styles.full,
-          ]}
-        /> :
-        null
-      }
+    <Fragment>
+      <AnimatedPressble
+        onPress={onClose}
+        style={[
+          uasBackground,
+          styles.full,
+        ]}
+      />
       <GestureDetector
         gesture={gesture}
       >
@@ -124,7 +151,7 @@ export const DrawerLayout: FC = memo(function DrawerLayout() {
           <DrawerContent />
         </Animated.View>
       </GestureDetector>
-    </Portal>
+    </Fragment>
   );
 })
 
