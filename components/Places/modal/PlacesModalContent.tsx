@@ -27,6 +27,9 @@ export const PlacesModalContent: FC<PlacesModalContentProps> = memo(function Pla
     <ModalSheet
       open={open}
       onClose={onClose}
+      config={{
+        enteringDuration: 500,
+      }}
     >
       <View
         style={styles.container}

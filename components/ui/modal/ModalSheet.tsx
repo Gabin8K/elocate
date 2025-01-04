@@ -13,13 +13,14 @@ import Animated, { Easing, interpolate, LinearTransition, ReduceMotion, runOnJS,
 type ModalConfig = {
   top: number;
   velocityHeight: number;
+  enteringDuration?: number;
   animationDuration: number;
 }
 
 interface ModalSheetProps extends PropsWithChildren {
   open?: boolean;
   onClose?: () => void;
-  config?: ModalConfig;
+  config?: Partial<ModalConfig>;
   style?: StyleProp<ViewStyle>;
   containerStyle?: StyleProp<ViewStyle>;
 }
@@ -27,8 +28,9 @@ interface ModalSheetProps extends PropsWithChildren {
 
 const defaultConfig: ModalConfig = {
   top: 0,
+  enteringDuration: 1000,
   velocityHeight: 1200,
-  animationDuration: 400
+  animationDuration: 400,
 }
 
 
@@ -58,6 +60,7 @@ const RenderModalSheet: FC<ModalSheetProps> = memo(function RenderModalSheet(pro
   const config: ModalConfig = {
     top: rest.config?.top ?? defaultConfig.top,
     velocityHeight: rest.config?.velocityHeight ?? defaultConfig.velocityHeight,
+    enteringDuration: rest.config?.enteringDuration ?? defaultConfig.enteringDuration,
     animationDuration: rest.config?.animationDuration ?? defaultConfig.animationDuration
   }
 
@@ -137,7 +140,7 @@ const RenderModalSheet: FC<ModalSheetProps> = memo(function RenderModalSheet(pro
 
   useEffect(() => {
     translateY.value = withTiming(0, {
-      duration: 800,
+      duration: config.enteringDuration,
       easing: Easing.inOut(Easing.quad),
       reduceMotion: ReduceMotion.System,
     });
