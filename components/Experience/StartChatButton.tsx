@@ -19,7 +19,7 @@ export const StartChatButton: FC = memo(function StartChatButton() {
     >
       <IconButton
         shadow
-        icon={'chatbubble-ellipses'}
+        icon={'chatbubble-sharp'}
         backgroundColor={'gray2'}
         iconProps={{
           size: 20,
