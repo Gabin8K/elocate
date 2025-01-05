@@ -19,7 +19,7 @@ type ContentProps = {
 
 const height = spacing.height * 0.7;
 const width = spacing.width * 0.75;
-const right = spacing.s;
+const right = 0;
 
 const velocity = 300;
 const duration = 400;
@@ -169,9 +169,9 @@ const styles = StyleSheet.create({
     width,
     height,
     right,
+    bottom: spacing.xl * 2,
     borderTopStartRadius: spacing.m,
     borderBottomStartRadius: spacing.m,
-    bottom: 80,
     ...component.shadow,
   },
   swip: {
