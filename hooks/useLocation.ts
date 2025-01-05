@@ -10,14 +10,17 @@ export function useLocation() {
 
   useEffect(() => {
     async function getCurrentLocation() {
-      
+
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         toast.show('Permission to access location was denied');
         return;
       }
 
-      const location = await Location.getCurrentPositionAsync({});
+      const location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.BestForNavigation,
+        timeInterval: 5000,
+      });
       setLocation(location);
     }
 

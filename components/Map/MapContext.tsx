@@ -1,5 +1,5 @@
+import MapView, { Camera } from "react-native-maps";
 import { createContext, FunctionComponent, PropsWithChildren, useCallback, useContext, useRef, useState } from "react";
-import MapView from "react-native-maps";
 
 export type Point = {
   x: number;
@@ -20,16 +20,19 @@ export type Place = {
 type MapState = {
   newPlace?: Place;
   openModal?: boolean;
+  currentCamera?: Camera;
 }
 
 interface MapContextType {
   newPlace?: Place;
   openModal?: boolean;
+  currentCamera?: Camera;
   mapRef: React.RefObject<MapView>;
   closePlace: () => void;
   closeModal: () => void;
   requestAddPlace: (place: Place) => void;
   confirmRequestPlace: () => void;
+  setCurrentCamera: (currentCamera: Camera) => void;
 }
 
 
@@ -37,6 +40,7 @@ export const MapContext = createContext<MapContextType>({
   mapRef: {} as MapContextType['mapRef'],
   requestAddPlace: () => { },
   closePlace: () => { },
+  setCurrentCamera: () => { },
   closeModal: () => { },
   confirmRequestPlace: () => { },
 });
@@ -72,7 +76,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
       ...state,
       newPlace: {
         ...state.newPlace || {} as Place,
-        open: false
+        open: false,
       }
     }));
   }, []);
@@ -84,7 +88,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
       openModal: true,
       newPlace: {
         ...state.newPlace || {} as Place,
-        open: false
+        open: false,
       },
     }));
   }, []);
@@ -93,7 +97,15 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
   const closeModal = useCallback(() => {
     setState(state => ({
       ...state,
-      openModal: false
+      openModal: false,
+    }));
+  }, []);
+
+
+  const setCurrentCamera = useCallback((currentCamera: Camera) => {
+    setState(state => ({
+      ...state,
+      currentCamera,
     }));
   }, []);
 
@@ -104,10 +116,12 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
         mapRef,
         newPlace: state.newPlace,
         openModal: state.openModal,
+        currentCamera: state.currentCamera,
         confirmRequestPlace,
         requestAddPlace,
         closePlace,
-        closeModal
+        closeModal,
+        setCurrentCamera,
       }}
     >
       {children}

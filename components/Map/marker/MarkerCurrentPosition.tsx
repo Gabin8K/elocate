@@ -1,18 +1,34 @@
 import { FC, memo } from "react";
-import { common } from "@/theme/palette";
+import { palette } from "@/theme/palette";
+import { StyleSheet } from "react-native";
 import { Coordinate } from "../MapContext";
-import { StyleSheet, View } from "react-native";
 import { reusableStyle } from "@/theme/reusables";
-import { MarkerAnimated } from "react-native-maps";
-import Animated, { ZoomIn } from "react-native-reanimated";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Camera, MarkerAnimated } from "react-native-maps";
+import Animated, { useAnimatedStyle, useDerivedValue, withTiming } from "react-native-reanimated";
 
 type MarkerCurrentPositionProps = {
+  currentCamera?: Camera;
   coordinate?: Coordinate;
 }
 
 
 export const MarkerCurrentPosition: FC<MarkerCurrentPositionProps> = memo(function MarkerCurrentPosition(props) {
-  const { coordinate } = props;
+  const { coordinate, currentCamera } = props;
+
+  const rotate3d = useDerivedValue(() => {
+    const pith = currentCamera?.pitch === undefined ? 0 : currentCamera.pitch;
+    return withTiming(pith);
+  }, [currentCamera?.pitch]);
+
+  const uas = useAnimatedStyle(() => {
+    return {
+      transform: [
+        { rotateX: `${rotate3d.value}deg` },
+      ],
+    }
+  }, []);
+
 
   if (!coordinate) return null;
 
@@ -22,11 +38,15 @@ export const MarkerCurrentPosition: FC<MarkerCurrentPositionProps> = memo(functi
       coordinate={coordinate}
     >
       <Animated.View
-        entering={ZoomIn}
-        style={styles.container}
+        style={[
+          uas,
+          styles.container,
+        ]}
       >
-        <View
-          style={styles.rounded}
+        <MaterialIcons
+          size={20}
+          name={'navigation'}
+          color={palette.light.primary}
         />
       </Animated.View>
     </MarkerAnimated>
@@ -40,16 +60,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 30,
     height: 30,
+    borderWidth: 2,
     borderRadius: 30,
-    borderWidth: .5,
     ...reusableStyle.center,
-    borderColor: common.gray5,
-    backgroundColor: 'rgba(0, 0, 0, .2)',
-  },
-  rounded: {
-    width: 11,
-    height: 11,
-    borderRadius: 11,
-    backgroundColor: common.gray5,
+    borderColor: palette.light.primary,
+    backgroundColor: 'rgba(29,164,69,.2)',
   }
 })
