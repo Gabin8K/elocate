@@ -1,2 +1,3 @@
+export * from './input/InputContent';
 export * from './HeaderExperience';
-export * from './StartChatButton';
+export * from './ExperienceContext';

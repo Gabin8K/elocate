@@ -1,11 +1,12 @@
 import { Map, MapProvider } from "@/components/Map";
 import { RequestPlace } from "@/components/Map/place";
-import { RequestPlaceModal } from "@/components/Map/place/modal/RequestPlaceModal";
-import { NearMeComponent } from "@/components/Map/place/near-me";
-import { KeyboardAvoidingViewProvider } from "@/providers/KeyboardAvoidingViewProvider";
 import PortalProvider from "@/providers/PortalProvider";
+import { KeyboardAvoidingViewProvider } from "@/providers";
+import { NearMeComponent } from "@/components/Map/place/near-me";
+import { RequestPlaceModal } from "@/components/Map/place/modal/RequestPlaceModal";
 
-export default function Page() {
+
+export default function MapTab() {
   return (
     <KeyboardAvoidingViewProvider>
       <PortalProvider>

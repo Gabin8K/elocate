@@ -1,12 +1,15 @@
-import { Fragment } from "react";
-import { HeaderExperience, StartChatButton } from "@/components/Experience";
+import { KeyboardAvoidingViewProvider } from "@/providers";
+import { ExperienceProvider, HeaderExperience, InputContent } from "@/components/Experience";
 
 
-export default function Page() {
+
+export default function ExperiencePage() {
   return (
-    <Fragment>
-      <HeaderExperience />
-      <StartChatButton />
-    </Fragment>
+    <KeyboardAvoidingViewProvider>
+        <HeaderExperience />
+        <ExperienceProvider>
+          <InputContent />
+        </ExperienceProvider>
+    </KeyboardAvoidingViewProvider>
   )
 }

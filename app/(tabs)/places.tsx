@@ -6,8 +6,7 @@ import { PlacesProvider } from "@/components/Places/PlacesContext";
 import { Fragment } from "react";
 
 
-export default function Page() {
-
+export default function PlacesTab() {
   return (
     <Fragment>
       <HeaderPlace />
