@@ -12,7 +12,7 @@ import { useTheme } from '@/hooks';
 const Toast: FC = memo(function Toast() {
 
   const { state, cancel } = useToast();
-  const { colors } = useTheme();
+  const { colors, mode } = useTheme();
 
   useEffect(() => {
     const subscribe = setTimeout(() => cancel(), 5000);
@@ -33,7 +33,7 @@ const Toast: FC = memo(function Toast() {
       }
       style={[
         styles.toast,
-        { backgroundColor: colors.background }
+        { backgroundColor: mode === 'light' ? colors.background : colors.card }
       ]}
     >
       <Text
