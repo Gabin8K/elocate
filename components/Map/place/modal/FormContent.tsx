@@ -3,8 +3,8 @@ import { Text, TextInput } from "@/components/ui";
 import { StyleSheet, View } from "react-native";
 import { spacing } from "@/theme/spacing";
 import { DropdownMenu } from "@/components/ui/dropdown";
-import { ImageInput } from "@/components/ui/image-input";
 import { Button } from "@/components/ui/buttons";
+import { ImageInput } from "./ImageInput";
 
 
 

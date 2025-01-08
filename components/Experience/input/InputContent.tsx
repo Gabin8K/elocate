@@ -4,43 +4,63 @@ import { spacing } from "@/theme/spacing";
 import { InputMedia } from "./InputMedia";
 import { IconButton } from "../../ui/buttons";
 import { StyleSheet, View } from "react-native";
+import { useKeyboard, useTheme } from "@/hooks";
 import { reusableStyle } from "@/theme/reusables";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Animated, { LinearTransition, ZoomIn } from "react-native-reanimated";
+import Animated, { useAnimatedStyle, withTiming } from "react-native-reanimated";
 
 
 
 
 export const InputContent: FC = memo(function InputContent() {
 
+  const { colors } = useTheme();
+  const keyboard = useKeyboard();
   const insets = useSafeAreaInsets();
 
-  const paddingBottom = insets.bottom + spacing.l;
+  const paddingBottom = insets.bottom + spacing.xs;
+
+  const uas = useAnimatedStyle(() => {
+    const translateY = withTiming(-keyboard.height);
+    return {
+      transform: [{ translateY }]
+    }
+  }, [keyboard])
 
 
   return (
     <Animated.View
-      layout={LinearTransition}
-      entering={ZoomIn}
       style={[
+        uas,
         styles.container,
-        { paddingBottom },
+        {
+          paddingBottom,
+          backgroundColor: colors.card,
+          boxShadow: `-4 -4 4 ${colors.shadow}`,
+        },
       ]}
     >
       <TextInput
         multiline
-        numberOfLines={2}
         placeholder={'Decrivez votre experience...'}
         style={styles.input}
       />
       <View
         style={styles.actions}
       >
-        <InputMedia />
-        <IconButton
-          icon={'send'}
-          variant={'primary'}
+        <InputMedia
+          visible={keyboard.visible}
         />
+        {keyboard.visible ?
+          <IconButton
+            icon={'send'}
+            variant={'text'}
+            iconProps={{
+              size: 20,
+            }}
+          /> :
+          null
+        }
       </View>
     </Animated.View>
   )
@@ -54,9 +74,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+    rowGap: spacing.s,
     position: 'absolute',
-    ...reusableStyle.row,
-    columnGap: spacing.m,
     paddingTop: spacing.m,
     paddingHorizontal: spacing.l,
   },
@@ -65,6 +84,6 @@ const styles = StyleSheet.create({
   },
   actions: {
     ...reusableStyle.row,
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
   }
 })

@@ -1,15 +1,15 @@
-import { KeyboardAvoidingViewProvider } from "@/providers";
+import { Fragment } from "react";
 import { ExperienceProvider, HeaderExperience, InputContent } from "@/components/Experience";
 
 
 
 export default function ExperiencePage() {
   return (
-    <KeyboardAvoidingViewProvider>
-        <HeaderExperience />
-        <ExperienceProvider>
-          <InputContent />
-        </ExperienceProvider>
-    </KeyboardAvoidingViewProvider>
+    <Fragment>
+      <HeaderExperience />
+      <ExperienceProvider>
+        <InputContent />
+      </ExperienceProvider>
+    </Fragment>
   )
 }

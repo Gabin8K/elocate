@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
+import { File } from "@/services/types";
 import { useCallback, useState } from "react";
 import * as ImagePicker from 'expo-image-picker';
-import { File } from "./ImageInput";
 
 
 
-export default function useMediaFile() {
+export function useMediaFile() {
 
   const [file, setFile] = useState<File>();
   const [hasPermission, setHasPermission] = useState<boolean>()

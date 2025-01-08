@@ -25,3 +25,9 @@ export interface Place {
   description?: string;
   image?: string;
 }
+
+export interface File {
+  uri: string;
+  name: string;
+  type: string;
+}

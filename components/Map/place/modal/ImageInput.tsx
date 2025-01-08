@@ -1,20 +1,13 @@
-import { FC, memo, useCallback } from "react";
+import { Text } from "../../../ui/Text";
 import { spacing } from "@/theme/spacing";
-import { Text } from "../Text";
-import useMediaFile from "./useMediaFile";
-import { useTheme, useToast } from "@/hooks";
-import { component, reusableStyle } from "@/theme/reusables";
-import { IconButton } from "../buttons/IconButton";
-import { Image, StyleSheet, View } from "react-native";
-import Animated, { LinearTransition, useAnimatedStyle, useSharedValue, withTiming, ZoomIn, ZoomOut } from "react-native-reanimated";
 import { display } from "@/utils/formater";
+import { FC, memo, useCallback } from "react";
+import { Image, StyleSheet, View } from "react-native";
+import { useMediaFile, useTheme, useToast } from "@/hooks";
+import { IconButton } from "../../../ui/buttons/IconButton";
+import { component, reusableStyle } from "@/theme/reusables";
+import Animated, { LinearTransition, useAnimatedStyle, useSharedValue, withTiming, ZoomIn, ZoomOut } from "react-native-reanimated";
 
-
-export interface File {
-  uri: string;
-  name: string;
-  type: string;
-}
 
 interface ImageInputProps { };
 
@@ -79,11 +72,11 @@ export const ImageInput: FC<ImageInputProps> = memo(function ImageInput(props) {
             />
             <IconButton
               icon={'close'}
+              variant={'text'}
               onPress={onRemove}
               styleContainer={styles.close}
               iconProps={{
                 size: 16,
-                color: colors.text,
               }}
             />
           </Animated.View> :
