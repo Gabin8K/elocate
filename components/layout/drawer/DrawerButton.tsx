@@ -1,6 +1,5 @@
 import { Text } from "@/components/ui";
 import { useTheme } from "@/hooks";
-import { common, } from "@/theme/palette";
 import { reusableStyle } from "@/theme/reusables";
 import { spacing } from "@/theme/spacing";
 import { display } from "@/utils/formater";
@@ -43,7 +42,9 @@ export const DrawerButton: FC<DrawerButtonProps> = memo(function DrawerLayout(pr
       }}
       style={styles.container}
     >
-      <View style={styles.row}>
+      <View
+        style={styles.row}
+      >
         <Ionicons
           name={Icon}
           size={24}
@@ -55,7 +56,12 @@ export const DrawerButton: FC<DrawerButtonProps> = memo(function DrawerLayout(pr
           {children}
         </Text>
       </View>
-      <View style={styles.divider} />
+      <View
+        style={[
+          styles.divider,
+          { backgroundColor: colors.divider }
+        ]}
+      />
     </Pressable>
   );
 })
@@ -66,19 +72,27 @@ export const DrawerButton: FC<DrawerButtonProps> = memo(function DrawerLayout(pr
 export const DrawerUser: FC<DrawerUserProps> = (function DrawerUser(props) {
   const { uri, username } = props;
 
+  const { colors } = useTheme();
+
   return (
     <View
       style={styles.container}
     >
-      <View style={styles.row}>
+      <View
+        style={styles.row}
+      >
         {uri ?
           <Image
             source={{ uri }}
-            style={styles.image}
+            style={[
+              styles.image,
+              { borderColor: colors.divider }
+            ]}
           /> :
           <Ionicons
             name={'person-outline'}
             size={24}
+            color={colors.text}
           />
         }
         <Text
@@ -87,7 +101,12 @@ export const DrawerUser: FC<DrawerUserProps> = (function DrawerUser(props) {
           {display(username || 'Non connecté', 13)}
         </Text>
       </View>
-      <View style={styles.divider} />
+      <View
+        style={[
+          styles.divider,
+          { backgroundColor: colors.divider }
+        ]}
+      />
     </View>
   )
 });
@@ -109,12 +128,10 @@ const styles = StyleSheet.create({
     height: 25,
     borderRadius: 25,
     borderWidth: 2,
-    borderColor: common.divider,
   },
   divider: {
     height: 1,
     width: "100%",
     marginTop: spacing.m,
-    backgroundColor: common.divider,
   }
 })

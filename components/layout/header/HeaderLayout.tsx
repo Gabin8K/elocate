@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     ...component.shadow,
   },
   button: {
+    marginTop:-10,
     alignSelf: 'flex-start',
   }
 })

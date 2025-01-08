@@ -1,15 +1,15 @@
-import { FC, memo, useCallback, useMemo } from "react";
-import { StyleSheet, View } from "react-native";
-import { ButtonTab } from "./ButtonTab";
-import { spacing } from "@/theme/spacing";
 import { Theme } from "@/theme";
-import { useDrawer } from "../drawer";
-import { common, palette } from "@/theme/palette";
 import { useTheme } from "@/hooks";
-import { reusableStyle } from "@/theme/reusables";
-import Animated, { useAnimatedStyle, withSpring } from "react-native-reanimated";
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs/src/types';
+import { useDrawer } from "../drawer";
+import { ButtonTab } from "./ButtonTab";
+import { palette } from "@/theme/palette";
+import { spacing } from "@/theme/spacing";
 import { Ionicons } from "@expo/vector-icons";
+import { StyleSheet, View } from "react-native";
+import { reusableStyle } from "@/theme/reusables";
+import { FC, memo, useCallback, useMemo } from "react";
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs/src/types';
+import Animated, { useAnimatedStyle, withSpring } from "react-native-reanimated";
 
 
 type Route = {
@@ -112,7 +112,8 @@ export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout(
       <Animated.View
         style={[
           uas,
-          styles.indicator
+          styles.indicator,
+          { boxShadow: `0 4 4 ${colors.shadow}` }
         ]}
       />
       {tabs.map((route) => (
@@ -147,6 +148,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
     borderRadius: spacing.s,
     backgroundColor: palette.light.primary,
-    boxShadow: `0 4 4 ${common.gray3}`,
   }
 })

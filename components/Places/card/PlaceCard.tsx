@@ -24,7 +24,7 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
   const { place, index } = props;
 
   const places = usePlaces()
-  const { colors } = useTheme();
+  const { colors, mode } = useTheme();
 
   const onGetItinerary = useCallback(() => {
     places.setItinerary(place);
@@ -73,11 +73,15 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
           style={styles.chipsContainer}
         >
           <View
-            style={styles.chips}
+            style={[
+              styles.chips,
+              { backgroundColor: mode === 'light' ? common.gray2 : colors.gray4 }
+            ]}
           >
             <Ionicons
               name={'calendar-outline'}
               size={18}
+              color={mode === 'light' ? colors.text : colors.gray1}
             />
             <Text
               variant={'caption'}
@@ -86,11 +90,15 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
             </Text>
           </View>
           <View
-            style={styles.chips}
+            style={[
+              styles.chips,
+              { backgroundColor: mode === 'light' ? common.gray2 : colors.gray4 }
+            ]}
           >
             <Ionicons
-              name={'person-outline'}
               size={18}
+              name={'person-outline'}
+              color={mode === 'light' ? colors.text : colors.gray1}
             />
             <Text
               variant={'caption'}
@@ -103,16 +111,16 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
           style={styles.footer}
         >
           <Button
-            variant={'text'}
+            variant={mode === 'light' ? 'text' : 'background'}
             onPress={onGetItinerary}
             textStyle={{
               variant: 'caption_b',
             }}
             startIcon={
               <Ionicons
-                name={'swap-horizontal-outline'}
-                color={colors.background}
                 size={18}
+                name={'swap-horizontal-outline'}
+                color={mode === 'light' ? colors.background : colors.text}
               />
             }
           >
@@ -156,7 +164,6 @@ const styles = StyleSheet.create({
   chips: {
     ...reusableStyle.row,
     columnGap: spacing.s,
-    backgroundColor: common.gray2,
     padding: spacing.xs,
     borderRadius: spacing.s,
   },

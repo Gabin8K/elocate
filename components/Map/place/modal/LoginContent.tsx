@@ -6,7 +6,7 @@ import { common } from "@/theme/palette";
 import { Button } from "@/components/ui/buttons";
 import { Ionicons } from "@expo/vector-icons";
 import { authService } from "@/services/auth";
-import { useToast } from "@/hooks";
+import { useTheme, useToast } from "@/hooks";
 
 
 
@@ -14,6 +14,7 @@ import { useToast } from "@/hooks";
 export const LoginContent: FC = memo(function LoginContent() {
 
   const toast = useToast();
+  const { colors } = useTheme();
   const [loading, setLoading] = useState(false);
 
   const onLogin = useCallback(() => {
@@ -33,7 +34,10 @@ export const LoginContent: FC = memo(function LoginContent() {
         Compte requis
       </Text>
       <Text
-        style={styles.info}
+        style={[
+          styles.info,
+          { borderColor: colors.divider }
+        ]}
       >
         Vous devez vous connecter pour ajouter un lieu
       </Text>
@@ -60,6 +64,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: spacing.s,
     padding: spacing.s,
-    borderColor: common.divider,
   }
 })

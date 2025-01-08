@@ -104,10 +104,10 @@ const RenderModalSheet: FC<ModalSheetProps> = memo(function RenderModalSheet(pro
 
   const uasBackground = useAnimatedStyle(() => {
     return {
-      backgroundColor: colors.text,
+      backgroundColor: colors.gray5,
       opacity: interpolate(translateY.value, [0, height], [.4, 0], 'clamp')
     }
-  }, [height, colors]);
+  }, [height]);
 
 
   const uasSwip = useAnimatedStyle(() => {

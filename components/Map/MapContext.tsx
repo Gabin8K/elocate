@@ -20,15 +20,18 @@ export type Place = {
 type MapState = {
   newPlace?: Place;
   openModal?: boolean;
+  loading: boolean;
   currentCamera?: Camera;
 }
 
 interface MapContextType {
+  loading: boolean;
   newPlace?: Place;
   openModal?: boolean;
   currentCamera?: Camera;
   mapRef: React.RefObject<MapView>;
   closePlace: () => void;
+  onMapLoaded: () => void;
   closeModal: () => void;
   requestAddPlace: (place: Place) => void;
   confirmRequestPlace: () => void;
@@ -36,14 +39,19 @@ interface MapContextType {
 }
 
 
-export const MapContext = createContext<MapContextType>({
+const initialValue: MapContextType = {
+  loading: true,
   mapRef: {} as MapContextType['mapRef'],
   requestAddPlace: () => { },
   closePlace: () => { },
   setCurrentCamera: () => { },
   closeModal: () => { },
+  onMapLoaded: () => { },
   confirmRequestPlace: () => { },
-});
+}
+
+
+export const MapContext = createContext<MapContextType>(initialValue);
 
 
 export const useMap = () => {
@@ -59,7 +67,7 @@ export const useMap = () => {
 export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
   const mapRef = useRef<MapView>(null);
-  const [state, setState] = useState<MapState>({});
+  const [state, setState] = useState<MapState>(initialValue);
 
   const requestAddPlace = useCallback((newPlace: Place) => {
     setState(state => ({
@@ -110,10 +118,19 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
   }, []);
 
 
+  const onMapLoaded = useCallback(() => {
+    setState(state => ({
+      ...state,
+      loading: false,
+    }));
+  }, []);
+
+
   return (
     <MapContext.Provider
       value={{
         mapRef,
+        loading: state.loading,
         newPlace: state.newPlace,
         openModal: state.openModal,
         currentCamera: state.currentCamera,
@@ -122,6 +139,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
         closePlace,
         closeModal,
         setCurrentCamera,
+        onMapLoaded,
       }}
     >
       {children}

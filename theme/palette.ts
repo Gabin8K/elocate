@@ -1,6 +1,5 @@
 
 export const common = {
-  divider: '#e5e5e5',
   error: '#ED5858',
   disabled: '#E5E5E5',
   gray1: '#FFFFFF',
@@ -18,16 +17,18 @@ export const palette = {
     primary_light: "#BBEABB",
     background: '#F8F8F8',
     card: '#fafafa',
-    shadow: 'rgba(0, 0, 0, 0.1)',
     text: '#000000',
+    shadow: 'rgba(0, 0, 0, 0.1)',
+    divider: '#e5e5e5',
   },
   dark: {
     ...common,
     primary: '#1DA445',
     primary_light: "#BBEABB",
     background: '#0f100f',
-    card: '#363736',
-    shadow: 'rgba(255, 255, 255, 0.1)',
-    text: '#FFFFFF'
+    card: '#292a29',
+    text: '#FFFFFF',
+    shadow: 'rgba(0, 0, 0, 0.3)',
+    divider: '#474b47',
   }
 };

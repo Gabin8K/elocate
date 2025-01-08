@@ -58,6 +58,7 @@ export const DropdownList: FC<DropdownListProps> = memo(function DropDownMenu(pr
           {
             backgroundColor: colors.card,
             borderTopColor: colors.text,
+            boxShadow: `0 4 4 ${colors.shadow}, 0 0 4 ${colors.shadow}`,
           }
         ]}
       />
@@ -71,6 +72,8 @@ export const DropdownList: FC<DropdownListProps> = memo(function DropDownMenu(pr
 
 const RenderItem: FC<RenderItemProps> = memo(function RenderItem(props) {
   const { item, onItemPress } = props;
+
+  const { colors, mode } = useTheme();
   const dropdown = useDropdown();
 
   const backgroundColor = Platform.select({
@@ -92,7 +95,11 @@ const RenderItem: FC<RenderItemProps> = memo(function RenderItem(props) {
       style={({ pressed }) => [
         styles.pressable,
         pressed ? { backgroundColor } : {},
-        { backgroundColor: dropdown.item?.value === item.value ? common.gray2 : common.transparent }
+        {
+          backgroundColor: dropdown.item?.value === item.value ?
+            mode === 'light' ? colors.gray2 : colors.background :
+            common.transparent,
+        }
       ]}
     >
       <Text>

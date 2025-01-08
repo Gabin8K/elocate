@@ -85,11 +85,12 @@ export const ImageInput: FC<ImageInputProps> = memo(function ImageInput(props) {
         <IconButton
           icon={'camera'}
           onPress={onPress}
+          variant={'background'}
           onPressIn={() => (active.value = withTiming(1))}
           onPressOut={() => (active.value = withTiming(0))}
           styleContainer={styles.styleContainer}
           style={{
-            backgroundColor: colors.gray2,
+            backgroundColor: colors.gray3,
           }}
           iconProps={{
             size: 20,

@@ -1,10 +1,13 @@
+import { useTheme } from "@/hooks";
 import { useMap } from "./MapContext";
+import { mapStyles } from "./map.styles";
 import { useLocation } from "@/hooks/useLocation";
 import { reusableStyle } from "@/theme/reusables";
 import { FC, Fragment, memo, useCallback } from "react";
 import { UserLocationButton } from "./UserLocationButton";
 import { MarkerCurrentPosition, MarkerPlace } from "./marker";
 import MapView, { Camera, LongPressEvent, PROVIDER_GOOGLE, Region } from "react-native-maps";
+import { LoadingMap } from "./LoadingMap";
 
 
 
@@ -12,6 +15,7 @@ import MapView, { Camera, LongPressEvent, PROVIDER_GOOGLE, Region } from "react-
 export const Map: FC = memo(function Map() {
 
   const map = useMap();
+  const { mode } = useTheme();
   const location = useLocation();
 
   const initialRegion: Region = {
@@ -52,8 +56,8 @@ export const Map: FC = memo(function Map() {
 
   const onRegionChangeComplete = useCallback(async () => {
     map.mapRef.current?.getCamera()
-    .then(camera => map.setCurrentCamera(camera))
-    .catch(console.error);
+      .then(camera => map.setCurrentCamera(camera))
+      .catch(console.error);
   }, []);
 
 
@@ -72,6 +76,8 @@ export const Map: FC = memo(function Map() {
         provider={PROVIDER_GOOGLE}
         style={reusableStyle.full}
         initialRegion={initialRegion}
+        customMapStyle={mapStyles[mode]}
+        onMapLoaded={map.onMapLoaded}
         onRegionChangeComplete={onRegionChangeComplete}
       >
         <MarkerPlace
@@ -86,6 +92,9 @@ export const Map: FC = memo(function Map() {
       <UserLocationButton
         mapRef={map.mapRef}
         camera={initialCamera}
+      />
+      <LoadingMap
+        loading={map.loading}
       />
     </Fragment>
   );
