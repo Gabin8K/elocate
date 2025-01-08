@@ -101,6 +101,7 @@ export const DropdownMenuContent: FC<DropdownMenuProps> = memo(function Dropdown
           <Ionicons
             name={'chevron-down'}
             size={16}
+            color={colors.text}
           />
         </Animated.View>
       </Animated.View>

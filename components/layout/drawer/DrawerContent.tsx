@@ -9,12 +9,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "@/providers/AuthProvider";
 import { Button } from "@/components/ui/buttons";
 import { authService } from "@/services";
+import { useTheme } from "@/hooks";
 
 
 
 
 export const DrawerContent: FC = memo(function DrawerLayout() {
   const { auth } = useAuth();
+  const { mode } = useTheme();
 
   const buttons: DrawerButtonProps[] = [
     {
@@ -83,6 +85,9 @@ export const DrawerContent: FC = memo(function DrawerLayout() {
           variant={'text'}
           onPress={onLogout}
           style={styles.button}
+          textStyle={{
+            color: mode === 'light' ? 'gray1' : 'background'
+          }}
         >
           Se Deconnecter
         </Button> :

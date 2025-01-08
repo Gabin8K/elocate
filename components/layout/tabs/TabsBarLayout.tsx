@@ -123,7 +123,7 @@ export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout(
           <Ionicons
             size={30}
             name={route.icon}
-            color={palette.light[route.color]}
+            color={colors[route.color]}
           />
         </ButtonTab>
       ))}

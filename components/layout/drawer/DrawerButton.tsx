@@ -1,4 +1,5 @@
 import { Text } from "@/components/ui";
+import { useTheme } from "@/hooks";
 import { common, } from "@/theme/palette";
 import { reusableStyle } from "@/theme/reusables";
 import { spacing } from "@/theme/spacing";
@@ -27,6 +28,8 @@ export type DrawerUserProps = {
 export const DrawerButton: FC<DrawerButtonProps> = memo(function DrawerLayout(props) {
   const { icon: Icon, href, children } = props;
 
+  const { colors } = useTheme();
+
   const onPress = () => {
     if (!href) return;
     router.navigate(href);
@@ -44,6 +47,7 @@ export const DrawerButton: FC<DrawerButtonProps> = memo(function DrawerLayout(pr
         <Ionicons
           name={Icon}
           size={24}
+          color={colors.text}
         />
         <Text
           variant={'body1_m'}

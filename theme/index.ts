@@ -3,19 +3,23 @@ export * from './typography';
 
 
 const light = {
-  colors: palette.light,
   mode: 'light',
+  colors: palette.light,
 }
 
 const dark = {
   mode: 'dark',
-  colors: palette.dark
-}
+  colors: palette.dark,
+} as const;
 
 const theme = {
   light,
   dark,
 };
 
-export type Theme = typeof light;
+export type Theme = {
+  colors: typeof palette.light;
+  mode: 'light' | 'dark';
+};
+
 export default theme;

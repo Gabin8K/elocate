@@ -15,7 +15,7 @@ import Animated, { Easing, SlideInDown, SlideOutDown } from "react-native-reanim
 export const RequestPlace: FC = memo(function RequestPlace() {
 
   const map = useMap();
-  const { colors } = useTheme();
+  const { colors, mode } = useTheme();
 
   const onClose = useCallback(() => {
     map.closePlace();
@@ -72,6 +72,9 @@ export const RequestPlace: FC = memo(function RequestPlace() {
             <Button
               variant={'text'}
               onPress={onConfirm}
+              textStyle={{
+                color: mode === 'light' ? 'gray1' : 'background'
+              }}
             >
               Oui
             </Button>

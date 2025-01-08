@@ -139,7 +139,7 @@ export const DrawerLayoutContent: FC<ContentProps> = memo(function DrawerLayoutC
           style={[
             uas,
             styles.container,
-            { backgroundColor: colors.background, },
+            { backgroundColor: colors.card, },
           ]}
         >
           <Animated.View

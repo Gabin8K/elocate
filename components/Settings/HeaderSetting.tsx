@@ -6,6 +6,7 @@ import { HeaderChild } from "../layout/header";
 import Animated, { interpolate, useAnimatedStyle } from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
 import { useScrollAnimated } from "@/providers/ScrollAnimatedProvider";
+import { useTheme } from "@/hooks";
 
 
 export const HeaderSetting: FC = memo(function HeaderSetting() {
@@ -19,7 +20,7 @@ export const HeaderSetting: FC = memo(function HeaderSetting() {
 
 
 const HeaderSettingContent: FC = memo(function HeaderSettingContent() {
-
+  const { colors } = useTheme();
   const { offsetY } = useScrollAnimated();
 
   const uas = useAnimatedStyle(() => {
@@ -42,6 +43,7 @@ const HeaderSettingContent: FC = memo(function HeaderSettingContent() {
     >
       <Ionicons
         name={'options-outline'}
+        color={colors['text']}
         size={spacing.m}
       />
       <Text
