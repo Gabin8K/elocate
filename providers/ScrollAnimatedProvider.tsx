@@ -47,7 +47,6 @@ export const useScrollAnimated = () => {
 
   return {
     ...context,
-    isScrolling,
     onScroll,
   };
 }
