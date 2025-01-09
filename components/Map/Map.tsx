@@ -1,13 +1,13 @@
 import { useTheme } from "@/hooks";
 import { useMap } from "./MapContext";
 import { mapStyles } from "./map.styles";
+import { LoadingMap } from "./LoadingMap";
 import { useLocation } from "@/hooks/useLocation";
 import { reusableStyle } from "@/theme/reusables";
 import { FC, Fragment, memo, useCallback } from "react";
 import { UserLocationButton } from "./UserLocationButton";
 import { MarkerCurrentPosition, MarkerPlace } from "./marker";
 import MapView, { Camera, LongPressEvent, PROVIDER_GOOGLE, Region } from "react-native-maps";
-import { LoadingMap } from "./LoadingMap";
 
 
 
@@ -62,8 +62,6 @@ export const Map: FC = memo(function Map() {
 
 
 
-  if (!location) return null;
-
 
   return (
     <Fragment>
@@ -76,8 +74,8 @@ export const Map: FC = memo(function Map() {
         provider={PROVIDER_GOOGLE}
         style={reusableStyle.full}
         initialRegion={initialRegion}
-        customMapStyle={mapStyles[mode]}
         onMapLoaded={map.onMapLoaded}
+        customMapStyle={mapStyles[mode]}
         onRegionChangeComplete={onRegionChangeComplete}
       >
         <MarkerPlace
@@ -85,7 +83,7 @@ export const Map: FC = memo(function Map() {
           coordinate={map.newPlace?.coordinate}
         />
         <MarkerCurrentPosition
-          coordinate={location.coords}
+          coordinate={location?.coords}
           currentCamera={map.currentCamera}
         />
       </MapView>

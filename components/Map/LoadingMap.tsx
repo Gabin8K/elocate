@@ -18,7 +18,10 @@ export const LoadingMap: FC<LoadingMapProps> = memo(function LoadingMap(props) {
 
   return (
     <View
-      style={styles.container}
+      style={[
+        styles.container,
+        { backgroundColor: colors.background }
+      ]}
     >
       <ActivityIndicator
         size={'large'}

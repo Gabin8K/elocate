@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { ExperienceProvider, HeaderExperience, InputContent } from "@/components/Experience";
+import { ExperienceProvider, HeaderExperience, InputContent, ListExperience } from "@/components/Experience";
 
 
 
@@ -8,6 +8,7 @@ export default function ExperiencePage() {
     <Fragment>
       <HeaderExperience />
       <ExperienceProvider>
+        <ListExperience />
         <InputContent />
       </ExperienceProvider>
     </Fragment>

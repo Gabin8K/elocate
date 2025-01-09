@@ -8,6 +8,7 @@ import { useKeyboard, useTheme } from "@/hooks";
 import { reusableStyle } from "@/theme/reusables";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, { useAnimatedStyle, withTiming } from "react-native-reanimated";
+import { useScrollAnimated } from "@/providers/ScrollAnimatedProvider";
 
 
 
@@ -17,11 +18,13 @@ export const InputContent: FC = memo(function InputContent() {
   const { colors } = useTheme();
   const keyboard = useKeyboard();
   const insets = useSafeAreaInsets();
+  const { direction } = useScrollAnimated();
 
   const paddingBottom = insets.bottom + spacing.xs;
 
   const uas = useAnimatedStyle(() => {
-    const translateY = withTiming(-keyboard.height);
+    const offsetY = direction.value === 'down' ? spacing.height * .14 : -keyboard.height;
+    const translateY = withTiming(offsetY);
     return {
       transform: [{ translateY }]
     }
