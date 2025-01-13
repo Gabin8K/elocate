@@ -6,6 +6,7 @@ import { usePlacesList } from "./usePlacesList";
 import { ListRenderItemInfo, StyleSheet } from "react-native";
 import { useScrollAnimated } from "@/providers/ScrollAnimatedProvider";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 
 export interface PlacesListProps {
@@ -16,6 +17,7 @@ export interface PlacesListProps {
 
 export const PlacesList: FC<PlacesListProps> = memo(function PlacesList() {
 
+  const insets = useSafeAreaInsets();
   const { places } = usePlacesList();
 
   const { offsetY } = useScrollAnimated();
@@ -23,6 +25,8 @@ export const PlacesList: FC<PlacesListProps> = memo(function PlacesList() {
   const scroll = useAnimatedScrollHandler((e) => {
     offsetY.value = e.contentOffset.y;
   });
+
+  const paddingTop = insets.top + 150;
 
   const renderItem = useMemo(() => function renderItem({ item, index }: ListRenderItemInfo<Place>) {
     return (
@@ -38,7 +42,10 @@ export const PlacesList: FC<PlacesListProps> = memo(function PlacesList() {
     <Animated.FlatList
       data={places}
       onScroll={scroll}
-      contentContainerStyle={styles.contentContainerStyle}
+      contentContainerStyle={[
+        styles.contentContainerStyle,
+        { paddingTop }
+      ]}
       showsVerticalScrollIndicator={false}
       renderItem={renderItem}
     />
@@ -48,7 +55,6 @@ export const PlacesList: FC<PlacesListProps> = memo(function PlacesList() {
 
 const styles = StyleSheet.create({
   contentContainerStyle: {
-    paddingTop: spacing.m,
     paddingBottom: spacing.xl,
     paddingHorizontal: spacing.m,
   }

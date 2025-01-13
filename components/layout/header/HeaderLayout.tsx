@@ -56,6 +56,8 @@ export const HeaderLayout: FC<NativeStackHeaderProps> = memo(function HeaderLayo
 
 const styles = StyleSheet.create({
   container: {
+    width: '100%',
+    position:'absolute',
     columnGap: spacing.l,
     paddingBottom: spacing.s,
     ...reusableStyle.row,
