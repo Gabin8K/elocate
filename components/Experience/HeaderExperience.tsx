@@ -20,7 +20,7 @@ export const HeaderExperience: FC = memo(function HeaderExperience() {
 
 
 const HeaderExperienceContent: FC = memo(function HeaderExperienceContent() {
-  
+
   const { colors } = useTheme();
 
   const { offsetY } = useScrollAnimated();
@@ -56,13 +56,13 @@ const HeaderExperienceContent: FC = memo(function HeaderExperienceContent() {
         >
           Dites en quelques mots votre expérience avec Elocate.
         </Text>
-          <Text
-            color={'gray4'}
-            variant={'body2_m'}
-            style={styles.text}
-          >
-            Cela nous aidera à améliorer les futures versions.
-          </Text>
+        <Text
+          color={'gray4'}
+          variant={'body2_m'}
+          style={styles.text}
+        >
+          Cela nous aidera à améliorer les futures versions.
+        </Text>
       </View>
     </Animated.View>
   )
@@ -72,6 +72,7 @@ const HeaderExperienceContent: FC = memo(function HeaderExperienceContent() {
 
 const styles = StyleSheet.create({
   container: {
+    overflow: 'hidden',
     flexDirection: 'row',
     paddingTop: spacing.m,
     columnGap: spacing.s,

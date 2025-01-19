@@ -16,7 +16,7 @@ export const palette = {
     primary: '#1DA445',
     primary_light: "#BBEABB",
     background: '#F8F8F8',
-    card: '#fafafa',
+    card: '#fff',
     text: '#000000',
     shadow: 'rgba(0, 0, 0, 0.1)',
     divider: '#e5e5e5',

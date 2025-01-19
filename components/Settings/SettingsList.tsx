@@ -43,7 +43,7 @@ export const SettingsList: FC<SettingsListProps> = memo(function SettingsList() 
 const styles = StyleSheet.create({
   contentContainerStyle: {
     rowGap: spacing.l,
-    paddingTop: spacing.m,
+    paddingTop: spacing.lg * 5,
     paddingBottom: spacing.xl,
     paddingHorizontal: spacing.s,
   }

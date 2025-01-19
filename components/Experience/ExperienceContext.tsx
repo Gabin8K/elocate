@@ -1,18 +1,23 @@
-import { createContext, FunctionComponent, PropsWithChildren, useContext, useState } from "react";
+import { createContext, FunctionComponent, PropsWithChildren, useCallback, useContext, useState } from "react";
 
 
 type State = {
-
+  showReply?: boolean;
 }
 
 
 interface ExperienceContextType {
+  showReply?: boolean;
+  setShowReply: (show: boolean) => void;
 }
 
 
-export const ExperienceContext = createContext<ExperienceContextType>({
- 
-});
+const initialValue: ExperienceContextType = {
+  setShowReply: () => { },
+}
+
+
+export const ExperienceContext = createContext<ExperienceContextType>(initialValue);
 
 
 export const useExperiences = () => {
@@ -28,11 +33,16 @@ export const useExperiences = () => {
 export const ExperienceProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const [state, setState] = useState<State>({});
 
+  const setShowReply = useCallback((showReply: boolean) => {
+    setState({ ...state, showReply });
+  }, []);
+
 
   return (
     <ExperienceContext.Provider
       value={{
         ...state,
+        setShowReply,
       }}
     >
       {children}
