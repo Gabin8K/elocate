@@ -58,7 +58,7 @@ export const useScrollAnimated = () => {
 const ScrollAnimatedProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
   const offsetY = useSharedValue(0);
-  const direction = useSharedValue<Direction>('up');
+  const direction = useSharedValue<Direction>('down');
 
   return (
     <ScrollAnimatedContext.Provider
