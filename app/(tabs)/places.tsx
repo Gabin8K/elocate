@@ -1,9 +1,10 @@
+import { Fragment } from "react";
 import { PlacesList } from "@/components/Places";
-import { HeaderPlace } from "@/components/Places/HeaderPlace";
 import { ImagePlace } from "@/components/Places/image";
 import { PlacesModal } from "@/components/Places/modal";
+import { HeaderPlace } from "@/components/Places/HeaderPlace";
 import { PlacesProvider } from "@/components/Places/PlacesContext";
-import { Fragment } from "react";
+import { ScrollAnimatedCleanup } from "@/providers/ScrollAnimatedProvider";
 
 
 export default function PlacesTab() {
@@ -15,6 +16,7 @@ export default function PlacesTab() {
         <ImagePlace />
         <PlacesModal />
       </PlacesProvider>
+      <ScrollAnimatedCleanup />
     </Fragment>
   )
 }

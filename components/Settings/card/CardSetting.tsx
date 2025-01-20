@@ -35,7 +35,10 @@ export const CardSetting: FC<CardSettingProps> = memo(function CardSetting(props
       <View
         style={[
           styles.content,
-          { backgroundColor: colors.card },
+          { 
+            backgroundColor: colors.card,
+            boxShadow: `4 4 30 ${colors.shadow}`,
+          },
         ]}
       >
         <Animated.View
@@ -61,13 +64,13 @@ const styles = StyleSheet.create({
     rowGap: spacing.s,
   },
   title:{
-    paddingLeft: spacing.m,
+    paddingLeft: spacing.s,
   },
   content: {
     padding: spacing.m,
     ...reusableStyle.row,
     columnGap: spacing.s,
-    borderRadius: spacing.m,
+    borderRadius: spacing.s,
     justifyContent: 'space-between',
   },
   value: {

@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { ScrollAnimatedCleanup } from "@/providers/ScrollAnimatedProvider";
 import { ExperienceProvider, HeaderExperience, InputContent, ListExperience } from "@/components/Experience";
 
 
@@ -11,6 +12,7 @@ export default function ExperiencePage() {
         <ListExperience />
         <InputContent />
       </ExperienceProvider>
+      <ScrollAnimatedCleanup />
     </Fragment>
   )
 }

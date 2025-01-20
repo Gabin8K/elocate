@@ -1,13 +1,13 @@
-import { FC, memo, useCallback } from "react";
-import { StyleSheet, View, } from "react-native";
-import { component, reusableStyle } from "@/theme/reusables";
-import { spacing } from "@/theme/spacing";
 import { useTheme } from "@/hooks";
 import { useMap } from "../MapContext";
 import { Text } from "@/components/ui";
-import { Portal } from "@/providers/PortalProvider";
+import { spacing } from "@/theme/spacing";
+import { FC, memo, useCallback } from "react";
+import { StyleSheet, View, } from "react-native";
 import { Button } from "@/components/ui/buttons";
 import { PointRipple, ripples } from "../marker";
+import { Portal } from "@/providers/PortalProvider";
+import { component, reusableStyle } from "@/theme/reusables";
 import Animated, { Easing, SlideInDown, SlideOutDown } from "react-native-reanimated";
 
 
@@ -98,13 +98,13 @@ const styles = StyleSheet.create({
   container: {
     zIndex: 2,
     bottom: spacing.l,
-    alignSelf: 'center',
-    position: 'absolute',
-    paddingVertical: spacing.m,
-    paddingHorizontal: spacing.m,
-    borderRadius: spacing.s,
     rowGap: spacing.m,
     ...component.shadow,
+    alignSelf: 'center',
+    position: 'absolute',
+    borderRadius: spacing.s,
+    paddingVertical: spacing.m,
+    paddingHorizontal: spacing.m,
   },
   ripples: {
     ...reusableStyle.row,

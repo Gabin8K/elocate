@@ -4,12 +4,13 @@ import { useDrawer } from "../drawer";
 import { ButtonTab } from "./ButtonTab";
 import { palette } from "@/theme/palette";
 import { spacing } from "@/theme/spacing";
+import { StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet, View } from "react-native";
 import { reusableStyle } from "@/theme/reusables";
-import { FC, memo, useCallback, useMemo } from "react";
+import { FC, memo, useCallback, useEffect, useMemo } from "react";
+import { useScrollAnimated } from "@/providers/ScrollAnimatedProvider";
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs/src/types';
-import Animated, { useAnimatedStyle, withSpring } from "react-native-reanimated";
+import Animated, { useAnimatedStyle, withSpring, withTiming } from "react-native-reanimated";
 
 
 type Route = {
@@ -42,6 +43,7 @@ const routes: Route[] = [
 
 
 const width = spacing.width;
+const height = spacing.height * .1;
 
 
 
@@ -49,6 +51,7 @@ export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout(
 
   const { colors } = useTheme();
   const { open, setOpen } = useDrawer();
+  const { direction } = useScrollAnimated();
 
   const tabs = useMemo<Route[]>(() => {
     return routes.map((route, index) => {
@@ -76,6 +79,7 @@ export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout(
   }, [state, open])
 
 
+
   const onPress = useCallback((route: Route) => () => {
     setOpen(route.name === 'menu')
     if (route.name === 'menu') return;
@@ -89,18 +93,45 @@ export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout(
   }, [navigation])
 
 
+
+  const uasLayout = useAnimatedStyle(() => {
+    const translateY = withTiming(direction.value === 'up' ? 0 : height);
+    return {
+      transform: [{ translateY }],
+      ...state.index === 1 ? {
+        bottom: 0,
+        position: 'absolute',
+      }: {
+        position: 'relative',
+        bottom: undefined,
+      }
+    }
+  }, [state.index])
+
+
+
   const uas = useAnimatedStyle(() => {
     const x = width / routes.length;
     const index = !open ? state.index : 2;
     return {
       left: withSpring((index + 1) * x - x / 2 - 6)
     }
-  }, [state.index, open])
+  }, [state.index, open]);
+
+
+
+  useEffect(() => {
+    if (state.index !== 1) {
+      direction.value = 'up';
+    }
+  }, [state.index])
+
 
 
   return (
-    <View
+    <Animated.View
       style={[
+        uasLayout,
         styles.container,
         {
           backgroundColor: colors.card,
@@ -128,7 +159,7 @@ export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout(
           />
         </ButtonTab>
       ))}
-    </View>
+    </Animated.View>
   )
 })
 
@@ -137,8 +168,8 @@ export const TabsBarLayout: FC<BottomTabBarProps> = memo(function TabsBarLayout(
 const styles = StyleSheet.create({
   container: {
     width,
-    paddingTop: spacing.m,
     ...reusableStyle.row,
+    paddingTop: spacing.m,
   },
   indicator: {
     zIndex: 1,

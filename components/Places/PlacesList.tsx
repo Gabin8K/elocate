@@ -2,11 +2,11 @@ import { Place } from "@/services/types";
 import { FC, memo, useMemo } from "react";
 import { spacing } from "@/theme/spacing";
 import { PlaceCard } from "./card/PlaceCard";
+import Animated from "react-native-reanimated";
 import { usePlacesList } from "./usePlacesList";
 import { ListRenderItemInfo, StyleSheet } from "react-native";
-import { useScrollAnimated } from "@/providers/ScrollAnimatedProvider";
-import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useScrollAnimated } from "@/providers/ScrollAnimatedProvider";
 
 
 export interface PlacesListProps {
@@ -20,11 +20,7 @@ export const PlacesList: FC<PlacesListProps> = memo(function PlacesList() {
   const insets = useSafeAreaInsets();
   const { places } = usePlacesList();
 
-  const { offsetY } = useScrollAnimated();
-
-  const scroll = useAnimatedScrollHandler((e) => {
-    offsetY.value = e.contentOffset.y;
-  });
+  const { onScroll } = useScrollAnimated();
 
   const paddingTop = insets.top + 150;
 
@@ -41,7 +37,7 @@ export const PlacesList: FC<PlacesListProps> = memo(function PlacesList() {
   return (
     <Animated.FlatList
       data={places}
-      onScroll={scroll}
+      onScroll={onScroll}
       contentContainerStyle={[
         styles.contentContainerStyle,
         { paddingTop }

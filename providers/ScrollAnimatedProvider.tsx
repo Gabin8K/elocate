@@ -1,5 +1,5 @@
 import { SharedValue, useAnimatedScrollHandler, useSharedValue } from "react-native-reanimated";
-import { createContext, FunctionComponent, PropsWithChildren, useContext } from "react";
+import { createContext, FC, FunctionComponent, PropsWithChildren, useContext, useEffect } from "react";
 
 type Direction = 'up' | 'down';
 
@@ -55,10 +55,33 @@ export const useScrollAnimated = () => {
 
 
 
+
+export const ScrollAnimatedCleanup: FC = () => {
+  const context = useContext(ScrollAnimatedContext);
+
+  if (!context) {
+    throw new Error('useScrollAnimatedCleanup must be used within an ScrollAnimatedProvider')
+  }
+
+  useEffect(() => {
+    return () => {
+      context.offsetY.value = 0;
+      context.direction.value = 'up';
+    }
+  }, []);
+
+  return null;
+}
+
+
+
+
+
+
 const ScrollAnimatedProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
 
   const offsetY = useSharedValue(0);
-  const direction = useSharedValue<Direction>('down');
+  const direction = useSharedValue<Direction>('up');
 
   return (
     <ScrollAnimatedContext.Provider
