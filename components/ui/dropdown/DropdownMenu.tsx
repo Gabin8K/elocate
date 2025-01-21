@@ -1,9 +1,9 @@
-import { FC, memo, useCallback } from "react";
 import { Text } from "../Text";
 import { useTheme } from "@/hooks";
 import { spacing } from "@/theme/spacing";
 import { Ionicons } from "@expo/vector-icons";
 import { DropdownList } from "./DropdownList";
+import { FC, memo, useCallback } from "react";
 import { reusableStyle } from "@/theme/reusables";
 import { Pressable } from "react-native-gesture-handler";
 import { LayoutChangeEvent, StyleSheet } from "react-native";
@@ -92,11 +92,18 @@ export const DropdownMenuContent: FC<DropdownMenuProps> = memo(function Dropdown
           variant={'body2'}
           color={dropdown.item ? 'text' : 'gray3'}
           {...placeholderStyle}
+          style={[
+            styles.text,
+            placeholderStyle?.style
+          ]}
         >
           {dropdown.item ? dropdown.item.label : placeholder}
         </Text>
         <Animated.View
-          style={[uasRotate]}
+          style={[
+            uasRotate,
+            styles.icon,
+          ]}
         >
           <Ionicons
             name={'chevron-down'}
@@ -115,9 +122,15 @@ const styles = StyleSheet.create({
   container: {
     borderWidth: 1,
     padding: spacing.s,
-    paddingVertical: spacing.m,
     ...reusableStyle.row,
     borderRadius: spacing.s,
+    paddingVertical: spacing.m,
     justifyContent: 'space-between',
+  },
+  text: {
+    flex: 1,
+  },
+  icon: {
+    maxWidth: 16,
   },
 })
