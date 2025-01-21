@@ -1,14 +1,23 @@
+import { Place } from "../../MapContext";
 import { FC, Fragment, memo } from "react";
-import { Text, TextInput } from "@/components/ui";
-import { StyleSheet, View } from "react-native";
 import { spacing } from "@/theme/spacing";
-import { DropdownMenu } from "@/components/ui/dropdown";
-import { Button } from "@/components/ui/buttons";
 import { ImageInput } from "./ImageInput";
+import { StyleSheet, View } from "react-native";
+import { Button } from "@/components/ui/buttons";
+import { Text, TextInput } from "@/components/ui";
+import { DropdownMenu } from "@/components/ui/dropdown";
+import { useAddressFromCoords } from "@/services/hooks";
 
 
+type FormContentProps = {
+  newPlace: Place;
+}
 
-export const FormContent: FC = memo(function FormContent() {
+export const FormContent: FC<FormContentProps> = memo(function FormContent(props) {
+  const { newPlace } = props;
+
+  const { data } = useAddressFromCoords(newPlace.coordinate);
+
 
   return (
     <Fragment>
@@ -23,13 +32,7 @@ export const FormContent: FC = memo(function FormContent() {
       >
         <DropdownMenu
           placeholder={'Selectionner l\'adresse'}
-          dropdownItems={[
-            { label: 'item 1', value: 'item 1' },
-            { label: 'item 2', value: 'item 2' },
-            { label: 'item 3', value: 'item 3' },
-            { label: 'item 4', value: 'item 4' },
-            { label: 'item 5', value: 'item 5' },
-          ]}
+          dropdownItems={data}
         />
         <TextInput
           multiline

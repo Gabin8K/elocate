@@ -1,11 +1,16 @@
 import { FC, memo } from "react";
-import { useMap } from "../../MapContext";
+import { Place, useMap } from "../../MapContext";
 import { ModalSheet } from "@/components/ui/modal";
 import { useAuth } from "@/providers/AuthProvider";
 import { StyleSheet, View } from "react-native";
 import { spacing } from "@/theme/spacing";
 import { LoginContent } from "./LoginContent";
 import { FormContent } from "./FormContent";
+
+
+type ContentProps = {
+  newPlace?: Place;
+}
 
 
 
@@ -17,7 +22,9 @@ export const RequestPlaceModal: FC = memo(function RequestPlaceModal() {
       open={map.openModal}
       onClose={map.closeModal}
     >
-      <RequestPlaceModalContent />
+      <RequestPlaceModalContent
+        newPlace={map.newPlace}
+      />
     </ModalSheet>
   );
 });
@@ -25,8 +32,11 @@ export const RequestPlaceModal: FC = memo(function RequestPlaceModal() {
 
 
 
-const RequestPlaceModalContent: FC = memo(function RequestPlaceModalContent() {
+const RequestPlaceModalContent: FC<ContentProps> = memo(function RequestPlaceModalContent(props) {
+  const { newPlace } = props;
   const { auth } = useAuth();
+
+  if(!newPlace) return null;
 
   return (
     <View
@@ -34,7 +44,9 @@ const RequestPlaceModalContent: FC = memo(function RequestPlaceModalContent() {
     >
       {!auth ?
         <LoginContent /> :
-        <FormContent />
+        <FormContent
+          newPlace={newPlace}
+        />
       }
     </View>
   );

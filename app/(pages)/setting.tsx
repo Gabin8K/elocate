@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { MapKeyRefresh } from "@/providers/MapKeyProvider";
 import { HeaderSetting, SettingsList } from "@/components/Settings";
 import { DropdownMenuPortalProvider } from "@/components/ui/dropdown";
 
@@ -10,6 +11,7 @@ export default function SettingPage() {
       <DropdownMenuPortalProvider>
         <SettingsList />
       </DropdownMenuPortalProvider>
+      <MapKeyRefresh />
     </Fragment>
   )
 }
