@@ -1,3 +1,4 @@
+import { Coordinate } from "@/services/types";
 import MapView, { Camera } from "react-native-maps";
 import { createContext, FunctionComponent, PropsWithChildren, useCallback, useContext, useRef, useState } from "react";
 
@@ -6,10 +7,6 @@ export type Point = {
   y: number;
 }
 
-export type Coordinate = {
-  longitude: number;
-  latitude: number;
-}
 
 export type Place = {
   open?: boolean;

@@ -1,9 +1,9 @@
 import { FC, memo } from "react";
-import { Coordinate } from "../MapContext";
+import { StyleSheet } from "react-native";
+import { Coordinate } from "@/services/types";
+import { reusableStyle } from "@/theme/reusables";
 import { MarkerAnimated } from "react-native-maps";
 import { PointRipple, ripples } from "./PointRipple";
-import { StyleSheet } from "react-native";
-import { reusableStyle } from "@/theme/reusables";
 
 
 type MarkerPlaceProps = {

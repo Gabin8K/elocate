@@ -31,3 +31,8 @@ export interface File {
   name: string;
   type: string;
 }
+
+export type Coordinate = {
+  longitude: number;
+  latitude: number;
+}
