@@ -8,13 +8,14 @@ import { Camera, MarkerAnimated } from "react-native-maps";
 import Animated, { useAnimatedStyle, useDerivedValue, withTiming } from "react-native-reanimated";
 
 type MarkerCurrentPositionProps = {
+  loading?: boolean;
   currentCamera?: Camera;
   coordinate?: Coordinate;
 }
 
 
 export const MarkerCurrentPosition: FC<MarkerCurrentPositionProps> = memo(function MarkerCurrentPosition(props) {
-  const { coordinate, currentCamera } = props;
+  const { coordinate, currentCamera, loading } = props;
 
   const rotate3d = useDerivedValue(() => {
     const pith = currentCamera?.pitch === undefined ? 0 : currentCamera.pitch;
