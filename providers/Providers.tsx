@@ -9,6 +9,7 @@ import { Toaster } from '@/components/ui/Toast';
 import PortalProvider from './PortalProvider';
 import ScrollAnimatedProvider from './ScrollAnimatedProvider';
 import { reusableStyle } from '@/theme/reusables';
+import MapKeyProvider from './MapKeyProvider';
 import 'react-native-reanimated';
 import '@/locale/i18n';
 
@@ -25,7 +26,9 @@ const Providers: FunctionComponent<PropsWithChildren> = ({ children }) => {
               <ThemeProvider>
                 <ToastProvider>
                   <PortalProvider>
-                    {children}
+                    <MapKeyProvider>
+                      {children}
+                    </MapKeyProvider>
                     <Toaster />
                   </PortalProvider>
                 </ToastProvider>

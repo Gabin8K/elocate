@@ -8,6 +8,7 @@ import { FC, Fragment, memo, useCallback } from "react";
 import { UserLocationButton } from "./UserLocationButton";
 import { MarkerCurrentPosition, MarkerPlace } from "./marker";
 import MapView, { Camera, LongPressEvent, PROVIDER_GOOGLE, Region } from "react-native-maps";
+import { useMapKey } from "@/providers/MapKeyProvider";
 
 
 
@@ -15,6 +16,7 @@ import MapView, { Camera, LongPressEvent, PROVIDER_GOOGLE, Region } from "react-
 export const Map: FC = memo(function Map() {
 
   const map = useMap();
+  const { key } = useMapKey();
   const { mode } = useTheme();
   const location = useLocation();
 
@@ -66,6 +68,7 @@ export const Map: FC = memo(function Map() {
   return (
     <Fragment>
       <MapView
+        key={key}
         showsBuildings
         ref={map.mapRef}
         minZoomLevel={14}
