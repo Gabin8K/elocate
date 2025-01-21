@@ -1,4 +1,4 @@
 export default {
-  app: "App (en)",
-  connection_error: "Connection error",
+  "app": "App (en)",
+  "connection-error": "Connection error",
 }

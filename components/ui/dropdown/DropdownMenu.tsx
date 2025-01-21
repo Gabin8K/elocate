@@ -92,10 +92,6 @@ export const DropdownMenuContent: FC<DropdownMenuProps> = memo(function Dropdown
           variant={'body2'}
           color={dropdown.item ? 'text' : 'gray3'}
           {...placeholderStyle}
-          style={[
-            styles.text,
-            placeholderStyle?.style
-          ]}
         >
           {dropdown.item ? dropdown.item.label : placeholder}
         </Text>
@@ -123,6 +119,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: spacing.s,
     ...reusableStyle.row,
+    columnGap: spacing.s,
     borderRadius: spacing.s,
     paddingVertical: spacing.m,
     justifyContent: 'space-between',
