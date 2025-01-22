@@ -27,7 +27,7 @@ export function useSettingList() {
         value: setting.locale === 'en' ? t('english') : t('french'),
         action: {
           dropdownMenuPortal: {
-            placeholder: display(t('setting-screen-language-placeholder'), 20),
+            placeholder: display(t('setting-screen-language-placeholder'), 17),
             onItemPress: (item) => {
               setting.setLocale(item.value);
             },
