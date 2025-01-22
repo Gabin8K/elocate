@@ -1,13 +1,13 @@
-import React, { FC, memo, useCallback } from "react";
-import { StyleSheet, View } from "react-native";
-import { NativeStackHeaderProps } from '@react-navigation/native-stack';
-import { component, reusableStyle } from "@/theme/reusables";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { IconButton } from "@/components/ui/buttons";
+import { useTheme } from "@/hooks";
 import { Text } from "@/components/ui";
 import { spacing } from "@/theme/spacing";
-import { useTheme } from "@/hooks";
 import { useHeader } from "./HeaderContext";
+import { StyleSheet, View } from "react-native";
+import React, { FC, memo, useCallback } from "react";
+import { IconButton } from "@/components/ui/buttons";
+import { component, reusableStyle } from "@/theme/reusables";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 
 
 
@@ -57,14 +57,14 @@ export const HeaderLayout: FC<NativeStackHeaderProps> = memo(function HeaderLayo
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    position:'absolute',
-    columnGap: spacing.l,
-    paddingBottom: spacing.s,
-    ...reusableStyle.row,
     ...component.shadow,
+    ...reusableStyle.row,
+    columnGap: spacing.l,
+    position: 'absolute',
+    paddingBottom: spacing.s,
   },
   button: {
-    marginTop:-10,
+    marginTop: -10,
     alignSelf: 'flex-start',
   }
 })

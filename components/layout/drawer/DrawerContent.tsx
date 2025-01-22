@@ -21,12 +21,12 @@ export const DrawerContent: FC = memo(function DrawerLayout() {
 
   const buttons: DrawerButtonProps[] = [
     {
-      children: "Experiences",
+      children: t('drawer-experience'),
       href: '/experience',
       icon: 'book-outline',
     },
     {
-      children: "Settings",
+      children: t('drawer-setting'),
       href: '/setting',
       icon: 'settings-outline',
     }
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   button: {
     width: '90%',
     bottom: spacing.m,
-    position: 'absolute',
     alignSelf: 'center',
+    position: 'absolute',
   }
 })

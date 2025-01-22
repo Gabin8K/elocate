@@ -1,15 +1,15 @@
-import { FC, Fragment, memo, useCallback, useEffect, useMemo } from "react";
-import Animated, { Easing, interpolate, interpolateColor, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
-import { Portal } from "@/providers/PortalProvider";
-import { StyleSheet, Pressable } from "react-native";
-import { spacing } from "@/theme/spacing";
 import { useTheme } from "@/hooks";
-import { component } from "@/theme/reusables";
-import { useDrawer } from "./DrawerProvider";
+import { spacing } from "@/theme/spacing";
 import { palette } from "@/theme/palette";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { useDrawer } from "./DrawerProvider";
+import { component } from "@/theme/reusables";
 import { DrawerContent } from "./DrawerContent";
 import useBackhandler from "@/hooks/useBackhandler";
+import { Portal } from "@/providers/PortalProvider";
+import { StyleSheet, Pressable } from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { FC, Fragment, memo, useCallback, useEffect, useMemo } from "react";
+import Animated, { Easing, interpolate, interpolateColor, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 
 
 type ContentProps = {
