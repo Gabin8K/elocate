@@ -21,7 +21,6 @@ type FormContentAnimatedProps = {
 export const FormContent: FC = memo(function FormContent() {
 
   const experience = useExperiences();
-
   const type = experience.showReply ? 'reply' : experience.showExperience ? 'experience' : 'none';
 
   useGlobalBackhandler(() => {
