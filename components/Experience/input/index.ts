@@ -1,1 +1,1 @@
-export * from './InputContent';
+export * from './FormContent';
