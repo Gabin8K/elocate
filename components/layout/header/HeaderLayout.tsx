@@ -20,6 +20,8 @@ export const HeaderLayout: FC<NativeStackHeaderProps> = memo(function HeaderLayo
   const paddingTop = insets.top + 20;
 
   const onPress = useCallback(() => {
+    const backHandler = header.canBackHandler.current();
+    if (backHandler) return;
     navigation.goBack();
   }, [navigation]);
 

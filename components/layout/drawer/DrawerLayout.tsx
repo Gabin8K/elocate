@@ -1,10 +1,8 @@
-import { useTheme } from "@/hooks";
 import { spacing } from "@/theme/spacing";
-import { palette } from "@/theme/palette";
 import { useDrawer } from "./DrawerProvider";
 import { component } from "@/theme/reusables";
 import { DrawerContent } from "./DrawerContent";
-import useBackhandler from "@/hooks/useBackhandler";
+import { useTheme, useBackhandler } from "@/hooks";
 import { Portal } from "@/providers/PortalProvider";
 import { StyleSheet, Pressable } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -53,7 +51,7 @@ export const DrawerLayout: FC = memo(function DrawerLayout() {
 export const DrawerLayoutContent: FC<ContentProps> = memo(function DrawerLayoutContent(props) {
   const { setOpen } = props;
 
-  const { colors } = useTheme();
+  const { colors, mode } = useTheme();
 
   const translateX = useSharedValue(width + right);
 
@@ -146,6 +144,7 @@ export const DrawerLayoutContent: FC<ContentProps> = memo(function DrawerLayoutC
             style={[
               uasSwip,
               styles.swip,
+              { backgroundColor: mode === 'light' ? colors.gray2 : colors.gray4 }
             ]}
           />
           <DrawerContent />
@@ -182,6 +181,5 @@ const styles = StyleSheet.create({
     height: 30,
     width: 4,
     borderRadius: 4,
-    backgroundColor: palette.light.gray2
   }
 })

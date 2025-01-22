@@ -1,12 +1,10 @@
-import { useTheme } from '@/hooks';
-import useBackhandler from '@/hooks/useBackhandler';
-import { Portal } from '@/providers/PortalProvider';
-import { palette } from '@/theme/palette';
-import { component } from '@/theme/reusables';
 import { spacing } from '@/theme/spacing';
-import React, { FC, PropsWithChildren, memo, useCallback, useEffect, useMemo } from 'react';
-import { Pressable, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { component } from '@/theme/reusables';
+import { useTheme, useBackhandler } from '@/hooks';
+import { Portal } from '@/providers/PortalProvider';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { Pressable, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import React, { FC, PropsWithChildren, memo, useCallback, useEffect, useMemo } from 'react';
 import Animated, { Easing, interpolate, LinearTransition, ReduceMotion, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 
@@ -64,7 +62,7 @@ const RenderModalSheet: FC<ModalSheetProps> = memo(function RenderModalSheet(pro
     animationDuration: rest.config?.animationDuration ?? defaultConfig.animationDuration
   }
 
-  const { colors } = useTheme();
+  const { colors, mode } = useTheme();
 
   const translateY = useSharedValue(height);
 
@@ -174,6 +172,7 @@ const RenderModalSheet: FC<ModalSheetProps> = memo(function RenderModalSheet(pro
             style={[
               uasSwip,
               styles.swip,
+              { backgroundColor: mode === 'light' ? colors.gray2 : colors.gray4 }
             ]}
           />
           {children}
@@ -209,7 +208,6 @@ const styles = StyleSheet.create({
     width: 30,
     height: 4,
     borderRadius: 4,
-    backgroundColor: palette.light.gray2,
   },
   pressable: {
     ...StyleSheet.absoluteFillObject,

@@ -3,10 +3,9 @@ import { FC, memo, useState } from "react";
 import { Text, TextInput } from "../../ui";
 import { IconButton } from "../../ui/buttons";
 import { StyleSheet, View } from "react-native";
-import useBackhandler from "@/hooks/useBackhandler";
 import { useExperiences } from "../ExperienceContext";
-import { useKeyboard, useLocale, useTheme } from "@/hooks";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useKeyboard, useLocale, useTheme, useGlobalBackhandler } from "@/hooks";
 import Animated, { useAnimatedStyle, withTiming, ZoomIn, ZoomOut } from "react-native-reanimated";
 
 
@@ -48,7 +47,7 @@ export const InputContent: FC = memo(function InputContent() {
   }, [keyboard, experience]);
 
 
-  useBackhandler(() => {
+  useGlobalBackhandler(() => {
     if (experience.showReply) {
       experience.setShowReply(false);
       return true;
@@ -73,17 +72,17 @@ export const InputContent: FC = memo(function InputContent() {
         },
       ]}
     >
-      {type === 'reply' ?
-        <Text>
-          {t('experience-input-reply-title')}
-          <Text
-            variant={'body2_m'}
-          >
-            {' '}Gabin
-          </Text>
-        </Text> :
-        null
-      }
+        {type === 'reply' ?
+          <Text>
+            {t('experience-input-reply-title')}
+            <Text
+              variant={'body2_m'}
+            >
+              {' '}Gabin
+            </Text>
+          </Text> :
+          null
+        }
       <View
         style={styles.content}
       >
@@ -129,6 +128,9 @@ const styles = StyleSheet.create({
   },
   content: {
     flexDirection: 'row',
+  },
+  reply: {
+
   },
   input: {
     flex: 1,
