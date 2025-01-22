@@ -1,16 +1,18 @@
-import { useSetting } from "@/hooks";
 import { useMemo } from "react";
 import { CardSettingProps } from "./card";
+import { display } from "@/utils/formater";
+import { useLocale, useSetting } from "@/hooks";
 
 
 export function useSettingList() {
+  const { t } = useLocale();
   const setting = useSetting();
 
   const settings = useMemo<CardSettingProps[]>(() => {
     return [
       {
-        title: 'Theme',
-        value: 'Dark',
+        title: t('setting-screen-theme-title'),
+        value: t('setting-screen-theme-dark'),
         action: {
           switchInput: {
             checked: setting.mode === 'dark',
@@ -21,21 +23,21 @@ export function useSettingList() {
         }
       },
       {
-        title: 'Language',
-        value: setting.locale === 'en' ? 'English' : 'Français',
+        title: t('setting-screen-language-title'),
+        value: setting.locale === 'en' ? t('english') : t('french'),
         action: {
           dropdownMenuPortal: {
-            placeholder: 'Select language',
+            placeholder: display(t('setting-screen-language-placeholder'), 20),
             onItemPress: (item) => {
               setting.setLocale(item.value);
             },
             dropdownItems: [
               {
-                label: 'English',
+                label: t('english'),
                 value: 'en',
               },
               {
-                label: 'Français',
+                label: t('french'),
                 value: 'fr',
               }
             ],
@@ -43,11 +45,11 @@ export function useSettingList() {
         }
       }
     ]
-  }, [setting]);
+  }, [setting, t]);
 
 
   return {
     settings,
   }
-  
+
 }

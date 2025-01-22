@@ -3,9 +3,9 @@ import { spacing } from "@/theme/spacing";
 import { display } from "@/utils/formater";
 import { FC, memo, useCallback } from "react";
 import { Image, StyleSheet, View } from "react-native";
-import { useMediaFile, useTheme, useToast } from "@/hooks";
 import { IconButton } from "../../../ui/buttons/IconButton";
 import { component, reusableStyle } from "@/theme/reusables";
+import { useLocale, useMediaFile, useTheme, useToast } from "@/hooks";
 import Animated, { LinearTransition, useAnimatedStyle, useSharedValue, withTiming, ZoomIn, ZoomOut } from "react-native-reanimated";
 
 
@@ -16,6 +16,7 @@ interface ImageInputProps { };
 export const ImageInput: FC<ImageInputProps> = memo(function ImageInput(props) {
 
   const toast = useToast();
+  const { t } = useLocale();
   const media = useMediaFile();
   const { colors } = useTheme();
   const active = useSharedValue(0);
@@ -53,7 +54,7 @@ export const ImageInput: FC<ImageInputProps> = memo(function ImageInput(props) {
       >
         {media.file ?
           display(media.file.name, 16) :
-          'Ajouter une image'
+          t('request-place-modal-form-file')
         }
       </Text>
       <View

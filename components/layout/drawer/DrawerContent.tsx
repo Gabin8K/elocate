@@ -1,20 +1,21 @@
 import { Text } from "@/components/ui";
-import { reusableStyle } from "@/theme/reusables";
-import { FC, Fragment, memo, useCallback } from "react";
-import { StyleSheet, View } from "react-native";
-import { palette } from "@/theme/palette";
-import { DrawerButton, DrawerButtonProps, DrawerUser } from "./DrawerButton";
-import { spacing } from "@/theme/spacing";
-import { Ionicons } from "@expo/vector-icons";
-import { useAuth } from "@/providers/AuthProvider";
-import { Button } from "@/components/ui/buttons";
 import { authService } from "@/services";
-import { useTheme } from "@/hooks";
+import { spacing } from "@/theme/spacing";
+import { palette } from "@/theme/palette";
+import { useLocale, useTheme } from "@/hooks";
+import { Ionicons } from "@expo/vector-icons";
+import { StyleSheet, View } from "react-native";
+import { Button } from "@/components/ui/buttons";
+import { reusableStyle } from "@/theme/reusables";
+import { useAuth } from "@/providers/AuthProvider";
+import { FC, Fragment, memo, useCallback } from "react";
+import { DrawerButton, DrawerButtonProps, DrawerUser } from "./DrawerButton";
 
 
 
 
 export const DrawerContent: FC = memo(function DrawerLayout() {
+  const { t } = useLocale();
   const { auth } = useAuth();
   const { mode } = useTheme();
 
@@ -89,7 +90,7 @@ export const DrawerContent: FC = memo(function DrawerLayout() {
             color: mode === 'light' ? 'gray1' : 'background'
           }}
         >
-          Se Deconnecter
+          {t('drawer-user-logout')}
         </Button> :
         null
       }
@@ -115,8 +116,8 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '90%',
-    position: 'absolute',
     bottom: spacing.m,
+    position: 'absolute',
     alignSelf: 'center',
   }
 })

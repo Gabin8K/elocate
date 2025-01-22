@@ -1,7 +1,7 @@
 import { Text } from "../ui";
 import { FC, memo } from "react";
-import { useTheme } from "@/hooks";
 import { spacing } from "@/theme/spacing";
+import { useLocale, useTheme } from "@/hooks";
 import { Ionicons } from "@expo/vector-icons";
 import { HeaderChild } from "../layout/header";
 import { StyleSheet, View } from "react-native";
@@ -18,6 +18,8 @@ export const HeaderSetting: FC = memo(function HeaderSetting() {
 
 
 const HeaderSettingContent: FC = memo(function HeaderSettingContent() {
+
+  const { t } = useLocale();
   const { colors } = useTheme();
 
   return (
@@ -33,7 +35,7 @@ const HeaderSettingContent: FC = memo(function HeaderSettingContent() {
         color={'gray4'}
         style={styles.text}
       >
-        Configurez vos préférences d'utilisation de l'application.
+        {t('setting-screen-subtitle')}
       </Text>
     </View>
   )

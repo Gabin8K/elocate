@@ -1,8 +1,10 @@
-import { HeaderLayout, HeaderProvider } from "@/components/layout/header";
-import { useTheme } from "@/hooks";
 import { Stack } from "expo-router";
+import { useLocale, useTheme } from "@/hooks";
+import { HeaderLayout, HeaderProvider } from "@/components/layout/header";
 
 export default function PagesLayout() {
+
+  const { t } = useLocale();
   const { colors } = useTheme();
 
   return (
@@ -18,13 +20,13 @@ export default function PagesLayout() {
         <Stack.Screen
           name={'experience'}
           options={{
-            title: 'Experience'
+            title: t('experience-screen-title')
           }}
         />
         <Stack.Screen
           name={'setting'}
           options={{
-            title: 'Setting'
+            title: t('setting-screen-title')
           }}
         />
       </Stack>

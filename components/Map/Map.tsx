@@ -4,11 +4,11 @@ import { mapStyles } from "./map.styles";
 import { LoadingMap } from "./LoadingMap";
 import { useLocation } from "@/hooks/useLocation";
 import { reusableStyle } from "@/theme/reusables";
+import { useMapKey } from "@/providers/MapKeyProvider";
 import { FC, Fragment, memo, useCallback } from "react";
 import { UserLocationButton } from "./UserLocationButton";
 import { MarkerCurrentPosition, MarkerPlace } from "./marker";
 import MapView, { Camera, LongPressEvent, PROVIDER_GOOGLE, Region } from "react-native-maps";
-import { useMapKey } from "@/providers/MapKeyProvider";
 
 
 

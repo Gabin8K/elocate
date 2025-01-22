@@ -1,30 +1,34 @@
 import { Tabs } from "expo-router";
-import { useTheme } from "@/hooks";
-import React, { Fragment } from "react";
+import { useLocale, useTheme } from "@/hooks";
 import { NavigationBar } from "@/components/ui";
+import React, { Fragment, useMemo } from "react";
 import { TabsBarLayout } from "@/components/layout/tabs";
 import { DrawerLayout, DrawerProvider } from "@/components/layout/drawer";
 import { HeaderLayout, HeaderProvider } from "@/components/layout/header";
 
 
-const tabs: React.ComponentProps<typeof Tabs.Screen>[] = [
-  {
-    name: 'index',
-    options: {
-      headerShown: false,
-    }
-  },
-  {
-    name: 'places',
-    options: {
-      title: 'Places',
-    }
-  },
-];
-
 
 export default function TabsLayout() {
+
+  const { t } = useLocale();
   const { colors } = useTheme();
+
+  const tabs = useMemo<React.ComponentProps<typeof Tabs.Screen>[]>(() => [
+    {
+      name: 'index',
+      options: {
+        headerShown: false,
+      }
+    },
+    {
+      name: 'places',
+      options: {
+        title: t('places-screen-title')
+      }
+    },
+  ], [t]);
+
+
 
   return (
     <Fragment>

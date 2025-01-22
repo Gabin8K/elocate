@@ -1,12 +1,12 @@
-import { FC, Fragment, memo, useCallback, useState } from "react";
 import { Text } from "@/components/ui";
+import { common } from "@/theme/palette";
 import { StyleSheet } from "react-native";
 import { spacing } from "@/theme/spacing";
-import { common } from "@/theme/palette";
-import { Button } from "@/components/ui/buttons";
 import { Ionicons } from "@expo/vector-icons";
 import { authService } from "@/services/auth";
-import { useTheme, useToast } from "@/hooks";
+import { Button } from "@/components/ui/buttons";
+import { useLocale, useTheme, useToast } from "@/hooks";
+import { FC, Fragment, memo, useCallback, useState } from "react";
 
 
 
@@ -14,6 +14,7 @@ import { useTheme, useToast } from "@/hooks";
 export const LoginContent: FC = memo(function LoginContent() {
 
   const toast = useToast();
+  const { t } = useLocale();
   const { colors } = useTheme();
   const [loading, setLoading] = useState(false);
 
@@ -31,7 +32,7 @@ export const LoginContent: FC = memo(function LoginContent() {
         variant={'body1_m'}
         style={{ textAlign: 'center' }}
       >
-        Compte requis
+        {t('login-content-required-account')}
       </Text>
       <Text
         style={[
@@ -39,7 +40,7 @@ export const LoginContent: FC = memo(function LoginContent() {
           { borderColor: colors.divider }
         ]}
       >
-        Vous devez vous connecter pour ajouter un lieu
+        {t('login-content-login-to-add-place')}
       </Text>
       <Button
         onPress={onLogin}
@@ -52,7 +53,7 @@ export const LoginContent: FC = memo(function LoginContent() {
           />
         }
       >
-        Se connecter avec
+        {t('login-content-login-with')}
       </Button>
     </Fragment>
   );

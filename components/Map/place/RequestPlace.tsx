@@ -1,7 +1,7 @@
-import { useTheme } from "@/hooks";
 import { useMap } from "../MapContext";
 import { Text } from "@/components/ui";
 import { spacing } from "@/theme/spacing";
+import { useLocale, useTheme } from "@/hooks";
 import { FC, memo, useCallback } from "react";
 import { StyleSheet, View, } from "react-native";
 import { Button } from "@/components/ui/buttons";
@@ -15,6 +15,8 @@ import Animated, { Easing, SlideInDown, SlideOutDown } from "react-native-reanim
 export const RequestPlace: FC = memo(function RequestPlace() {
 
   const map = useMap();
+  const { t } = useLocale();
+
   const { colors, mode } = useTheme();
 
   const onClose = useCallback(() => {
@@ -52,7 +54,7 @@ export const RequestPlace: FC = memo(function RequestPlace() {
             <Text
               variant={'body2_m'}
             >
-              Voulez-vous ajouter se lieu
+              {t('request-place-modal-title')}
             </Text>
             <View
               style={styles.ripples}
@@ -76,13 +78,13 @@ export const RequestPlace: FC = memo(function RequestPlace() {
                 color: mode === 'light' ? 'gray1' : 'background'
               }}
             >
-              Oui
+              {t('request-place-modal-btn-yes')}
             </Button>
             <Button
               variant={'error'}
               onPress={onClose}
             >
-              Non
+              {t('request-place-modal-btn-no')}
             </Button>
           </View>
         </Animated.View> :

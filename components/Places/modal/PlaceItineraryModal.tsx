@@ -1,13 +1,15 @@
-import { FC, memo, useCallback } from "react";
+import { useLocale } from "@/hooks";
+import { router } from "expo-router";
 import { Linking } from "react-native";
 import { usePlaces } from "../PlacesContext";
-import { router } from "expo-router";
+import { FC, memo, useCallback } from "react";
 import { PlacesModalContent } from "./PlacesModalContent";
 
 
 
 export const PlaceItineraryModal: FC = memo(function PlaceItineraryModal() {
 
+  const { t } = useLocale();
   const places = usePlaces();
 
   const open = !!places.itinerary;
@@ -32,10 +34,10 @@ export const PlaceItineraryModal: FC = memo(function PlaceItineraryModal() {
   return (
     <PlacesModalContent
       open={open}
-      title={'Selectioner l\'application'}
+      onHere={onHere}
       onClose={onClose}
       onGoogleMaps={onGoogleMaps}
-      onHere={onHere}
+      title={t('place-modal-itinerary-title')}
     />
   );
 });

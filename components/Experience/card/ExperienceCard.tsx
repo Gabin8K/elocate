@@ -1,6 +1,6 @@
-import { useTheme } from "@/hooks";
 import { Text } from "@/components/ui";
 import { spacing } from "@/theme/spacing";
+import { useLocale, useTheme } from "@/hooks";
 import { Button } from "@/components/ui/buttons";
 import { reusableStyle } from "@/theme/reusables";
 import { useExperiences } from "../ExperienceContext";
@@ -20,6 +20,7 @@ export type ExperienceCardProps = {
 export const ExperienceCard: FC<ExperienceCardProps> = memo(function ExperienceCard(props) {
   const { item, depth } = props;
 
+  const { t } = useLocale();
   const { colors } = useTheme();
   const { setShowReply } = useExperiences();
 
@@ -115,7 +116,7 @@ export const ExperienceCard: FC<ExperienceCardProps> = memo(function ExperienceC
                 variant: 'caption_m',
               }}
             >
-              See more (10)
+              {t('experience-card-seemore-btn')} (10)
             </Button>
             <Button
               onPress={onReply}
@@ -126,7 +127,7 @@ export const ExperienceCard: FC<ExperienceCardProps> = memo(function ExperienceC
                 variant: 'caption_m',
               }}
             >
-              Reply
+              {t('experience-card-reply-btn')}
             </Button>
           </View>
         </View>

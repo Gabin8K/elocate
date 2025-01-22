@@ -1,11 +1,12 @@
-import { FC, memo, useState } from "react";
-import { StyleSheet, View } from "react-native";
 import { Text } from "../ui";
+import { useLocale } from "@/hooks";
 import { Slider } from "../ui/slider";
 import { spacing } from "@/theme/spacing";
+import { FC, memo, useState } from "react";
 import { HeaderChild } from "../layout/header";
-import Animated, { interpolate, useAnimatedStyle } from "react-native-reanimated";
+import { StyleSheet, View } from "react-native";
 import { useScrollAnimated } from "@/providers/ScrollAnimatedProvider";
+import Animated, { interpolate, useAnimatedStyle } from "react-native-reanimated";
 
 
 export const HeaderPlace: FC = memo(function HeaderPlace() {
@@ -19,6 +20,8 @@ export const HeaderPlace: FC = memo(function HeaderPlace() {
 
 
 const HeaderPlaceContent: FC = memo(function HeaderPlaceContent() {
+
+  const { t } = useLocale();
 
   const { offsetY } = useScrollAnimated();
   const [value, setValue] = useState(0);
@@ -44,21 +47,21 @@ const HeaderPlaceContent: FC = memo(function HeaderPlaceContent() {
         <Text
           style={styles.text}
         >
-          Showing:{' '}
+          {t('slider-showing')}:{' '}
           <Text
             variant={'body2_b'}
             color={'primary'}
           >
-            0 locations
+            0 {t('slider-showing-end')}
           </Text>
         </Text>
         <Text>
-          Within:{' '}
+          {t('slider-within')}:{' '}
           <Text
             variant={'body2_b'}
             color={'primary'}
           >
-            {km} km
+            {km} {t('slider-km')}
           </Text>
         </Text>
       </View>
@@ -88,9 +91,10 @@ const styles = StyleSheet.create({
   },
   slider: {
     overflow: 'hidden',
-    justifyContent: 'center',
     paddingLeft: spacing.m,
     marginLeft: -spacing.m,
     paddingRight: spacing.m,
+    justifyContent: 'center',
+    width: spacing.width * .7,
   }
 })

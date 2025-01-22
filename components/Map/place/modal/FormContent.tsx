@@ -1,7 +1,8 @@
+import { useLocale } from "@/hooks";
 import { Place } from "../../MapContext";
-import { FC, Fragment, memo } from "react";
 import { spacing } from "@/theme/spacing";
 import { ImageInput } from "./ImageInput";
+import { FC, Fragment, memo } from "react";
 import { StyleSheet, View } from "react-native";
 import { Button } from "@/components/ui/buttons";
 import { Text, TextInput } from "@/components/ui";
@@ -16,6 +17,7 @@ type FormContentProps = {
 export const FormContent: FC<FormContentProps> = memo(function FormContent(props) {
   const { newPlace } = props;
 
+  const { t } = useLocale();
   const { data } = useAddressFromCoords(newPlace.coordinate);
 
 
@@ -25,18 +27,18 @@ export const FormContent: FC<FormContentProps> = memo(function FormContent(props
         variant={'body1_m'}
         style={{ textAlign: 'center' }}
       >
-        Ajouter un lieu
+        {t('request-place-modal-form-title')}
       </Text>
       <View
         style={styles.content}
       >
         <DropdownMenu
-          placeholder={'Selectionner l\'adresse'}
+          placeholder={t('request-place-modal-form-placeholder-address')}
           dropdownItems={data}
         />
         <TextInput
           multiline
-          placeholder={'Description...'}
+          placeholder={t('request-place-modal-form-placeholder-description')}
         />
         <ImageInput />
         <Button
@@ -44,7 +46,7 @@ export const FormContent: FC<FormContentProps> = memo(function FormContent(props
           style={styles.button}
           containerStyle={styles.buttonContainer}
         >
-          Soumettre
+          {t('request-place-modal-form-btn-submit')}
         </Button>
       </View>
     </Fragment>

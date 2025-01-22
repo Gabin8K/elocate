@@ -1,11 +1,12 @@
-import { TextInput } from "../../ui";
+import { typography } from "@/theme";
 import { spacing } from "@/theme/spacing";
-import { StyleSheet } from "react-native";
 import { FC, memo, useState } from "react";
+import { Text, TextInput } from "../../ui";
 import { IconButton } from "../../ui/buttons";
-import { useKeyboard, useTheme } from "@/hooks";
+import { StyleSheet, View } from "react-native";
 import useBackhandler from "@/hooks/useBackhandler";
 import { useExperiences } from "../ExperienceContext";
+import { useKeyboard, useLocale, useTheme } from "@/hooks";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, { useAnimatedStyle, withTiming, ZoomIn, ZoomOut } from "react-native-reanimated";
 
@@ -14,6 +15,7 @@ import Animated, { useAnimatedStyle, withTiming, ZoomIn, ZoomOut } from "react-n
 
 export const InputContent: FC = memo(function InputContent() {
 
+  const { t } = useLocale();
   const { colors } = useTheme();
   const keyboard = useKeyboard();
   const insets = useSafeAreaInsets();
@@ -22,6 +24,7 @@ export const InputContent: FC = memo(function InputContent() {
   const [text, setText] = useState('');
 
   const paddingBottom = insets.bottom + spacing.xs;
+  const type = experience.showReply ? 'reply' : 'experience';
 
   const uas = useAnimatedStyle(() => {
     let offsetY = spacing.height * .14;
@@ -31,16 +34,28 @@ export const InputContent: FC = memo(function InputContent() {
     else if (experience.showReply) {
       offsetY = 0;
     }
+
+    if (experience.showExperience && keyboard.visible) {
+      offsetY = -keyboard.height;
+    }
+    else if (experience.showExperience) {
+      offsetY = 0;
+    }
+
     const translateY = withTiming(offsetY);
     return {
       transform: [{ translateY }]
     }
-  }, [keyboard, experience.showReply]);
+  }, [keyboard, experience]);
 
 
   useBackhandler(() => {
     if (experience.showReply) {
       experience.setShowReply(false);
+      return true;
+    }
+    if (experience.showExperience) {
+      experience.setShowExperience(false);
       return true;
     }
     return false;
@@ -59,12 +74,28 @@ export const InputContent: FC = memo(function InputContent() {
         },
       ]}
     >
-      <TextInput
-        multiline
-        onChangeText={setText}
-        placeholder={'Decrivez votre experience...'}
-        style={styles.input}
-      />
+      <View
+        style={styles.content}
+      >
+        {type === 'reply' ?
+          <Text
+            style={styles.text}
+          >
+            {t('experience-input-reply-title')}
+            <Text
+              variant={'body1_m'}
+            >
+              {' '}Gabin
+            </Text>
+          </Text> :
+          null
+        }
+        <TextInput
+          multiline
+          onChangeText={setText}
+          placeholder={type === 'experience' ? t('experience-input-placeholder') : t('experience-input-reply-placeholder')}
+        />
+      </View>
       {keyboard.visible && text.length > 0 ?
         <Animated.View
           entering={ZoomIn}
@@ -97,8 +128,12 @@ const styles = StyleSheet.create({
     paddingTop: spacing.m,
     justifyContent: 'space-between',
   },
-  input: {
+  content: {
     flex: 1,
+    rowGap: spacing.s,
     marginHorizontal: spacing.s,
   },
+  text: {
+    lineHeight: typography.body1_b.lineHeight
+  }
 })

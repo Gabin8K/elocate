@@ -1,5 +1,6 @@
-import { FC, memo, useCallback } from "react";
+import { useLocale } from "@/hooks";
 import { usePlaces } from "../PlacesContext";
+import { FC, memo, useCallback } from "react";
 import { useShareCard } from "../card/useShareCard";
 import { PlacesModalContent } from "./PlacesModalContent";
 
@@ -7,6 +8,7 @@ import { PlacesModalContent } from "./PlacesModalContent";
 
 export const SharePlaceModal: FC = memo(function SharePlaceModal() {
 
+  const { t } = useLocale();
   const places = usePlaces();
   const share = useShareCard();
 
@@ -32,10 +34,10 @@ export const SharePlaceModal: FC = memo(function SharePlaceModal() {
   return (
     <PlacesModalContent
       open={open}
-      title={'Selectioner le lien de partage'}
-      onClose={onClose}
       onHere={onHere}
+      onClose={onClose}
       onGoogleMaps={onGoogleMaps}
+      title={t('place-modal-share-title')}
     />
   );
 });

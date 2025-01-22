@@ -1,14 +1,14 @@
 import { Text } from "@/components/ui";
-import { useTheme } from "@/hooks";
+import { CardImage } from "./CardImage";
 import { Place } from "@/services/types";
 import { common } from "@/theme/palette";
 import { spacing } from "@/theme/spacing";
+import { usePlaces } from "../PlacesContext";
 import { Ionicons } from "@expo/vector-icons";
 import { FC, memo, useCallback } from "react";
+import { useLocale, useTheme } from "@/hooks";
 import { StyleSheet, View } from "react-native";
-import { CardImage } from "./CardImage";
 import Animated, { FadeIn } from "react-native-reanimated";
-import { usePlaces } from "../PlacesContext";
 import { Button, IconButton } from "@/components/ui/buttons";
 import { component, reusableStyle } from "@/theme/reusables";
 
@@ -23,7 +23,8 @@ export interface PlaceCardProps {
 export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
   const { place, index } = props;
 
-  const places = usePlaces()
+  const places = usePlaces();
+  const { t } = useLocale();
   const { colors, mode } = useTheme();
 
   const onGetItinerary = useCallback(() => {
@@ -124,7 +125,7 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
               />
             }
           >
-            Obtenir l'itinéraire
+            {t('places-card-get-direction-btn')}
           </Button>
           <IconButton
             onPress={onShare}
@@ -150,12 +151,12 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     ...component.shadow,
     marginTop: spacing.s,
-    paddingBottom: spacing.m,
     borderRadius: spacing.m,
+    paddingBottom: spacing.m,
   },
   content: {
-    paddingHorizontal: spacing.m,
     rowGap: spacing.s,
+    paddingHorizontal: spacing.m,
   },
   chipsContainer: {
     ...reusableStyle.row,

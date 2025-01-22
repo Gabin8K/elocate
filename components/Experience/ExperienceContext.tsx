@@ -3,17 +3,21 @@ import { createContext, FunctionComponent, PropsWithChildren, useCallback, useCo
 
 type State = {
   showReply?: boolean;
+  showExperience?: boolean;
 }
 
 
 interface ExperienceContextType {
   showReply?: boolean;
+  showExperience?: boolean;
   setShowReply: (show: boolean) => void;
+  setShowExperience: (show: boolean) => void;
 }
 
 
 const initialValue: ExperienceContextType = {
   setShowReply: () => { },
+  setShowExperience: () => { },
 }
 
 
@@ -37,12 +41,17 @@ export const ExperienceProvider: FunctionComponent<PropsWithChildren> = ({ child
     setState({ ...state, showReply });
   }, []);
 
+  const setShowExperience = useCallback((showExperience: boolean) => {
+    setState({ ...state, showExperience });
+  }, []);
+
 
   return (
     <ExperienceContext.Provider
       value={{
         ...state,
         setShowReply,
+        setShowExperience,
       }}
     >
       {children}

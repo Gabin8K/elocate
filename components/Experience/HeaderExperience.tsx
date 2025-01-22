@@ -1,12 +1,12 @@
-import { FC, memo } from "react";
-import { useTheme } from "@/hooks";
-import { StyleSheet, View } from "react-native";
 import { Text } from "../ui";
+import { FC, memo } from "react";
 import { spacing } from "@/theme/spacing";
-import { HeaderChild } from "../layout/header";
-import Animated, { interpolate, useAnimatedStyle } from "react-native-reanimated";
+import { useLocale, useTheme } from "@/hooks";
 import { Ionicons } from "@expo/vector-icons";
+import { HeaderChild } from "../layout/header";
+import { StyleSheet, View } from "react-native";
 import { useScrollAnimated } from "@/providers/ScrollAnimatedProvider";
+import Animated, { interpolate, useAnimatedStyle } from "react-native-reanimated";
 
 
 export const HeaderExperience: FC = memo(function HeaderExperience() {
@@ -21,6 +21,7 @@ export const HeaderExperience: FC = memo(function HeaderExperience() {
 
 const HeaderExperienceContent: FC = memo(function HeaderExperienceContent() {
 
+  const { t } = useLocale();
   const { colors } = useTheme();
 
   const { offsetY } = useScrollAnimated();
@@ -54,14 +55,14 @@ const HeaderExperienceContent: FC = memo(function HeaderExperienceContent() {
         <Text
           color={'gray4'}
         >
-          Dites en quelques mots votre expérience avec Elocate.
+          {t('experience-screen-subtitle-1')}
         </Text>
         <Text
           color={'gray4'}
           variant={'body2_m'}
           style={styles.text}
         >
-          Cela nous aidera à améliorer les futures versions.
+          {t('experience-screen-subtitle-2')}
         </Text>
       </View>
     </Animated.View>
