@@ -93,7 +93,7 @@ export const InputContent: FC = memo(function InputContent() {
           placeholder={type === 'experience' ? t('experience-input-placeholder') : t('experience-input-reply-placeholder')}
         />
       </View>
-      {keyboard.visible && text.length > 0 ?
+      {text.length > 0 ?
         <Animated.View
           entering={ZoomIn}
           exiting={ZoomOut}
