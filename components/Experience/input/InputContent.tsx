@@ -73,41 +73,43 @@ export const InputContent: FC = memo(function InputContent() {
         },
       ]}
     >
+      {type === 'reply' ?
+        <Text>
+          {t('experience-input-reply-title')}
+          <Text
+            variant={'body2_m'}
+          >
+            {' '}Gabin
+          </Text>
+        </Text> :
+        null
+      }
       <View
         style={styles.content}
       >
-        {type === 'reply' ?
-          <Text>
-            {t('experience-input-reply-title')}
-            <Text
-              variant={'body2_m'}
-            >
-              {' '}Gabin
-            </Text>
-          </Text> :
-          null
-        }
         <TextInput
           multiline
+          style={styles.input}
           onChangeText={setText}
           placeholder={type === 'experience' ? t('experience-input-placeholder') : t('experience-input-reply-placeholder')}
         />
+        {text.length > 0 ?
+          <Animated.View
+            entering={ZoomIn}
+            exiting={ZoomOut}
+          >
+            <IconButton
+              icon={'send'}
+              variant={'text'}
+              styleContainer={styles.icon}
+              iconProps={{
+                size: 20,
+              }}
+            />
+          </Animated.View> :
+          null
+        }
       </View>
-      {text.length > 0 ?
-        <Animated.View
-          entering={ZoomIn}
-          exiting={ZoomOut}
-        >
-          <IconButton
-            icon={'send'}
-            variant={'text'}
-            iconProps={{
-              size: 20,
-            }}
-          />
-        </Animated.View> :
-        null
-      }
     </Animated.View>
   )
 })
@@ -120,14 +122,20 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+    rowGap: spacing.s,
     position: 'absolute',
-    flexDirection: 'row',
     paddingTop: spacing.m,
-    justifyContent: 'space-between',
+    paddingHorizontal: spacing.s,
   },
   content: {
-    flex: 1,
-    rowGap: spacing.s,
-    marginHorizontal: spacing.s,
+    flexDirection: 'row',
   },
+  input: {
+    flex: 1,
+    maxHeight: spacing.height * .15,
+  },
+  icon: {
+    top: spacing.xs,
+    right: -spacing.s,
+  }
 })
