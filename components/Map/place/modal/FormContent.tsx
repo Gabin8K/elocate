@@ -35,6 +35,9 @@ export const FormContent: FC<FormContentProps> = memo(function FormContent(props
         <DropdownMenu
           placeholder={t('request-place-modal-form-placeholder-address')}
           dropdownItems={data}
+          placeholderStyle={{
+            style: styles.placeholder,
+          }}
         />
         <TextInput
           multiline
@@ -57,6 +60,9 @@ export const FormContent: FC<FormContentProps> = memo(function FormContent(props
 const styles = StyleSheet.create({
   content: {
     rowGap: spacing.s,
+  },
+  placeholder: {
+    flex: 1,
   },
   button: {
     marginTop: spacing.m,

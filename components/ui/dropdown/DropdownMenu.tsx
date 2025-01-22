@@ -124,9 +124,6 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.m,
     justifyContent: 'space-between',
   },
-  text: {
-    flex: 1,
-  },
   icon: {
     maxWidth: 16,
   },
