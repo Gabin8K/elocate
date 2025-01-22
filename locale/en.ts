@@ -19,7 +19,7 @@ export default {
   
   // --Home Screen--
   // Request Place Modal
-  "request-place-modal-title": "Do you want to add this place?",
+  "request-place-modal-title": "Do you want to add this place",
   "request-place-modal-btn-yes": "Yes",
   "request-place-modal-btn-no": "No",
   "request-place-modal-form-title": "Add a place",
