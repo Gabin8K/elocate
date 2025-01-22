@@ -72,10 +72,12 @@ export const Map: FC = memo(function Map() {
         showsBuildings
         ref={map.mapRef}
         minZoomLevel={14}
+        showsCompass={false}
         camera={initialCamera}
         onLongPress={onLongPress}
         provider={PROVIDER_GOOGLE}
         style={reusableStyle.full}
+        showsMyLocationButton={false}
         initialRegion={initialRegion}
         onMapLoaded={map.onMapLoaded}
         customMapStyle={mapStyles[mode]}
