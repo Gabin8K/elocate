@@ -1,9 +1,9 @@
-import { useTheme } from "@/hooks";
 import { StyleSheet } from "react-native";
 import { spacing } from "@/theme/spacing";
 import { useMap } from "../../MapContext";
 import { NearMeSlider } from "./NearMeSlider";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useBackhandler, useTheme } from "@/hooks";
 import { IconButton } from "@/components/ui/buttons";
 import { FC, Fragment, memo, useCallback } from "react";
 import { NearMeProvider, useNearMe } from "./NearMeContext";
@@ -14,7 +14,7 @@ import Animated, { LinearTransition, ZoomIn } from "react-native-reanimated";
 
 export const NearMeComponent: FC = memo(function NearMeComponent() {
   const { loading } = useMap();
-  
+
   if (loading) return null;
 
   return (
@@ -38,6 +38,15 @@ const NearMeContent: FC = memo(function NearMeContent() {
   const onClose = useCallback(() => {
     near.setOpen(false);
   }, []);
+
+
+  useBackhandler(() => {
+    if (near.open) {
+      onClose();
+      return true;
+    }
+    return false;
+  });
 
 
   return (

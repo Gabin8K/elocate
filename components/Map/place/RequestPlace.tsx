@@ -1,13 +1,13 @@
 import { useMap } from "../MapContext";
 import { Text } from "@/components/ui";
 import { spacing } from "@/theme/spacing";
-import { useLocale, useTheme } from "@/hooks";
 import { FC, memo, useCallback } from "react";
 import { StyleSheet, View, } from "react-native";
 import { Button } from "@/components/ui/buttons";
 import { PointRipple, ripples } from "../marker";
 import { Portal } from "@/providers/PortalProvider";
 import { component, reusableStyle } from "@/theme/reusables";
+import { useBackhandler, useLocale, useTheme } from "@/hooks";
 import Animated, { Easing, SlideInDown, SlideOutDown } from "react-native-reanimated";
 
 
@@ -26,6 +26,16 @@ export const RequestPlace: FC = memo(function RequestPlace() {
   const onConfirm = useCallback(() => {
     map.confirmRequestPlace();
   }, []);
+
+
+  useBackhandler(() => {
+    if (map.newPlace?.open) {
+      onClose();
+      return true;
+    }
+    return false;
+  });
+
 
   return (
     <Portal
