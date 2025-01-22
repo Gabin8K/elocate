@@ -112,7 +112,7 @@ export const DrawerLayoutContent: FC<ContentProps> = memo(function DrawerLayoutC
 
 
   useBackhandler(() => {
-    setOpen(false);
+    onClose();
     return true;
   });
 
