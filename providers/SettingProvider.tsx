@@ -1,8 +1,9 @@
-import { FunctionComponent, PropsWithChildren, createContext, useCallback, useEffect, useState } from "react";
 import { useFonts } from "expo-font";
 import { fonts } from "@/theme/typography";
 import { defaultLocale } from "@/locale/i18n";
+import { useColorScheme } from "react-native";
 import { AsyncStorageGetItem, AsyncStorageSetItem } from "@/utils/storage";
+import { FunctionComponent, PropsWithChildren, createContext, useCallback, useEffect, useState } from "react";
 
 
 export interface Setting {
@@ -14,6 +15,7 @@ export interface Setting {
 export interface SettingCtx extends Setting {
   setLocale: (locale: string) => void;
   setMode: (mode: SettingCtx['mode']) => void;
+  setHasInitialized: (hasInitialized: boolean) => void;
 }
 
 
@@ -21,6 +23,8 @@ export const SettingContext = createContext<SettingCtx>({} as SettingCtx);
 
 
 const SettingProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
+  const schema = useColorScheme();
+
   const [fontsLoaded] = useFonts(fonts);
   const [setting, setSetting] = useState<Setting>({
     locale: 'en',
@@ -42,6 +46,13 @@ const SettingProvider: FunctionComponent<PropsWithChildren> = ({ children }) => 
     }))
   }, [])
 
+  const setHasInitialized = useCallback((hasInitialized: boolean) => {
+    setSetting((prev) => ({
+      ...prev,
+      hasInitialized
+    }))
+  }, [])
+
 
   const saveSetting = useCallback(async () => {
     if (Object.keys(setting).length === 0) return;
@@ -55,6 +66,8 @@ const SettingProvider: FunctionComponent<PropsWithChildren> = ({ children }) => 
       if (setting) {
         setSetting(setting)
         defaultLocale(setting.locale)
+      } else {
+        setMode(schema || 'light');
       }
     }
     launchSetting()
@@ -77,6 +90,7 @@ const SettingProvider: FunctionComponent<PropsWithChildren> = ({ children }) => 
         ...setting,
         setLocale,
         setMode,
+        setHasInitialized
       }}
     >
       {children}
