@@ -1,4 +1,3 @@
-import { typography } from "@/theme";
 import { spacing } from "@/theme/spacing";
 import { FC, memo, useState } from "react";
 import { Text, TextInput } from "../../ui";
@@ -78,12 +77,10 @@ export const InputContent: FC = memo(function InputContent() {
         style={styles.content}
       >
         {type === 'reply' ?
-          <Text
-            style={styles.text}
-          >
+          <Text>
             {t('experience-input-reply-title')}
             <Text
-              variant={'body1_m'}
+              variant={'body2_m'}
             >
               {' '}Gabin
             </Text>
@@ -133,7 +130,4 @@ const styles = StyleSheet.create({
     rowGap: spacing.s,
     marginHorizontal: spacing.s,
   },
-  text: {
-    lineHeight: typography.body1_b.lineHeight
-  }
 })
