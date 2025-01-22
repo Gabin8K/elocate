@@ -15,7 +15,7 @@ export const SharePlaceModal: FC = memo(function SharePlaceModal() {
   const open = !!places.sharePlace;
 
   const onHere = useCallback(() => {
-    share.launchHere(places.sharePlace);
+    share.launchHere(places.sharePlace?.id);
   }, [places.sharePlace]);
 
 
