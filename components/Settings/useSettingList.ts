@@ -12,7 +12,7 @@ export function useSettingList() {
     return [
       {
         title: t('setting-screen-theme-title'),
-        value: t('setting-screen-theme-dark'),
+        value: setting.mode === 'dark' ? t('setting-screen-theme-dark') : t('setting-screen-theme-light'),
         action: {
           switchInput: {
             checked: setting.mode === 'dark',
