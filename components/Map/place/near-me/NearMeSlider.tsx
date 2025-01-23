@@ -1,13 +1,15 @@
+import { useLocale } from "@/hooks";
+import { Text } from "@/components/ui";
+import { spacing } from "@/theme/spacing";
 import { FC, memo, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { spacing } from "@/theme/spacing";
-import { Text } from "@/components/ui";
 import { Slider } from "@/components/ui/slider";
 import Animated, { FadeIn } from "react-native-reanimated";
 
 
 
 export const NearMeSlider: FC = memo(function NearMeSlider() {
+  const { t } = useLocale();
 
   const [value, setValue] = useState(0);
   const km = Math.floor(value / 5);
@@ -22,21 +24,21 @@ export const NearMeSlider: FC = memo(function NearMeSlider() {
         <Text
           style={styles.text}
         >
-          Showing:{' '}
+          {t('slider-showing')}:{' '}
           <Text
             variant={'body2_b'}
             color={'primary'}
           >
-            0 locations
+            0 {t('slider-showing-end')}
           </Text>
         </Text>
         <Text>
-          Within:{' '}
+          {t('slider-within')}:{' '}
           <Text
             variant={'body2_b'}
             color={'primary'}
           >
-            {km} km
+            {km} {t('slider-km')}
           </Text>
         </Text>
       </View>
@@ -51,8 +53,8 @@ export const NearMeSlider: FC = memo(function NearMeSlider() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: spacing.l,
     rowGap: spacing.l,
+    padding: spacing.l,
   },
   text: {
     lineHeight: 22,
