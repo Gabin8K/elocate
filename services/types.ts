@@ -36,3 +36,23 @@ export type Coordinate = {
   longitude: number;
   latitude: number;
 }
+
+
+export interface PlaceDoc {
+  id?: string;
+  userId: string;
+  address: string;
+  createdAt?: string;
+  imageRef?: string;
+  description: string;
+  coordinate: Coordinate;
+}
+
+
+export interface CommentDoc {
+  id?: string;
+  text: string;
+  userId: string;
+  parentId: string;
+  createdAt?: string;
+}

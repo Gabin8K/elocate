@@ -22,7 +22,7 @@ export function useMediaFile() {
       setHasPermission(result.granted)
     }
 
-    if (hasPermission === false) return;
+    if (hasPermission === false) return null;
 
     const document = await ImagePicker.launchImageLibraryAsync({
       quality: 1,
@@ -40,6 +40,7 @@ export function useMediaFile() {
       type: document.assets[0]?.mimeType as string,
     }
     setFile(_file);
+    return _file;
   }, [hasPermission, requestPermission])
 
 

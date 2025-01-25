@@ -1,4 +1,5 @@
 import { Text } from "../../../ui/Text";
+import { File } from "@/services/types";
 import { spacing } from "@/theme/spacing";
 import { display } from "@/utils/formater";
 import { FC, memo, useCallback } from "react";
@@ -9,11 +10,14 @@ import { useLocale, useMediaFile, useTheme, useToast } from "@/hooks";
 import Animated, { LinearTransition, useAnimatedStyle, useSharedValue, withTiming, ZoomIn, ZoomOut } from "react-native-reanimated";
 
 
-interface ImageInputProps { };
+interface ImageInputProps {
+  onImageChange?: (file: File | null) => void;
+};
 
 
 
 export const ImageInput: FC<ImageInputProps> = memo(function ImageInput(props) {
+  const { onImageChange } = props;
 
   const toast = useToast();
   const { t } = useLocale();
@@ -25,6 +29,7 @@ export const ImageInput: FC<ImageInputProps> = memo(function ImageInput(props) {
   const onPress = useCallback(() => {
     media
       .uploadFile()
+      .then(file => onImageChange?.(file))
       .catch(err => toast.show(String(err.message || err), 'error'))
   }, []);
 

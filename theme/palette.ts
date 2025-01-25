@@ -1,7 +1,6 @@
 
 export const common = {
   error: '#ED5858',
-  disabled: '#E5E5E5',
   gray1: '#FFFFFF',
   gray2: '#E5E5E5',
   gray3: '#A1A1A1',
@@ -20,6 +19,7 @@ export const palette = {
     text: '#000000',
     shadow: 'rgba(0, 0, 0, 0.1)',
     divider: '#e5e5e5',
+    disabled: '#bdbdbd',
   },
   dark: {
     ...common,
@@ -30,5 +30,6 @@ export const palette = {
     text: '#e0e0e0',
     shadow: 'rgba(0, 0, 0, 0.3)',
     divider: '#474b47',
+    disabled: '#6c6e6f',
   }
 };

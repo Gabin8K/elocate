@@ -3,11 +3,11 @@ import { useTheme } from "@/hooks";
 import { spacing } from "@/theme/spacing";
 import { Ionicons } from "@expo/vector-icons";
 import { DropdownList } from "./DropdownList";
-import { FC, memo, useCallback } from "react";
 import { reusableStyle } from "@/theme/reusables";
+import { FC, memo, useCallback } from "react";
 import { Pressable } from "react-native-gesture-handler";
-import { LayoutChangeEvent, StyleSheet } from "react-native";
 import { DropdownProvider, useDropdown } from "./DropdownContext";
+import { LayoutChangeEvent, StyleProp, StyleSheet, ViewStyle } from "react-native";
 import Animated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated";
 
 
@@ -18,6 +18,7 @@ export type DropdownItem = {
 
 export interface DropdownMenuProps {
   placeholder?: string;
+  containerStyle?: StyleProp<ViewStyle>;
   placeholderStyle?: React.ComponentProps<typeof Text>;
   dropdownItems: DropdownItem[];
   onItemPress?: (item: DropdownItem) => void;
@@ -41,7 +42,7 @@ export const DropdownMenu = memo(function DropdownMenu(props: DropdownMenuProps)
 
 
 export const DropdownMenuContent: FC<DropdownMenuProps> = memo(function DropdownMenu(props) {
-  const { onLayout, placeholder, placeholderStyle } = props;
+  const { onLayout, placeholder, placeholderStyle, containerStyle } = props;
 
   const { colors } = useTheme();
   const dropdown = useDropdown();
@@ -85,7 +86,8 @@ export const DropdownMenuContent: FC<DropdownMenuProps> = memo(function Dropdown
       <Animated.View
         style={[
           uas,
-          styles.container
+          styles.container,
+          containerStyle,
         ]}
       >
         <Text

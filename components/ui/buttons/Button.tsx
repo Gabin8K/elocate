@@ -27,7 +27,7 @@ export interface ButtonProps extends PressableProps {
 
 export const Button = memo<ButtonProps>(function Button({ style: _style, ...props }) {
   const { textStyle, loading, disabled, variant = 'primary', colorDisabled = 'disabled', colorIndicator, full, containerStyle, layout, ...rest } = props;
-  
+
   const { colors } = useTheme();
   const active = useSharedValue(false);
 
@@ -52,8 +52,8 @@ export const Button = memo<ButtonProps>(function Button({ style: _style, ...prop
           style={[
             uas,
             styles.container,
-            { shadowColor: colors.shadow },
             full ? { width: '100%' } : {},
+            { boxShadow: !disabled ? component.shadow.boxShadow : undefined },
             containerStyle,
           ]}
         >
@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     columnGap: spacing.s,
     ...reusableStyle.row,
-    ...component.shadow
   },
   indicator: {
     position: 'absolute',
