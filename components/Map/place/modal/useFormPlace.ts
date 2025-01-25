@@ -1,6 +1,6 @@
 import { Place } from "../../MapContext";
-import { useCallback, useRef, useState } from "react";
 import { Coordinate, File } from "@/services/types";
+import { useCallback, useRef, useState } from "react";
 import { useAddressFromCoords, useFormPlaceSubmit } from "@/services/hooks";
 
 
