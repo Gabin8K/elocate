@@ -32,8 +32,26 @@ async function createPlace(place: PlaceDoc) {
 
 
 
+async function getPlaces(): Promise<PlaceDoc[]> {
+  const places: PlaceDoc[] = [];
+
+  const query = await firestore().collection('place').get();
+  query.forEach((doc) => {
+    places.push({
+      id: doc.id,
+      ...doc.data() as PlaceDoc,
+    });
+  });
+  return places;
+}
+
+
+
+
+
 
 export const places = {
   uploadFile,
+  getPlaces,
   createPlace,
 };

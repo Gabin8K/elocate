@@ -1,6 +1,7 @@
 import { Coordinate } from "@/services/types";
 import MapView, { Camera } from "react-native-maps";
 import { createContext, FunctionComponent, PropsWithChildren, useCallback, useContext, useRef, useState } from "react";
+import { useGetPlacesAround } from "@/services/hooks";
 
 export type Point = {
   x: number;
@@ -18,6 +19,7 @@ type MapState = {
   newPlace?: Place;
   openModal?: boolean;
   loading: boolean;
+  radius: number;
   currentCamera?: Camera;
 }
 
@@ -27,10 +29,12 @@ interface MapContextType {
   openModal?: boolean;
   currentCamera?: Camera;
   mapRef: React.RefObject<MapView>;
+  radius: number;
   closePlace: () => void;
   onMapLoaded: () => void;
   closeModal: () => void;
   requestAddPlace: (place: Place) => void;
+  onradiusChange: (value: number) => void;
   confirmRequestPlace: () => void;
   setCurrentCamera: (currentCamera: Camera) => void;
 }
@@ -38,6 +42,7 @@ interface MapContextType {
 
 const initialValue: MapContextType = {
   loading: true,
+  radius: 5,
   mapRef: {} as MapContextType['mapRef'],
   requestAddPlace: () => { },
   closePlace: () => { },
@@ -45,6 +50,7 @@ const initialValue: MapContextType = {
   closeModal: () => { },
   onMapLoaded: () => { },
   confirmRequestPlace: () => { },
+  onradiusChange: () => { },
 }
 
 
@@ -65,6 +71,8 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
 
   const mapRef = useRef<MapView>(null);
   const [state, setState] = useState<MapState>(initialValue);
+
+  const { data } = useGetPlacesAround(state.radius);
 
   const requestAddPlace = useCallback((newPlace: Place) => {
     setState(state => ({
@@ -123,6 +131,15 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
   }, []);
 
 
+  const onradiusChange = useCallback((radius: number) => {
+    setState(state => ({
+      ...state,
+      radius,
+    }));
+  }, []);
+
+
+
   return (
     <MapContext.Provider
       value={{
@@ -130,6 +147,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
         loading: state.loading,
         newPlace: state.newPlace,
         openModal: state.openModal,
+        radius: state.radius,
         currentCamera: state.currentCamera,
         confirmRequestPlace,
         requestAddPlace,
@@ -137,6 +155,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
         closeModal,
         setCurrentCamera,
         onMapLoaded,
+        onradiusChange,
       }}
     >
       {children}

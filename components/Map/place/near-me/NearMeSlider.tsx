@@ -1,18 +1,30 @@
 import { useLocale } from "@/hooks";
 import { Text } from "@/components/ui";
 import { spacing } from "@/theme/spacing";
-import { FC, memo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Slider } from "@/components/ui/slider";
+import { FC, memo, useCallback, useState } from "react";
 import Animated, { FadeIn } from "react-native-reanimated";
 
 
+type NearMeSliderProps = {
+  onRadiusChange: (value: number) => void;
+}
 
-export const NearMeSlider: FC = memo(function NearMeSlider() {
+
+
+export const NearMeSlider: FC<NearMeSliderProps> = memo(function NearMeSlider(props) {
+  const { onRadiusChange } = props;
+
   const { t } = useLocale();
 
   const [value, setValue] = useState(0);
   const km = Math.floor(value / 5);
+
+  const onChange = useCallback((value: number) => {
+    setValue(value);
+    onRadiusChange(value);
+  }, [onRadiusChange]);
 
 
   return (
@@ -43,7 +55,7 @@ export const NearMeSlider: FC = memo(function NearMeSlider() {
         </Text>
       </View>
       <Slider
-        onChange={setValue}
+        onChange={onChange}
       />
     </Animated.View>
   );

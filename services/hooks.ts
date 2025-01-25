@@ -1,11 +1,12 @@
 import { places } from "./places";
-import { Coordinate } from "./types";
 import { geocoding } from "./geocoding";
 import { useLocale, useToast } from "@/hooks";
+import { Coordinate, PlaceDoc } from "./types";
 import { useAuth } from "@/providers/AuthProvider";
 import { DropdownItem } from "@/components/ui/dropdown";
 import { useCallback, useEffect, useState } from "react";
 import { FormPlace } from "@/components/Map/place/modal/useFormPlace";
+import { useLocation } from "@/hooks/useLocation";
 
 
 export function useAddressFromCoords(coords: Coordinate) {
@@ -64,4 +65,70 @@ export function useFormPlaceSubmit() {
     onSubmit,
   }
 
+}
+
+
+
+
+
+export function useGetPlaces() {
+  const toast = useToast();
+  const [data, setData] = useState<PlaceDoc[]>([]);
+  const [loading, setLoading] = useState(true);
+
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const data = await places.getPlaces();
+        setData(data);
+      } catch (error: any) {
+        toast.show(String(error.message || error), 'error');
+      }
+      finally {
+        setLoading(false);
+      }
+    }
+    fetch();
+  }, [])
+
+  return {
+    data,
+    loading,
+  }
+
+}
+
+
+
+
+
+export function useGetPlacesAround(radiusKm: number) {
+  const toast = useToast();
+  const location = useLocation();
+
+  const [data, setData] = useState<PlaceDoc[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetch = async () => {
+      if (!location) return;
+      try {
+        const data = await geocoding.getCoordsWithinRadiusDirectly(location.coords, radiusKm);
+        setData(data);
+      } catch (error: any) {
+        toast.show(String(error.message || error), 'error');
+      }
+      finally {
+        setLoading(false);
+      }
+    }
+    fetch();
+  }, [location, radiusKm])
+
+
+  return {
+    data,
+    loading,
+  }
 }
