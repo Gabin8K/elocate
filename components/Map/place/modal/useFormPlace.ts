@@ -45,11 +45,11 @@ export function useFormPlace(place: Place) {
 
 
   return {
+    errors,
     loading,
     setValue,
     handleSubmit,
     dropdownItems,
-    errors,
   }
 
 }
