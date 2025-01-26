@@ -70,6 +70,10 @@ export const Button = memo<ButtonProps>(function Button({ style: _style, ...prop
             color={'gray1'}
             variant={'body2_eb'}
             {...textStyle}
+            style={[
+              { opacity: loading ? .1 : 1 },
+              textStyle?.style,
+            ]}
           >
             {props.children}
           </Text>

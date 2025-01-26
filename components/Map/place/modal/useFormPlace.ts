@@ -1,3 +1,4 @@
+import { Keyboard } from "react-native";
 import { Place } from "../../MapContext";
 import { Coordinate, File } from "@/services/types";
 import { useCallback, useRef, useState } from "react";
@@ -12,11 +13,17 @@ export type FormPlace = {
 }
 
 
+type FormState = {
+  error?: boolean;
+  resultId?: string;
+}
+
 
 
 export function useFormPlace(place: Place) {
 
-  const [errors, setErrors] = useState(true);
+  const [state, setState] = useState<FormState>({});
+
   const { onSubmit, loading } = useFormPlaceSubmit();
   const { data: dropdownItems } = useAddressFromCoords(place.coordinate);
 
@@ -30,17 +37,22 @@ export function useFormPlace(place: Place) {
     description: '',
   });
 
+  const errors = state.error;
+  const resultId = state.resultId;
+
 
   const setValue = useCallback(<T extends keyof FormPlace>(key: T, value: FormPlace[T]) => {
     if (key === 'address') {
-      setErrors(false);
+      setState(state => ({ ...state, error: false }));
     }
     formRef.current[key] = value;
   }, [])
 
 
   const handleSubmit = useCallback(async () => {
-    await onSubmit(formRef.current)
+    Keyboard.dismiss();
+    const resultId = await onSubmit(formRef.current)
+    setState(state => ({ ...state, resultId }));
   }, []);
 
 
@@ -48,6 +60,7 @@ export function useFormPlace(place: Place) {
     errors,
     loading,
     setValue,
+    resultId,
     handleSubmit,
     dropdownItems,
   }

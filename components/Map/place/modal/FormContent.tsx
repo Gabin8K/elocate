@@ -8,6 +8,7 @@ import { StyleSheet, View } from "react-native";
 import { Button } from "@/components/ui/buttons";
 import { Text, TextInput } from "@/components/ui";
 import { DropdownMenu } from "@/components/ui/dropdown";
+import { FormRequestCompeted } from "./FormRequestCompeted";
 
 
 type FormContentProps = {
@@ -22,8 +23,7 @@ export const FormContent: FC<FormContentProps> = memo(function FormContent(props
   const form = useFormPlace(newPlace);
 
   const onSubmit = () => {
-    form.handleSubmit()
-      .then(() => onClose());
+    form.handleSubmit();
   }
 
   return (
@@ -54,16 +54,21 @@ export const FormContent: FC<FormContentProps> = memo(function FormContent(props
         <ImageInput
           onImageChange={file => form.setValue('image', file)}
         />
-        <Button
-          layout
-          onPress={onSubmit}
-          style={styles.button}
-          loading={form.loading}
-          disabled={form.errors}
-          containerStyle={styles.buttonContainer}
-        >
-          {t('request-place-modal-form-btn-submit')}
-        </Button>
+        {!form.resultId ?
+          <Button
+            layout
+            onPress={onSubmit}
+            style={styles.button}
+            loading={form.loading}
+            disabled={form.errors}
+            containerStyle={styles.buttonContainer}
+          >
+            {t('request-place-modal-form-btn-submit')}
+          </Button> :
+          <FormRequestCompeted
+            onClose={onClose}
+          />
+        }
       </View>
     </Fragment>
   );

@@ -47,7 +47,7 @@ export function useFormPlaceSubmit() {
         const response = await places.uploadFile(image)
         imageRef = response.metadata.fullPath;
       }
-      await places.createPlace({
+      return await places.createPlace({
         userId: auth?.uid || '',
         ...place,
         imageRef,
