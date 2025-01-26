@@ -18,11 +18,8 @@ export const FormRequestCompleted: FC<FormRequestCompletedProps> = memo(function
   const { colors } = useTheme();
 
   useEffect(() => {
-    setTimeout(() => {
-      onClose();
-    }, 1500);
+    setTimeout(() => onClose(), 1500);
   }, [])
-
 
   return (
     <Animated.View
