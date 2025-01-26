@@ -8,7 +8,7 @@ import { StyleSheet, View } from "react-native";
 import { Button } from "@/components/ui/buttons";
 import { Text, TextInput } from "@/components/ui";
 import { DropdownMenu } from "@/components/ui/dropdown";
-import { FormRequestCompeted } from "./FormRequestCompeted";
+import { FormRequestCompleted } from "./FormRequestCompleted";
 
 
 type FormContentProps = {
@@ -65,7 +65,7 @@ export const FormContent: FC<FormContentProps> = memo(function FormContent(props
           >
             {t('request-place-modal-form-btn-submit')}
           </Button> :
-          <FormRequestCompeted
+          <FormRequestCompleted
             onClose={onClose}
           />
         }

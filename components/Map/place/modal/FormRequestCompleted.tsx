@@ -7,12 +7,12 @@ import { Ionicons } from "@expo/vector-icons";
 import Animated, { ZoomIn } from "react-native-reanimated";
 
 
-type FormRequestCompetedProps = {
+type FormRequestCompletedProps = {
   onClose: () => void;
 }
 
 
-export const FormRequestCompeted: FC<FormRequestCompetedProps> = memo(function FormRequestCompeted(props) {
+export const FormRequestCompleted: FC<FormRequestCompletedProps> = memo(function FormRequestCompleted(props) {
   const { onClose } = props;
 
   const { colors } = useTheme();
