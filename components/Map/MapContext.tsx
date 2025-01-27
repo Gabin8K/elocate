@@ -1,5 +1,5 @@
-import { useGetPlacesAround } from "@/services/hooks";
 import MapView, { Camera } from "react-native-maps";
+import { useGetPlacesAround } from "@/services/hooks";
 import { Coordinate, PlaceDoc } from "@/services/types";
 import { createContext, FunctionComponent, PropsWithChildren, useCallback, useContext, useRef, useState } from "react";
 
