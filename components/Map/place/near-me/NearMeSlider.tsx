@@ -8,17 +8,18 @@ import Animated, { FadeIn } from "react-native-reanimated";
 
 
 type NearMeSliderProps = {
+  showing?: number;
   onRadiusChange: (value: number) => void;
 }
 
 
 
 export const NearMeSlider: FC<NearMeSliderProps> = memo(function NearMeSlider(props) {
-  const { onRadiusChange } = props;
+  const { showing, onRadiusChange } = props;
 
   const { t } = useLocale();
 
-  const [km, setKm] = useState(0);
+  const [km, setKm] = useState(2);
 
   const onChange = useCallback((value: number) => {
     const km = Math.floor(value / 5);
@@ -41,7 +42,7 @@ export const NearMeSlider: FC<NearMeSliderProps> = memo(function NearMeSlider(pr
             variant={'body2_b'}
             color={'primary'}
           >
-            0 {t('slider-showing-end')}
+            {showing} {t('slider-showing-end')}
           </Text>
         </Text>
         <Text>
@@ -55,6 +56,7 @@ export const NearMeSlider: FC<NearMeSliderProps> = memo(function NearMeSlider(pr
         </Text>
       </View>
       <Slider
+        defaultValue={2}
         onChange={onChange}
       />
     </Animated.View>

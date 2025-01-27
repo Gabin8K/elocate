@@ -5,10 +5,11 @@ import { reusableStyle } from "@/theme/reusables";
 import { FC, memo, useCallback, useMemo } from "react";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { ActivityIndicator, LayoutChangeEvent, StyleSheet, Vibration, View } from "react-native";
-import Animated, { interpolate, runOnJS, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
+import Animated, { interpolate, runOnJS, runOnUI, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 
 export interface SliderProps {
   loading?: boolean;
+  defaultValue?: number;
   onChange?: (value: number) => void;
 }
 
@@ -20,7 +21,7 @@ const trackOffsetX = (trackSize - trackBorderWidth) / 2;
 
 
 export const Slider: FC<SliderProps> = memo(function Slider(props) {
-  const { loading, onChange } = props;
+  const { defaultValue = 0, loading, onChange } = props;
 
   const { colors } = useTheme();
 
@@ -74,7 +75,13 @@ export const Slider: FC<SliderProps> = memo(function Slider(props) {
 
   const onLayout = useCallback(({ target }: LayoutChangeEvent) => {
     target.measure((x, y, width, height, pageX, pageY) => {
-      size.value = width;
+      runOnUI(() => {
+        if (size.value !== 0) return;
+        const x = (defaultValue * 5) / 100 * width;
+        translateX.value = x;
+        offsetX.value = x;
+        size.value = width;
+      })()
     });
   }, []);
 

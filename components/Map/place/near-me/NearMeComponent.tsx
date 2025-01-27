@@ -13,6 +13,7 @@ import Animated, { LinearTransition, ZoomIn } from "react-native-reanimated";
 
 type NearMeContentProps = {
   loading?: boolean;
+  showing: number;
   onRadiusChange: (value: number) => void;
 }
 
@@ -26,6 +27,7 @@ export const NearMeComponent: FC = memo(function NearMeComponent() {
     <NearMeProvider>
       <NearMeContent
         loading={map.loadingPlaces}
+        showing={map.places.length}
         onRadiusChange={map.onRadiusChange}
       />
     </NearMeProvider>
@@ -107,6 +109,7 @@ const NearMeContent: FC<NearMeContentProps> = memo(function NearMeContent(props)
               }}
             />
             <NearMeSlider
+              showing={props.showing}
               onRadiusChange={onRadiusChange}
             />
           </Fragment>
