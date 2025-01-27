@@ -1,12 +1,13 @@
 import { places } from "./places";
 import { geocoding } from "./geocoding";
+import { Place } from "@/components/Map";
 import { useLocale, useToast } from "@/hooks";
 import { Coordinate, PlaceDoc } from "./types";
+import { useLocation } from "@/hooks/useLocation";
 import { useAuth } from "@/providers/AuthProvider";
 import { DropdownItem } from "@/components/ui/dropdown";
 import { useCallback, useEffect, useState } from "react";
 import { FormPlace } from "@/components/Map/place/modal/useFormPlace";
-import { useLocation } from "@/hooks/useLocation";
 
 
 export function useAddressFromCoords(coords: Coordinate) {
@@ -103,7 +104,7 @@ export function useGetPlaces() {
 
 
 
-export function useGetPlacesAround(radiusKm: number) {
+export function useGetPlacesAround(radius: number) {
   const toast = useToast();
   const location = useLocation();
 
@@ -114,7 +115,7 @@ export function useGetPlacesAround(radiusKm: number) {
     const fetch = async () => {
       if (!location) return;
       try {
-        const data = await geocoding.getCoordsWithinRadiusDirectly(location.coords, radiusKm);
+        const data = await geocoding.getCoordsWithinRadiusDirectly(location.coords, radius);
         setData(data);
       } catch (error: any) {
         toast.show(String(error.message || error), 'error');
@@ -124,11 +125,40 @@ export function useGetPlacesAround(radiusKm: number) {
       }
     }
     fetch();
-  }, [location, radiusKm])
-
+  }, [location, radius])
 
   return {
     data,
+    loading,
+  }
+}
+
+
+
+export function useValidationPlace(place: Place) {
+  const toast = useToast();
+
+  const [valid, setValid] = useState<boolean>();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const hasPlace = await geocoding.checkIfPlaceExists(place.coordinate);
+        setValid(!hasPlace);
+      } catch (error: any) {
+        toast.show(String(error.message || error), 'error');
+      }
+      finally {
+        setLoading(false);
+      }
+    }
+    fetch();
+  }, [])
+
+
+  return {
+    valid,
     loading,
   }
 }

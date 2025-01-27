@@ -111,6 +111,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
     setState(state => ({
       ...state,
       openModal: false,
+      newPlace: undefined,
     }));
   }, []);
 

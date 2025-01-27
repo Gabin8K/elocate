@@ -1,11 +1,11 @@
 import { Coordinate, PlaceDoc } from "./types";
-import firestore, { getDocs, query, where }  from "@react-native-firebase/firestore";
+import firestore, { getDocs, query, where } from "@react-native-firebase/firestore";
 
 
-const EARTH_RADIUS_KM = 6371;
+const R = 6371;
 
 
-async function getAddressFromCoords(coords: Coordinate, language: string ) {
+async function getAddressFromCoords(coords: Coordinate, language: string) {
   const { latitude, longitude } = coords;
   const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&language=${language}&key=${process.env.EXPO_PUBLIC_GOOGLE_MAP_API_KEY}`;
 
@@ -30,78 +30,76 @@ async function getAddressFromCoords(coords: Coordinate, language: string ) {
 
 
 
-function calculateBoundingBox(coordinate: Coordinate, radiusInKm: number) {
-  const { latitude, longitude } = coordinate;
-  const latDelta = radiusInKm / EARTH_RADIUS_KM;
-  const lonDelta = radiusInKm / (EARTH_RADIUS_KM * Math.cos((latitude * Math.PI) / 180));
+function calculateDistance(pos1: Coordinate, pos2: Coordinate) {
+  const dLat = degreesToRadians(pos2.latitude - pos1.latitude);
+  const dLon = degreesToRadians(pos2.longitude - pos1.longitude);
+  const lat1 = degreesToRadians(pos1.latitude);
+  const lat2 = degreesToRadians(pos2.latitude);
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return R * c;
+}
+
+
+function degreesToRadians(degrees: number): number {
+  return (degrees * Math.PI) / 180;
+}
+
+
+function getBoundingBox(coordinate: Coordinate, radius: number) {
+  const lat = coordinate.latitude;
+  const lon = coordinate.longitude;
+
+  const deltaLat = (radius / R) * (180 / Math.PI);
+  const deltaLon = (radius / R) * (180 / Math.PI) / Math.cos(lat * (Math.PI / 180));
 
   return {
-    minLat: latitude - latDelta,
-    maxLat: latitude + latDelta,
-    minLon: longitude - lonDelta,
-    maxLon: longitude + lonDelta,
-  }
+    minLat: lat - deltaLat,
+    maxLat: lat + deltaLat,
+    minLon: lon - deltaLon,
+    maxLon: lon + deltaLon,
+  };
 }
 
-// Fonction principale pour récupérer les lieux
-async function getCoordsWithinRadiusDirectly(currentLocation: Coordinate, radiusInKm: number): Promise<PlaceDoc[]> {
-  // Étape 1 : Calcul de la bounding box
-  const { maxLat, maxLon } = calculateBoundingBox(
-    currentLocation,
-    radiusInKm
+
+
+async function getCoordsWithinRadiusDirectly(location: Coordinate, radius: number) {
+  const boundingBox = getBoundingBox(location, radius);
+  const placesQuery = query(
+    firestore().collection('places'),
+    where('coordinate.latitude', '>=', boundingBox.minLat),
+    where('coordinate.latitude', '<=', boundingBox.maxLat),
+    where('coordinate.longitude', '>=', boundingBox.minLon),
+    where('coordinate.longitude', '<=', boundingBox.maxLon),
   );
 
-  // Étape 2 : Requête Firestore pour récupérer les lieux dans la bounding box
-  const coordinatesCollection = firestore().collection('place');
-  const locationsQuery = query(
-    coordinatesCollection,
-    where("coordinate.latitude", "<=", maxLat),
-    where("coordinate.longitude", "<=", maxLon)
+  const snapshot = await getDocs(placesQuery);
+  const places = snapshot.docs.map<PlaceDoc>((doc) => ({ id: doc.id, ...doc.data() }) as PlaceDoc);
+
+
+  return places.filter((place) =>
+    calculateDistance(location, place.coordinate) <= radius
   );
-  
-  const snapshot = await getDocs(locationsQuery);
-  console.log(snapshot.docs.length)
-  // Étape 3 : Appliquer le filtre de distance exacte (haversine)
-
-  function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
-    const toRadians = (degrees: number) => (degrees * Math.PI) / 180;
-
-    const dLat = toRadians(lat2 - lat1);
-    const dLon = toRadians(lon2 - lon1);
-
-    const a =
-      Math.sin(dLat / 2) ** 2 +
-      Math.cos(toRadians(lat1)) *
-      Math.cos(toRadians(lat2)) *
-      Math.sin(dLon / 2) ** 2;
-
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-    return EARTH_RADIUS_KM * c;
-  }
-
-  const places = snapshot.docs
-    .map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }))
-    .filter((data: any) => {
-      const distance = haversineDistance(
-        currentLocation.latitude,
-        currentLocation.longitude,
-        data.coordinate.latitude,
-        data.coordinate.longitude
-      );
-      return distance <= radiusInKm;
-    });
-
-  return places as PlaceDoc[];
 }
 
+
+
+async function checkIfPlaceExists(location: Coordinate) {
+  const radiusKm = 1;
+
+  const places = await getCoordsWithinRadiusDirectly(location, radiusKm);
+  return places.length > 0;
+
+}
 
 
 
 export const geocoding = {
   getAddressFromCoords,
+  checkIfPlaceExists,
   getCoordsWithinRadiusDirectly,
 }

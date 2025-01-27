@@ -1,36 +1,32 @@
-import { useMap } from "../MapContext";
 import { Text } from "@/components/ui";
 import { spacing } from "@/theme/spacing";
-import { FC, memo, useCallback } from "react";
+import { FC, Fragment, memo } from "react";
+import { Place, useMap } from "../MapContext";
+import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, View, } from "react-native";
 import { Button } from "@/components/ui/buttons";
 import { PointRipple, ripples } from "../marker";
 import { Portal } from "@/providers/PortalProvider";
+import { useValidationPlace } from "@/services/hooks";
 import { component, reusableStyle } from "@/theme/reusables";
 import { useBackhandler, useLocale, useTheme } from "@/hooks";
 import Animated, { Easing, SlideInDown, SlideOutDown } from "react-native-reanimated";
 
 
+type RenderRequestPlaceProps = {
+  place: Place;
+  closePlace: () => void;
+  confirmRequestPlace: () => void;
+}
+
+
 
 export const RequestPlace: FC = memo(function RequestPlace() {
-
   const map = useMap();
-  const { t } = useLocale();
-
-  const { colors, mode } = useTheme();
-
-  const onClose = useCallback(() => {
-    map.closePlace();
-  }, []);
-
-  const onConfirm = useCallback(() => {
-    map.confirmRequestPlace();
-  }, []);
-
 
   useBackhandler(() => {
     if (map.newPlace?.open) {
-      onClose();
+      map.closePlace();
       return true;
     }
     return false;
@@ -42,25 +38,52 @@ export const RequestPlace: FC = memo(function RequestPlace() {
       name={'request-place'}
     >
       {map.newPlace?.open ?
-        <Animated.View
-          entering={
-            SlideInDown
-              .springify()
-              .damping(50)
-          }
-          exiting={
-            SlideOutDown
-              .duration(1000)
-              .easing(Easing.ease)
-          }
-          style={[
-            styles.container,
-            { backgroundColor: colors.card }
-          ]}
-        >
-          <View
-            style={reusableStyle.row}
-          >
+        <RenderRequestPlace
+          place={map.newPlace}
+          closePlace={map.closePlace}
+          confirmRequestPlace={map.confirmRequestPlace}
+        /> :
+        null
+      }
+    </Portal>
+  );
+});
+
+
+
+
+
+
+const RenderRequestPlace: FC<RenderRequestPlaceProps> = memo(function RenderRequestPlace(props) {
+  const { place, closePlace, confirmRequestPlace } = props;
+
+  const { t } = useLocale();
+
+  const { colors, mode } = useTheme();
+  const validation = useValidationPlace(place);
+
+  return (
+    <Animated.View
+      entering={
+        SlideInDown
+          .springify()
+          .damping(50)
+      }
+      exiting={
+        SlideOutDown
+          .duration(1000)
+          .easing(Easing.ease)
+      }
+      style={[
+        styles.container,
+        { backgroundColor: colors.card }
+      ]}
+    >
+      <View
+        style={reusableStyle.row}
+      >
+        {validation.valid !== false ?
+          <Fragment>
             <Text
               variant={'body2_m'}
             >
@@ -77,32 +100,49 @@ export const RequestPlace: FC = memo(function RequestPlace() {
               ))}
             </View>
             <Text variant={'body2_m'}>?</Text>
-          </View>
+          </Fragment> :
           <View
-            style={styles.buttons}
+            style={styles.content}
           >
-            <Button
-              variant={'text'}
-              onPress={onConfirm}
-              textStyle={{
-                color: mode === 'light' ? 'gray1' : 'background'
-              }}
+            <Ionicons
+              size={spacing.l}
+              color={colors.error}
+              name={'warning-outline'}
+            />
+            <Text
+              color={'error'}
+              variant={'body2_m'}
             >
-              {t('request-place-modal-btn-yes')}
-            </Button>
-            <Button
-              variant={'error'}
-              onPress={onClose}
-            >
-              {t('request-place-modal-btn-no')}
-            </Button>
+              {t('places-confirm-btn')}
+            </Text>
           </View>
-        </Animated.View> :
-        null
-      }
-    </Portal>
+        }
+      </View>
+      <View
+        style={styles.buttons}
+      >
+        <Button
+          variant={'text'}
+          onPress={confirmRequestPlace}
+          disabled={!validation.valid}
+          loading={validation.loading}
+          textStyle={{
+            color: mode === 'light' ? 'gray1' : 'background'
+          }}
+        >
+          {t('request-place-modal-btn-yes')}
+        </Button>
+        <Button
+          variant={'error'}
+          onPress={closePlace}
+        >
+          {t('request-place-modal-btn-no')}
+        </Button>
+      </View>
+    </Animated.View>
   );
-})
+});
+
 
 
 
@@ -117,6 +157,10 @@ const styles = StyleSheet.create({
     borderRadius: spacing.s,
     paddingVertical: spacing.m,
     paddingHorizontal: spacing.m,
+  },
+  content: {
+    ...reusableStyle.row,
+    columnGap: spacing.s,
   },
   ripples: {
     ...reusableStyle.row,
