@@ -1,7 +1,7 @@
-import { Coordinate } from "@/services/types";
-import MapView, { Camera } from "react-native-maps";
-import { createContext, FunctionComponent, PropsWithChildren, useCallback, useContext, useRef, useState } from "react";
 import { useGetPlacesAround } from "@/services/hooks";
+import MapView, { Camera } from "react-native-maps";
+import { Coordinate, PlaceDoc } from "@/services/types";
+import { createContext, FunctionComponent, PropsWithChildren, useCallback, useContext, useRef, useState } from "react";
 
 export type Point = {
   x: number;
@@ -30,11 +30,12 @@ interface MapContextType {
   currentCamera?: Camera;
   mapRef: React.RefObject<MapView>;
   radius: number;
+  places:PlaceDoc[];
   closePlace: () => void;
   onMapLoaded: () => void;
   closeModal: () => void;
   requestAddPlace: (place: Place) => void;
-  onradiusChange: (value: number) => void;
+  onRadiusChange: (value: number) => void;
   confirmRequestPlace: () => void;
   setCurrentCamera: (currentCamera: Camera) => void;
 }
@@ -43,6 +44,7 @@ interface MapContextType {
 const initialValue: MapContextType = {
   loading: true,
   radius: 5,
+  places:[],
   mapRef: {} as MapContextType['mapRef'],
   requestAddPlace: () => { },
   closePlace: () => { },
@@ -50,7 +52,7 @@ const initialValue: MapContextType = {
   closeModal: () => { },
   onMapLoaded: () => { },
   confirmRequestPlace: () => { },
-  onradiusChange: () => { },
+  onRadiusChange: () => { },
 }
 
 
@@ -72,7 +74,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
   const mapRef = useRef<MapView>(null);
   const [state, setState] = useState<MapState>(initialValue);
 
-  const { data } = useGetPlacesAround(state.radius);
+  const { places } = useGetPlacesAround(state.radius);
 
   const requestAddPlace = useCallback((newPlace: Place) => {
     setState(state => ({
@@ -132,7 +134,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
   }, []);
 
 
-  const onradiusChange = useCallback((radius: number) => {
+  const onRadiusChange = useCallback((radius: number) => {
     setState(state => ({
       ...state,
       radius,
@@ -149,6 +151,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
         newPlace: state.newPlace,
         openModal: state.openModal,
         radius: state.radius,
+        places,
         currentCamera: state.currentCamera,
         confirmRequestPlace,
         requestAddPlace,
@@ -156,7 +159,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
         closeModal,
         setCurrentCamera,
         onMapLoaded,
-        onradiusChange,
+        onRadiusChange,
       }}
     >
       {children}

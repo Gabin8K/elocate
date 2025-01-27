@@ -80,7 +80,7 @@ const RenderRequestPlace: FC<RenderRequestPlaceProps> = memo(function RenderRequ
       ]}
     >
       <View
-        style={reusableStyle.row}
+        style={styles.content}
       >
         {validation.valid !== false ?
           <Fragment>
@@ -101,9 +101,7 @@ const RenderRequestPlace: FC<RenderRequestPlaceProps> = memo(function RenderRequ
             </View>
             <Text variant={'body2_m'}>?</Text>
           </Fragment> :
-          <View
-            style={styles.content}
-          >
+          <Fragment>
             <Ionicons
               size={spacing.l}
               color={colors.error}
@@ -112,10 +110,11 @@ const RenderRequestPlace: FC<RenderRequestPlaceProps> = memo(function RenderRequ
             <Text
               color={'error'}
               variant={'body2_m'}
+              style={styles.text}
             >
-              {t('places-confirm-btn')}
+              {t('places-already-exists')}
             </Text>
-          </View>
+          </Fragment>
         }
       </View>
       <View
@@ -159,8 +158,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.m,
   },
   content: {
+    height: spacing.lg,
     ...reusableStyle.row,
     columnGap: spacing.s,
+    width: spacing.width * .85,
+  },
+  text: {
+    flex: 1,
   },
   ripples: {
     ...reusableStyle.row,

@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: 4,
     ...reusableStyle.row,
-    backgroundColor: common.disabled,
+    backgroundColor: common.gray2,
   },
   thumb: {
     height: '100%',

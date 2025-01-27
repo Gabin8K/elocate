@@ -35,7 +35,7 @@ export default {
   // --Places Screen--
   "places-screen-title": "Lieux",
   "places-card-get-direction-btn": "Obtenir l'itinéraire",
-  "places-confirm-btn": "Un lieu proche existe déjà à cet endroit",
+  "places-already-exists": "Un lieu proche existe déjà à cet endroit.",
   // Place Modal
   "place-modal-itinerary-title": "Sélectionner l'application",
   "place-modal-share-title": "Sélectionner le lien de partage",

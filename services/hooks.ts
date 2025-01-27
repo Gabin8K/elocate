@@ -108,7 +108,7 @@ export function useGetPlacesAround(radius: number) {
   const toast = useToast();
   const location = useLocation();
 
-  const [data, setData] = useState<PlaceDoc[]>([]);
+  const [places, setPlaces] = useState<PlaceDoc[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -116,7 +116,7 @@ export function useGetPlacesAround(radius: number) {
       if (!location) return;
       try {
         const data = await geocoding.getCoordsWithinRadiusDirectly(location.coords, radius);
-        setData(data);
+        setPlaces(data);
       } catch (error: any) {
         toast.show(String(error.message || error), 'error');
       }
@@ -128,7 +128,7 @@ export function useGetPlacesAround(radius: number) {
   }, [location, radius])
 
   return {
-    data,
+    places,
     loading,
   }
 }

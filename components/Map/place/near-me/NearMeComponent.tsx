@@ -24,7 +24,7 @@ export const NearMeComponent: FC = memo(function NearMeComponent() {
   return (
     <NearMeProvider>
       <NearMeContent
-        onRadiusChange={map.onRaduisChange}
+        onRadiusChange={map.onRadiusChange}
       />
     </NearMeProvider>
   );
