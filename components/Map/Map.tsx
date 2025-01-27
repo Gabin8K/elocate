@@ -7,7 +7,7 @@ import { reusableStyle } from "@/theme/reusables";
 import { useMapKey } from "@/providers/MapKeyProvider";
 import { FC, Fragment, memo, useCallback } from "react";
 import { UserLocationButton } from "./UserLocationButton";
-import { MarkerCurrentPosition, MarkerPlace } from "./marker";
+import { MarkerCurrentPosition, MarkerPlace, MarkerPlaceNearMe } from "./marker";
 import MapView, { Camera, LongPressEvent, PROVIDER_GOOGLE, Region } from "react-native-maps";
 
 
@@ -89,6 +89,10 @@ export const Map: FC = memo(function Map() {
         />
         <MarkerCurrentPosition
           coordinate={location?.coords}
+          currentCamera={map.currentCamera}
+        />
+        <MarkerPlaceNearMe
+          coordinates={map.places.map(place => place.coordinate)}
           currentCamera={map.currentCamera}
         />
       </MapView>

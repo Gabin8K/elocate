@@ -30,7 +30,8 @@ interface MapContextType {
   currentCamera?: Camera;
   mapRef: React.RefObject<MapView>;
   radius: number;
-  places:PlaceDoc[];
+  places: PlaceDoc[];
+  loadingPlaces: boolean;
   closePlace: () => void;
   onMapLoaded: () => void;
   closeModal: () => void;
@@ -43,8 +44,9 @@ interface MapContextType {
 
 const initialValue: MapContextType = {
   loading: true,
+  loadingPlaces: true,
   radius: 5,
-  places:[],
+  places: [],
   mapRef: {} as MapContextType['mapRef'],
   requestAddPlace: () => { },
   closePlace: () => { },
@@ -74,7 +76,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
   const mapRef = useRef<MapView>(null);
   const [state, setState] = useState<MapState>(initialValue);
 
-  const { places } = useGetPlacesAround(state.radius);
+  const near = useGetPlacesAround(state.radius);
 
   const requestAddPlace = useCallback((newPlace: Place) => {
     setState(state => ({
@@ -151,7 +153,8 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
         newPlace: state.newPlace,
         openModal: state.openModal,
         radius: state.radius,
-        places,
+        places: near.places,
+        loadingPlaces: near.loading,
         currentCamera: state.currentCamera,
         confirmRequestPlace,
         requestAddPlace,

@@ -1,12 +1,14 @@
 import { useTheme } from "@/hooks";
 import { common } from "@/theme/palette";
+import { spacing } from "@/theme/spacing";
 import { reusableStyle } from "@/theme/reusables";
 import { FC, memo, useCallback, useMemo } from "react";
-import { LayoutChangeEvent, StyleSheet, Vibration, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { ActivityIndicator, LayoutChangeEvent, StyleSheet, Vibration, View } from "react-native";
 import Animated, { interpolate, runOnJS, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 
 export interface SliderProps {
+  loading?: boolean;
   onChange?: (value: number) => void;
 }
 
@@ -18,7 +20,7 @@ const trackOffsetX = (trackSize - trackBorderWidth) / 2;
 
 
 export const Slider: FC<SliderProps> = memo(function Slider(props) {
-  const { onChange } = props;
+  const { loading, onChange } = props;
 
   const { colors } = useTheme();
 
@@ -93,6 +95,7 @@ export const Slider: FC<SliderProps> = memo(function Slider(props) {
         gesture={gesture}
       >
         <Animated.View
+          pointerEvents={loading ? 'none' : undefined}
           style={[
             uas,
             styles.track,
@@ -101,7 +104,15 @@ export const Slider: FC<SliderProps> = memo(function Slider(props) {
               boxShadow: `0 4 4 ${colors.shadow}, 0 -4 4 ${colors.shadow}`,
             }
           ]}
-        />
+        >
+          {loading ?
+            <ActivityIndicator
+              color={colors.primary}
+              size={spacing.m}
+            /> :
+            null
+          }
+        </Animated.View>
       </GestureDetector>
     </View>
   )
@@ -125,9 +136,11 @@ const styles = StyleSheet.create({
     left: -trackLeft,
     width: trackSize,
     height: trackSize,
-    borderWidth: trackBorderWidth,
     position: 'absolute',
+    alignItems: 'center',
     borderRadius: trackSize,
+    justifyContent: 'center',
+    borderWidth: trackBorderWidth,
     backgroundColor: common.gray1,
   }
 })

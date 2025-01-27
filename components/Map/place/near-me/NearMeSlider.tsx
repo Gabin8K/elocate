@@ -18,12 +18,12 @@ export const NearMeSlider: FC<NearMeSliderProps> = memo(function NearMeSlider(pr
 
   const { t } = useLocale();
 
-  const [value, setValue] = useState(0);
-  const km = Math.floor(value / 5);
+  const [km, setKm] = useState(0);
 
   const onChange = useCallback((value: number) => {
-    setValue(value);
-    onRadiusChange(value);
+    const km = Math.floor(value / 5);
+    setKm(km);
+    onRadiusChange(km);
   }, [onRadiusChange]);
 
 
