@@ -72,38 +72,6 @@ export function useFormPlaceSubmit() {
 
 
 
-export function useGetPlaces() {
-  const toast = useToast();
-  const [data, setData] = useState<PlaceDoc[]>([]);
-  const [loading, setLoading] = useState(true);
-
-
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        const data = await places.getPlaces();
-        setData(data);
-      } catch (error: any) {
-        toast.show(String(error.message || error), 'error');
-      }
-      finally {
-        setLoading(false);
-      }
-    }
-    fetch();
-  }, [])
-
-  return {
-    data,
-    loading,
-  }
-
-}
-
-
-
-
-
 export function useGetPlacesAround(radius: number) {
   const toast = useToast();
   const location = useLocation();

@@ -71,6 +71,7 @@ export const Map: FC = memo(function Map() {
         ref={map.mapRef}
         minZoomLevel={13}
         showsCompass={false}
+        toolbarEnabled={false}
         camera={initialCamera}
         onLongPress={onLongPress}
         provider={PROVIDER_GOOGLE}
