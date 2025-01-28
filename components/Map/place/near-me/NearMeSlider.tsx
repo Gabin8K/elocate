@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   container: {
     rowGap: spacing.l,
     padding: spacing.l,
-    minWidth: spacing.width * 0.65,
+    minWidth: spacing.width * .75,
   },
   text: {
     lineHeight: 22,
