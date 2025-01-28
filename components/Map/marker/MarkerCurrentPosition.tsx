@@ -5,12 +5,21 @@ import { Coordinate } from "@/services/types";
 import { reusableStyle } from "@/theme/reusables";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Marker3DContent } from "./Marker3DContent";
-import { Camera, MarkerAnimated } from "react-native-maps";
+import { Camera, Circle, MarkerAnimated } from "react-native-maps";
 
 type MarkerCurrentPositionProps = {
   currentCamera?: Camera;
   coordinate?: Coordinate;
 }
+
+
+type RadiusCurrentPositionProps = {
+  radius: number;
+  coordinate?: Coordinate;
+  currentCamera?: Camera;
+}
+
+
 
 
 export const MarkerCurrentPosition: FC<MarkerCurrentPositionProps> = memo(function MarkerCurrentPosition(props) {
@@ -35,6 +44,31 @@ export const MarkerCurrentPosition: FC<MarkerCurrentPositionProps> = memo(functi
     </MarkerAnimated>
   );
 });
+
+
+
+
+
+
+export const RadiusCurrentPosition: FC<RadiusCurrentPositionProps> = memo(function RadiusCurrentPosition(props) {
+  const { radius, coordinate, currentCamera } = props;
+
+  const radiusInKm = radius * 1000;
+
+  if (!coordinate || !currentCamera) return null;
+
+  return (
+    <Circle
+      center={coordinate}
+      radius={radiusInKm}
+      strokeWidth={1.5}
+      strokeColor={'rgba(29,164,69,.4)'}
+      fillColor={'rgba(29,164,69,.08)'}
+    />
+  );
+});
+
+
 
 
 

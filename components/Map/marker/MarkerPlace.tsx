@@ -1,11 +1,14 @@
 import { useTheme } from "@/hooks";
-import { FC, Fragment, memo } from "react";
-import { Coordinate } from "@/services/types";
-import { StyleSheet, View } from "react-native";
+import { Text } from "@/components/ui";
+import { StyleSheet } from "react-native";
+import { Itinerary } from "../MapContext";
+import { Ionicons } from "@expo/vector-icons";
 import { reusableStyle } from "@/theme/reusables";
-import { Marker3DContent } from "./Marker3DContent";
+import { MarkerAnimated } from "react-native-maps";
 import { PointRipple, ripples } from "./PointRipple";
-import { Camera, MarkerAnimated } from "react-native-maps";
+import { FC, Fragment, memo, useCallback } from "react";
+import { Coordinate, PlaceDoc } from "@/services/types";
+import Animated, { FadeOut, ZoomIn } from "react-native-reanimated";
 
 
 type MarkerPlaceProps = {
@@ -14,8 +17,8 @@ type MarkerPlaceProps = {
 }
 
 type MarkerPlaceNearMeProps = {
-  coordinates: Coordinate[];
-  currentCamera?: Camera;
+  places: PlaceDoc[];
+  requestItinerary: (itinerary: Itinerary) => void;
 }
 
 
@@ -45,38 +48,46 @@ export const MarkerPlace: FC<MarkerPlaceProps> = memo(function MarkerPlace(props
 
 
 export const MarkerPlaceNearMe: FC<MarkerPlaceNearMeProps> = memo(function MarkerPlaceNearMe(props) {
-  const { coordinates, currentCamera } = props;
+  const { places, requestItinerary } = props;
 
   const { colors } = useTheme();
 
+  const onPress = useCallback((place: PlaceDoc, index:number) => {
+    requestItinerary({ place, index });
+  }, []);
+
+
   return (
     <Fragment>
-      {coordinates.map((coord) => (
+      {places.map((place, index) => (
         <MarkerAnimated
-          key={`${coord.latitude}-${coord.longitude}`}
-          coordinate={coord}
+          key={place.id}
+          coordinate={place.coordinate}
+          style={styles.container}
+          onPress={() => onPress(place, index)}
         >
-          <Marker3DContent
-            currentCamera={currentCamera}
-            style={[
-              styles.box,
-              { backgroundColor: colors.primary_light }
-            ]}
+          <Animated.View
+            entering={ZoomIn}
+            exiting={FadeOut}
           >
-            <View
-              style={[
-                styles.dot,
-                { backgroundColor: colors.primary }
-              ]}
+            <Ionicons
+              size={18}
+              name={'location-outline'}
+              color={colors.primary}
             />
-          </Marker3DContent>
+            <Text
+              color={'primary'}
+              variant={'caption_eb'}
+              style={styles.text}
+            >
+              {index + 1}
+            </Text>
+          </Animated.View>
         </MarkerAnimated>
       ))}
     </Fragment>
   );
 });
-
-
 
 
 
@@ -87,15 +98,12 @@ const styles = StyleSheet.create({
     position: 'relative',
     ...reusableStyle.center,
   },
-  box: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    ...reusableStyle.center,
-  },
-  dot: {
-    width: 6,
-    height: 6,
-    borderRadius: 6,
+  text: {
+    fontSize: 10,
+    lineHeight: 10,
+    textAlign: 'center',
+    transform: [
+      { scale: 1.5 }
+    ],
   }
 })

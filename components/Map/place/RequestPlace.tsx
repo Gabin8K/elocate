@@ -129,13 +129,13 @@ const RenderRequestPlace: FC<RenderRequestPlaceProps> = memo(function RenderRequ
             color: mode === 'light' ? 'gray1' : 'background'
           }}
         >
-          {t('request-place-modal-btn-yes')}
+          {t('yes')}
         </Button>
         <Button
           variant={'error'}
           onPress={closePlace}
         >
-          {t('request-place-modal-btn-no')}
+          {t('no')}
         </Button>
       </View>
     </Animated.View>
@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
     height: spacing.lg,
     ...reusableStyle.row,
     columnGap: spacing.s,
+    justifyContent: 'center',
     width: spacing.width * .85,
   },
   text: {

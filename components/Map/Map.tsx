@@ -7,8 +7,8 @@ import { reusableStyle } from "@/theme/reusables";
 import { useMapKey } from "@/providers/MapKeyProvider";
 import { FC, Fragment, memo, useCallback } from "react";
 import { UserLocationButton } from "./UserLocationButton";
-import { MarkerCurrentPosition, MarkerPlace, MarkerPlaceNearMe } from "./marker";
 import MapView, { Camera, LongPressEvent, PROVIDER_GOOGLE, Region } from "react-native-maps";
+import { ItineraryComponent, MarkerCurrentPosition, MarkerPlace, MarkerPlaceNearMe, RadiusCurrentPosition } from "./marker";
 
 
 
@@ -43,10 +43,6 @@ export const Map: FC = memo(function Map() {
     const { center, ...camera } = initialCamera;
     map.mapRef.current?.animateCamera(camera, { duration: 500 });
     map.requestAddPlace({
-      point: {
-        x: nativeEvent.position.x,
-        y: nativeEvent.position.y
-      },
       coordinate: {
         latitude: nativeEvent.coordinate.latitude,
         longitude: nativeEvent.coordinate.longitude
@@ -71,7 +67,7 @@ export const Map: FC = memo(function Map() {
         key={key}
         showsBuildings
         ref={map.mapRef}
-        minZoomLevel={14}
+        minZoomLevel={13}
         showsCompass={false}
         camera={initialCamera}
         onLongPress={onLongPress}
@@ -91,14 +87,24 @@ export const Map: FC = memo(function Map() {
           coordinate={location?.coords}
           currentCamera={map.currentCamera}
         />
-        <MarkerPlaceNearMe
-          coordinates={map.places.map(place => place.coordinate)}
+        <RadiusCurrentPosition
+          radius={map.radius}
+          coordinate={location?.coords}
           currentCamera={map.currentCamera}
+        />
+        <MarkerPlaceNearMe
+          places={map.places}
+          requestItinerary={map.requestItinerary}
         />
       </MapView>
       <UserLocationButton
         mapRef={map.mapRef}
         camera={initialCamera}
+      />
+      <ItineraryComponent
+        radius={map.radius}
+        itinerary={map.itinerary}
+        location={location?.coords}
       />
       <LoadingMap
         loading={map.loading}

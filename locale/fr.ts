@@ -4,6 +4,8 @@ export default {
   "english": "English",
   "french": "Français",
   "connection-error": "Erreur de connexion",
+  "yes": "Oui",
+  "no": "Non",
 
   // --Drawer--
   "drawer-user-status": "Non connecté",
@@ -16,12 +18,11 @@ export default {
   "slider-showing-end": "lieux",
   "slider-within": "Rayon de",
   "slider-km": "km",
-  
+
   // --Home Screen--
   // Request Place Modal
+  "request-itinerary-modal-title": "Voulez-vous obtenir l'itinéraire vers ce lieu ?",
   "request-place-modal-title": "Voulez-vous ajouter ce lieu",
-  "request-place-modal-btn-yes": "Oui",
-  "request-place-modal-btn-no": "Non",
   "request-place-modal-form-title": "Ajouter un lieu",
   "request-place-modal-form-placeholder-address": "Selectionner l'adresse",
   "request-place-modal-form-placeholder-description": "Description...",

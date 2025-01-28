@@ -3,20 +3,23 @@ import { useGetPlacesAround } from "@/services/hooks";
 import { Coordinate, PlaceDoc } from "@/services/types";
 import { createContext, FunctionComponent, PropsWithChildren, useCallback, useContext, useRef, useState } from "react";
 
-export type Point = {
-  x: number;
-  y: number;
-}
-
 
 export type Place = {
   open?: boolean;
-  point: Point;
   coordinate: Coordinate;
 }
 
+export type Itinerary = {
+  open?: boolean;
+  index: number;
+  place: PlaceDoc;
+  confirm?: boolean;
+}
+
+
 type MapState = {
   newPlace?: Place;
+  itinerary?: Itinerary;
   openModal?: boolean;
   loading: boolean;
   radius: number;
@@ -27,17 +30,21 @@ interface MapContextType {
   loading: boolean;
   newPlace?: Place;
   openModal?: boolean;
+  itinerary?: Itinerary;
   currentCamera?: Camera;
   mapRef: React.RefObject<MapView>;
   radius: number;
   places: PlaceDoc[];
   loadingPlaces: boolean;
   closePlace: () => void;
+  closeItinerary: () => void;
   onMapLoaded: () => void;
   closeModal: () => void;
   requestAddPlace: (place: Place) => void;
+  requestItinerary: (itinerary: Itinerary) => void;
   onRadiusChange: (value: number) => void;
   confirmRequestPlace: () => void;
+  confirmRequestItinerary: () => void;
   setCurrentCamera: (currentCamera: Camera) => void;
 }
 
@@ -55,6 +62,9 @@ const initialValue: MapContextType = {
   onMapLoaded: () => { },
   confirmRequestPlace: () => { },
   onRadiusChange: () => { },
+  closeItinerary: () => { },
+  requestItinerary: () => { },
+  confirmRequestItinerary: () => { },
 }
 
 
@@ -88,6 +98,16 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
     }));
   }, []);
 
+  const requestItinerary = useCallback((itinerary: Itinerary) => {
+    setState(state => ({
+      ...state,
+      itinerary: {
+        ...itinerary,
+        open: true,
+      }
+    }));
+  }, []);
+
   const closePlace = useCallback(() => {
     setState(state => ({
       ...state,
@@ -106,6 +126,19 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
       newPlace: {
         ...state.newPlace || {} as Place,
         open: false,
+      },
+    }));
+  }, []);
+
+
+
+  const confirmRequestItinerary = useCallback(() => {
+    setState(state => ({
+      ...state,
+      itinerary: {
+        ...state.itinerary || {} as Itinerary,
+        open: false,
+        confirm: true,
       },
     }));
   }, []);
@@ -144,6 +177,14 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
   }, []);
 
 
+  const closeItinerary = useCallback(() => {
+    setState(state => ({
+      ...state,
+      itinerary: undefined,
+    }));
+  }, []);
+
+
 
   return (
     <MapContext.Provider
@@ -154,6 +195,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
         openModal: state.openModal,
         radius: state.radius,
         places: near.places,
+        itinerary: state.itinerary,
         loadingPlaces: near.loading,
         currentCamera: state.currentCamera,
         confirmRequestPlace,
@@ -163,6 +205,9 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
         setCurrentCamera,
         onMapLoaded,
         onRadiusChange,
+        closeItinerary,
+        requestItinerary,
+        confirmRequestItinerary,
       }}
     >
       {children}

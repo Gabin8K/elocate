@@ -1,5 +1,11 @@
 export const mapStyles = {
-  light: [],
+  light: [
+    {
+      featureType: "poi",
+      elementType: "labels",
+      stylers: [{ visibility: "off" }]
+    }
+  ],
   dark: [
     { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
     { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
@@ -7,22 +13,27 @@ export const mapStyles = {
     {
       featureType: "administrative.locality",
       elementType: "labels.text.fill",
-      stylers: [{ color: "#d59563" }],
+      stylers: [{ color: "#d59563", visibility: "off" }],
+    },
+    {
+      featureType: "poi.business",
+      elementType: "labels",
+      stylers: [{ visibility: "off" }]
     },
     {
       featureType: "poi",
-      elementType: "labels.text.fill",
-      stylers: [{ color: "#d59563" }],
+      elementType: "labels",
+      stylers: [{ color: "#d59563", visibility: "off" }],
     },
     {
       featureType: "poi.park",
       elementType: "geometry",
-      stylers: [{ color: "#263c3f" }],
+      stylers: [{ color: "#263c3f", visibility: "off" }],
     },
     {
       featureType: "poi.park",
       elementType: "labels.text.fill",
-      stylers: [{ color: "#6b9a76" }],
+      stylers: [{ color: "#6b9a76", visibility: "off" }],
     },
     {
       featureType: "road",
