@@ -1,13 +1,13 @@
+import { useTheme } from "@/hooks";
 import { FC, memo, useMemo } from "react";
 import { spacing } from "@/theme/spacing";
-import { palette } from "@/theme/palette";
 import { usePlaces } from "./PlacesContext";
 import { PlaceDoc } from "@/services/types";
 import { PlaceCard } from "./card/PlaceCard";
-import Animated from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Animated, { LinearTransition } from "react-native-reanimated";
 import { useScrollAnimated } from "@/providers/ScrollAnimatedProvider";
-import { ActivityIndicator, ListRenderItemInfo, StyleSheet } from "react-native";
+import { ActivityIndicator, ListRenderItemInfo, RefreshControl, StyleSheet } from "react-native";
 
 
 export interface PlacesListProps {
@@ -19,6 +19,8 @@ export interface PlacesListProps {
 export const PlacesList: FC<PlacesListProps> = memo(function PlacesList() {
 
   const insets = useSafeAreaInsets();
+  const { colors } = useTheme();
+
   const places = usePlaces();
   const { onScroll } = useScrollAnimated();
 
@@ -44,15 +46,23 @@ export const PlacesList: FC<PlacesListProps> = memo(function PlacesList() {
         { paddingTop }
       ]}
       showsVerticalScrollIndicator={false}
+      itemLayoutAnimation={LinearTransition}
       renderItem={renderItem}
       ListFooterComponent={
         places.loading ?
           <ActivityIndicator
             size={spacing.lg}
             style={styles.loading}
-            color={palette.light.primary}
+            color={colors.primary}
           /> :
           null
+      }
+      refreshControl={
+        <RefreshControl
+          onRefresh={places.onFetch}
+          refreshing={places.loading as boolean}
+          colors={[colors.primary, colors.text]}
+        />
       }
     />
   )

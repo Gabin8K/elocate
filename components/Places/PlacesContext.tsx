@@ -15,6 +15,7 @@ interface PlacesContextType {
   listOfPlaces: PlaceDoc[];
   itinerary?: PlaceDoc;
   sharePlace?: PlaceDoc;
+  onFetch: () => void;
   onRadiusChange: (radius: number) => void;
   setSharePlace: (share?: PlaceDoc) => void;
   setItinerary: (itinary?: PlaceDoc) => void;
@@ -23,6 +24,7 @@ interface PlacesContextType {
 const initialValues: PlacesContextType = {
   radius: 2,
   listOfPlaces: [],
+  onFetch: () => { },
   setSharePlace: () => { },
   setItinerary: () => { },
   onRadiusChange: () => { },
@@ -45,7 +47,7 @@ export const usePlaces = () => {
 export const PlacesProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const [state, setState] = useState<State>(initialValues);
 
-  const { places, loading } = useGetPlacesMappedAround(state.radius);
+  const { places, onFetch, loading } = useGetPlacesMappedAround(state.radius);
 
   const setItinerary = useCallback((itinerary?: PlaceDoc) => {
     setState((prev) => ({
@@ -74,6 +76,7 @@ export const PlacesProvider: FunctionComponent<PropsWithChildren> = ({ children 
     <PlacesContext.Provider
       value={{
         loading,
+        onFetch,
         setItinerary,
         setSharePlace,
         onRadiusChange,

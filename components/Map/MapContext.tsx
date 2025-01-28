@@ -174,6 +174,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
     setState(state => ({
       ...state,
       radius,
+      itinerary: undefined,
     }));
   }, []);
 

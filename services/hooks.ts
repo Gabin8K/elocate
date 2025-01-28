@@ -151,24 +151,27 @@ export function useGetPlacesMappedAround(radius: number) {
   const [places, setPlaces] = useState<PlaceDoc[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetch = async () => {
-      if (!location || !isFocused) return;
-      try {
-        const data = await geocoding.getPlacesWithinRadiusDirectly(location.coords, radius);
-        setPlaces(data);
-      } catch (error: any) {
-        toast.show(String(error.message || error), 'error');
-      }
-      finally {
-        setLoading(false);
-      }
+  const onFetch = useCallback(async () => {
+    if (!location || !isFocused) return;
+    try {
+      setLoading(true);
+      const data = await geocoding.getPlacesWithinRadiusDirectly(location.coords, radius);
+      setPlaces(data);
+    } catch (error: any) {
+      toast.show(String(error.message || error), 'error');
     }
-    fetch();
+    finally {
+      setLoading(false);
+    }
+  }, [location, radius])
+
+  useEffect(() => {
+    onFetch();
   }, [isFocused, location, radius])
 
   return {
     places,
     loading,
+    onFetch,
   }
 }
