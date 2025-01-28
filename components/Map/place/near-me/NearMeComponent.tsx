@@ -5,7 +5,7 @@ import { NearMeSlider } from "./NearMeSlider";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useBackhandler, useTheme } from "@/hooks";
 import { IconButton } from "@/components/ui/buttons";
-import { FC, Fragment, memo, useCallback, useState } from "react";
+import { FC, Fragment, memo, useCallback } from "react";
 import { NearMeProvider, useNearMe } from "./NearMeContext";
 import Animated, { LinearTransition, ZoomIn } from "react-native-reanimated";
 
@@ -21,10 +21,8 @@ type NearMeContentProps = {
 
 export const NearMeComponent: FC = memo(function NearMeComponent() {
   const map = useMap();
-  const [defaultValue, setDefaultValue] = useState(2);
 
   const onRadiusChange = useCallback((value: number) => {
-    setDefaultValue(value);
     map.onRadiusChange(value);
   }, []);
 
@@ -33,9 +31,9 @@ export const NearMeComponent: FC = memo(function NearMeComponent() {
   return (
     <NearMeProvider>
       <NearMeContent
+        defaultValue={2}
         loading={map.loadingPlaces}
         showing={map.places.length}
-        defaultValue={defaultValue}
         onRadiusChange={onRadiusChange}
       />
     </NearMeProvider>
@@ -117,8 +115,8 @@ const NearMeContent: FC<NearMeContentProps> = memo(function NearMeContent(props)
               }}
             />
             <NearMeSlider
-              defaultValue={defaultValue}
               showing={props.showing}
+              defaultValue={defaultValue}
               onRadiusChange={onRadiusChange}
             />
           </Fragment>

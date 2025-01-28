@@ -1,8 +1,9 @@
 import { Text } from "@/components/ui";
 import { CardImage } from "./CardImage";
-import { Place } from "@/services/types";
+import { date } from "@/utils/formater";
 import { common } from "@/theme/palette";
 import { spacing } from "@/theme/spacing";
+import { PlaceDoc } from "@/services/types";
 import { usePlaces } from "../PlacesContext";
 import { Ionicons } from "@expo/vector-icons";
 import { FC, memo, useCallback } from "react";
@@ -15,7 +16,7 @@ import { component, reusableStyle } from "@/theme/reusables";
 
 export interface PlaceCardProps {
   index: number;
-  place: Place;
+  place: PlaceDoc;
 }
 
 
@@ -24,7 +25,7 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
   const { place, index } = props;
 
   const places = usePlaces();
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const { colors, mode } = useTheme();
 
   const onGetItinerary = useCallback(() => {
@@ -48,27 +49,30 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
         { backgroundColor: colors.card }
       ]}
     >
-      {place.image ?
+      {place.imageRef ?
         <CardImage
-          uri={place.image}
+          uri={place.imageRef}
         /> :
         null
       }
       <View
         style={[
           styles.content,
-          { marginTop: !place.image ? spacing.m : undefined }
+          { marginTop: !place.imageRef ? spacing.m : undefined }
         ]}
       >
         <View>
           <Text>
-            Quebec City, QC Canada
+            {place.address}
           </Text>
-          <Text
-            color={'gray4'}
-          >
-            Avenu des Champs-Élysées
-          </Text>
+          {place.description ?
+            <Text
+              color={'gray4'}
+            >
+              {place.description}
+            </Text> :
+            null
+          }
         </View>
         <View
           style={styles.chipsContainer}
@@ -80,14 +84,14 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
             ]}
           >
             <Ionicons
-              name={'calendar-outline'}
               size={18}
+              name={'calendar-outline'}
               color={mode === 'light' ? colors.text : colors.gray1}
             />
             <Text
               variant={'caption'}
             >
-              3 days ago
+              {date(place.createdAt, locale)}
             </Text>
           </View>
           <View
@@ -104,7 +108,7 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
             <Text
               variant={'caption'}
             >
-              Franck Dernoncourt
+              {place.user.displayName}
             </Text>
           </View>
         </View>

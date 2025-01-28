@@ -1,12 +1,13 @@
-import { Place } from "@/services/types";
 import { FC, memo, useMemo } from "react";
 import { spacing } from "@/theme/spacing";
+import { palette } from "@/theme/palette";
+import { usePlaces } from "./PlacesContext";
+import { PlaceDoc } from "@/services/types";
 import { PlaceCard } from "./card/PlaceCard";
 import Animated from "react-native-reanimated";
-import { usePlacesList } from "./usePlacesList";
-import { ListRenderItemInfo, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useScrollAnimated } from "@/providers/ScrollAnimatedProvider";
+import { ActivityIndicator, ListRenderItemInfo, StyleSheet } from "react-native";
 
 
 export interface PlacesListProps {
@@ -18,13 +19,13 @@ export interface PlacesListProps {
 export const PlacesList: FC<PlacesListProps> = memo(function PlacesList() {
 
   const insets = useSafeAreaInsets();
-  const { places } = usePlacesList();
-
+  const places = usePlaces();
   const { onScroll } = useScrollAnimated();
+
 
   const paddingTop = insets.top + 150;
 
-  const renderItem = useMemo(() => function renderItem({ item, index }: ListRenderItemInfo<Place>) {
+  const renderItem = useMemo(() => function renderItem({ item, index }: ListRenderItemInfo<PlaceDoc>) {
     return (
       <PlaceCard
         index={index}
@@ -36,7 +37,7 @@ export const PlacesList: FC<PlacesListProps> = memo(function PlacesList() {
 
   return (
     <Animated.FlatList
-      data={places}
+      data={places.listOfPlaces}
       onScroll={onScroll}
       contentContainerStyle={[
         styles.contentContainerStyle,
@@ -44,6 +45,15 @@ export const PlacesList: FC<PlacesListProps> = memo(function PlacesList() {
       ]}
       showsVerticalScrollIndicator={false}
       renderItem={renderItem}
+      ListFooterComponent={
+        places.loading ?
+          <ActivityIndicator
+            size={spacing.lg}
+            style={styles.loading}
+            color={palette.light.primary}
+          /> :
+          null
+      }
     />
   )
 })
@@ -53,5 +63,8 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     paddingBottom: spacing.xl,
     paddingHorizontal: spacing.m,
+  },
+  loading: {
+    marginHorizontal: 'auto',
   }
 })

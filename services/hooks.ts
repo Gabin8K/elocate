@@ -49,7 +49,11 @@ export function useFormPlaceSubmit() {
         imageRef = response.metadata.fullPath;
       }
       return await places.createPlace({
-        userId: auth?.uid || '',
+        user: {
+          id: auth?.uid || '',
+          displayName: auth?.displayName || '',
+          photoURL: auth?.photoURL || '',
+        },
         ...place,
         imageRef,
       });
@@ -127,6 +131,40 @@ export function useValidationPlace(place: Place) {
 
   return {
     valid,
+    loading,
+  }
+}
+
+
+
+
+
+
+export function useGetPlacesMappedAround(radius: number) {
+  const toast = useToast();
+  const location = useLocation();
+
+  const [places, setPlaces] = useState<PlaceDoc[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetch = async () => {
+      if (!location) return;
+      try {
+        const data = await geocoding.getPlacesWithinRadiusDirectly(location.coords, radius);
+        setPlaces(data);
+      } catch (error: any) {
+        toast.show(String(error.message || error), 'error');
+      }
+      finally {
+        setLoading(false);
+      }
+    }
+    fetch();
+  }, [location, radius])
+
+  return {
+    places,
     loading,
   }
 }

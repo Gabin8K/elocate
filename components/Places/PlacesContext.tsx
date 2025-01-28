@@ -1,7 +1,10 @@
+import { PlaceDoc } from "@/services/types";
+import { useGetPlacesMappedAround } from "@/services/hooks";
 import { createContext, FunctionComponent, PropsWithChildren, useCallback, useContext, useState } from "react";
 
 
 type State = {
+  radius: number;
   itinerary?: Itinenary;
   sharePlace?: SharePlace;
 }
@@ -10,17 +13,26 @@ type Itinenary = any;
 type SharePlace = any;
 
 interface PlacesContextType {
+  radius: number;
+  loading?: boolean;
+  listOfPlaces: PlaceDoc[];
   itinerary?: Itinenary;
   sharePlace?: SharePlace;
+  onRadiusChange: (radius: number) => void;
   setSharePlace: (share?: SharePlace) => void;
   setItinerary: (itinary?: Itinenary) => void;
 }
 
-
-export const PlacesContext = createContext<PlacesContextType>({
+const initialValues: PlacesContextType = {
+  radius: 2,
+  listOfPlaces: [],
   setSharePlace: () => { },
-  setItinerary: () => { }
-});
+  setItinerary: () => { },
+  onRadiusChange: () => { },
+}
+
+
+export const PlacesContext = createContext<PlacesContextType>(initialValues);
 
 
 export const usePlaces = () => {
@@ -34,7 +46,9 @@ export const usePlaces = () => {
 
 
 export const PlacesProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
-  const [state, setState] = useState<State>({});
+  const [state, setState] = useState<State>(initialValues);
+
+  const { places, loading } = useGetPlacesMappedAround(state.radius);
 
   const setItinerary = useCallback((itinerary?: Itinenary) => {
     setState((prev) => ({
@@ -51,11 +65,23 @@ export const PlacesProvider: FunctionComponent<PropsWithChildren> = ({ children 
   }, []);
 
 
+  const onRadiusChange = useCallback((radius: number) => {
+    setState((prev) => ({
+      ...prev,
+      radius,
+    }));
+  }, []);
+
+
   return (
     <PlacesContext.Provider
       value={{
+        loading,
         setItinerary,
         setSharePlace,
+        onRadiusChange,
+        radius: state.radius,
+        listOfPlaces: places,
         itinerary: state.itinerary,
         sharePlace: state.sharePlace,
       }}

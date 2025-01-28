@@ -86,7 +86,7 @@ const RenderRequestItinerary: FC<RenderRequestItineraryProps> = memo(function Re
           selectionColor={colors.primary_light}
           style={[
             styles.address,
-            { backgroundColor: mode === 'light' ? 'rgba(0,0,0,.03)' : 'rgba(0,0,0,.1)' }
+            { borderColor: colors.divider },
           ]}
         >
           {itinerary.index}: {itinerary.place.address}
@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.m,
   },
   address: {
+    borderWidth: 1,
     padding: spacing.s,
     textAlign: 'center',
     marginTop: spacing.s,

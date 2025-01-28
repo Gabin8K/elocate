@@ -10,8 +10,8 @@ import { ScrollAnimatedCleanup } from "@/providers/ScrollAnimatedProvider";
 export default function PlacesTab() {
   return (
     <Fragment>
-      <HeaderPlace />
       <PlacesProvider>
+        <HeaderPlace />
         <PlacesList />
         <ImagePlace />
         <PlacesModal />

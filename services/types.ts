@@ -40,7 +40,7 @@ export type Coordinate = {
 
 export interface PlaceDoc {
   id?: string;
-  userId: string;
+  user: User;
   address: string;
   createdAt?: string;
   imageRef?: string;
@@ -51,8 +51,15 @@ export interface PlaceDoc {
 
 export interface CommentDoc {
   id?: string;
+  user: User;
   text: string;
-  userId: string;
   parentId: string;
   createdAt?: string;
+}
+
+
+export interface User {
+  id?: string;
+  photoURL: string;
+  displayName: string;
 }

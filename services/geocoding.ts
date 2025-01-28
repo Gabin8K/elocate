@@ -1,4 +1,5 @@
 import { Coordinate, PlaceDoc } from "./types";
+import storage from '@react-native-firebase/storage';
 import firestore, { getDocs, query, where } from "@react-native-firebase/firestore";
 
 
@@ -88,6 +89,28 @@ async function getCoordsWithinRadiusDirectly(location: Coordinate, radius: numbe
 
 
 
+
+
+
+async function getPlacesWithinRadiusDirectly(location: Coordinate, radius: number) {
+  const places = await getCoordsWithinRadiusDirectly(location, radius);
+
+  const placesMapped = places.map(async (place) => {
+    if (!place.imageRef) return place;
+    const imageRef = await storage().ref(place.imageRef).getDownloadURL();
+    return {
+      ...place,
+      imageRef,
+    }
+  });
+
+  return await Promise.all(placesMapped);
+}
+
+
+
+
+
 async function checkIfPlaceExists(location: Coordinate) {
   const radiusKm = 1;
 
@@ -102,4 +125,5 @@ export const geocoding = {
   getAddressFromCoords,
   checkIfPlaceExists,
   getCoordsWithinRadiusDirectly,
+  getPlacesWithinRadiusDirectly,
 }
