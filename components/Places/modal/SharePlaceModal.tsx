@@ -15,19 +15,22 @@ export const SharePlaceModal: FC = memo(function SharePlaceModal() {
   const open = !!places.sharePlace;
 
   const onHere = useCallback(() => {
+    if (!places.sharePlace?.id) return;
     share.launchHere(places.sharePlace?.id);
   }, [places.sharePlace]);
 
 
   const onGoogleMaps = useCallback(() => {
+    if (!places.sharePlace) return;
+    const { coordinate } = places.sharePlace;
     share.launchGoogleMaps({
-      lat: 37.484847,
-      lng: -122.148386,
+      latitude: coordinate.latitude,
+      longitude: coordinate.longitude,
     });
-  }, []);
+  }, [places.sharePlace]);
 
   const onClose = useCallback(() => {
-    places.setSharePlace(null);
+    places.setSharePlace(undefined);
   }, []);
 
 

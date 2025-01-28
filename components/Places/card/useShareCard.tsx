@@ -1,42 +1,35 @@
-import { useToast } from "@/hooks";
 import { useCallback } from "react";
 import { Share } from "react-native";
-
-
-type Location = {
-  lat: number;
-  lng: number;
-}
+import { useLocale, useToast } from "@/hooks";
+import { Coordinate } from "@/services/types";
 
 
 export function useShareCard() {
   const toast = useToast();
-
+  const { t } = useLocale();
 
   const launchHere = useCallback(async (placeId: string) => {
     const url = `elocal://place/${placeId}`;
-    const message = `Découvrez ce lieu sur Easy Locate (Elocate): ${url}`;
-
+    const message = url;
     try {
       await Share.share({
-        message,
         url,
+        message,
       });
     } catch (err: any) {
-      toast.show(`Erreur lors du partage: ${String(err.message || err)}`, 'error');
+      toast.show(`${t('error-sharing')} ${String(err.message || err)}`, 'error');
     }
-  }, []);
+  }, [t]);
 
 
-  const launchGoogleMaps = useCallback(async (location: Location) => {
-    const message = `http://maps.google.com/maps?q=loc:${location.lat},${location.lng}`;
-
+  const launchGoogleMaps = useCallback(async (location: Coordinate) => {
+    const message = `http://maps.google.com/maps?q=loc:${location.latitude},${location.longitude}`;
     try {
       await Share.share({ message });
     } catch (err: any) {
-      toast.show(`Erreur lors du partage: ${String(err.message || err)}`, 'error');
+      toast.show(`${t('error-sharing')} ${String(err.message || err)}`, 'error');
     }
-  }, []);
+  }, [t]);
 
 
   return {

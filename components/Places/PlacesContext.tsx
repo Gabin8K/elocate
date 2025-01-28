@@ -5,22 +5,19 @@ import { createContext, FunctionComponent, PropsWithChildren, useCallback, useCo
 
 type State = {
   radius: number;
-  itinerary?: Itinenary;
-  sharePlace?: SharePlace;
+  itinerary?: PlaceDoc;
+  sharePlace?: PlaceDoc;
 }
-
-type Itinenary = any;
-type SharePlace = any;
 
 interface PlacesContextType {
   radius: number;
   loading?: boolean;
   listOfPlaces: PlaceDoc[];
-  itinerary?: Itinenary;
-  sharePlace?: SharePlace;
+  itinerary?: PlaceDoc;
+  sharePlace?: PlaceDoc;
   onRadiusChange: (radius: number) => void;
-  setSharePlace: (share?: SharePlace) => void;
-  setItinerary: (itinary?: Itinenary) => void;
+  setSharePlace: (share?: PlaceDoc) => void;
+  setItinerary: (itinary?: PlaceDoc) => void;
 }
 
 const initialValues: PlacesContextType = {
@@ -50,14 +47,14 @@ export const PlacesProvider: FunctionComponent<PropsWithChildren> = ({ children 
 
   const { places, loading } = useGetPlacesMappedAround(state.radius);
 
-  const setItinerary = useCallback((itinerary?: Itinenary) => {
+  const setItinerary = useCallback((itinerary?: PlaceDoc) => {
     setState((prev) => ({
       ...prev,
       itinerary,
     }));
   }, []);
 
-  const setSharePlace = useCallback((sharePlace?: any) => {
+  const setSharePlace = useCallback((sharePlace?: PlaceDoc) => {
     setState((prev) => ({
       ...prev,
       sharePlace,

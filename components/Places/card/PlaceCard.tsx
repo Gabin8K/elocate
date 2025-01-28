@@ -1,14 +1,14 @@
 import { Text } from "@/components/ui";
 import { CardImage } from "./CardImage";
-import { date } from "@/utils/formater";
 import { common } from "@/theme/palette";
 import { spacing } from "@/theme/spacing";
 import { PlaceDoc } from "@/services/types";
 import { usePlaces } from "../PlacesContext";
 import { Ionicons } from "@expo/vector-icons";
-import { FC, memo, useCallback } from "react";
 import { useLocale, useTheme } from "@/hooks";
 import { StyleSheet, View } from "react-native";
+import { date, display } from "@/utils/formater";
+import { FC, memo, useCallback, useMemo } from "react";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { Button, IconButton } from "@/components/ui/buttons";
 import { component, reusableStyle } from "@/theme/reusables";
@@ -27,6 +27,8 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
   const places = usePlaces();
   const { t, locale } = useLocale();
   const { colors, mode } = useTheme();
+
+  const time = useMemo(() => date(place.createdAt, locale as any), [place.createdAt, locale]);
 
   const onGetItinerary = useCallback(() => {
     places.setItinerary(place);
@@ -91,7 +93,7 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
             <Text
               variant={'caption'}
             >
-              {date(place.createdAt, locale)}
+              {time}
             </Text>
           </View>
           <View
@@ -108,7 +110,7 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
             <Text
               variant={'caption'}
             >
-              {place.user.displayName}
+              {display(place.user.displayName, 12)}
             </Text>
           </View>
         </View>

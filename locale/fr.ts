@@ -6,6 +6,8 @@ export default {
   "connection-error": "Erreur de connexion",
   "yes": "Oui",
   "no": "Non",
+  "elocate-share-title": "Itinéraire Easy Locate (Elocate)",
+  "error-sharing": "Erreur lors du partage:",
 
   // --Drawer--
   "drawer-user-status": "Non connecté",

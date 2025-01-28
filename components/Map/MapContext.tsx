@@ -1,6 +1,7 @@
 import MapView, { Camera } from "react-native-maps";
 import { useGetPlacesAround } from "@/services/hooks";
 import { Coordinate, PlaceDoc } from "@/services/types";
+import { useMapParamsEffect } from "./useMapParamsEffect";
 import { createContext, FunctionComponent, PropsWithChildren, useCallback, useContext, useRef, useState } from "react";
 
 
@@ -103,7 +104,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
       ...state,
       itinerary: {
         ...itinerary,
-        open: true,
+        open: itinerary.open !== undefined ? itinerary.open : true,
       }
     }));
   }, []);
@@ -183,6 +184,15 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
       itinerary: undefined,
     }));
   }, []);
+
+
+
+
+  useMapParamsEffect((params) => {
+    if (params.itinerary) {
+      requestItinerary(params.itinerary);
+    }
+  });
 
 
 

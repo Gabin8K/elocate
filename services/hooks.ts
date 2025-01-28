@@ -8,6 +8,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import { DropdownItem } from "@/components/ui/dropdown";
 import { useCallback, useEffect, useState } from "react";
 import { FormPlace } from "@/components/Map/place/modal/useFormPlace";
+import { useNavigation } from "expo-router";
 
 
 export function useAddressFromCoords(coords: Coordinate) {
@@ -143,13 +144,16 @@ export function useValidationPlace(place: Place) {
 export function useGetPlacesMappedAround(radius: number) {
   const toast = useToast();
   const location = useLocation();
+  const navigation = useNavigation();
+
+  const isFocused = navigation.isFocused();
 
   const [places, setPlaces] = useState<PlaceDoc[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetch = async () => {
-      if (!location) return;
+      if (!location || !isFocused) return;
       try {
         const data = await geocoding.getPlacesWithinRadiusDirectly(location.coords, radius);
         setPlaces(data);
@@ -161,7 +165,7 @@ export function useGetPlacesMappedAround(radius: number) {
       }
     }
     fetch();
-  }, [location, radius])
+  }, [isFocused, location, radius])
 
   return {
     places,

@@ -61,8 +61,8 @@ export const PlacesList: FC<PlacesListProps> = memo(function PlacesList() {
 
 const styles = StyleSheet.create({
   contentContainerStyle: {
-    paddingBottom: spacing.xl,
     paddingHorizontal: spacing.m,
+    paddingBottom: spacing.height * .2,
   },
   loading: {
     marginHorizontal: 'auto',

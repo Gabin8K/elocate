@@ -15,19 +15,25 @@ export const PlaceItineraryModal: FC = memo(function PlaceItineraryModal() {
   const open = !!places.itinerary;
 
   const onHere = useCallback(() => {
-    places.setItinerary(null);
-    router.navigate('/(tabs)');
-  }, []);
+    places.setItinerary(undefined);
+    router.navigate({
+      pathname: '/(tabs)',
+      params: {
+        itinerary: JSON.stringify(places.itinerary)
+      }
+    });
+  }, [places.itinerary]);
 
 
   const onGoogleMaps = useCallback(() => {
-    places.setItinerary(null);
-    const title = 'Itinéraire Easy Locate (Elocate)';
-    Linking.openURL(`http://maps.google.com/maps?q=loc:${37.484847},${-122.148386} (${title})`);
-  }, []);
+    if (!places.itinerary) return;
+    const { latitude, longitude } = places.itinerary.coordinate;
+    places.setItinerary(undefined);
+    Linking.openURL(`http://maps.google.com/maps?q=loc:${latitude},${longitude}`);
+  }, [places.itinerary]);
 
   const onClose = useCallback(() => {
-    places.setItinerary(null);
+    places.setItinerary(undefined);
   }, []);
 
 
