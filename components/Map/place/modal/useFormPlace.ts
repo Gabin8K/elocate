@@ -50,6 +50,10 @@ export function useFormPlace(place: Place) {
 
 
   const handleSubmit = useCallback(async () => {
+    if (!formRef.current.address) {
+      setState(state => ({ ...state, error: true }));
+      return;
+    }
     Keyboard.dismiss();
     const resultId = await onSubmit(formRef.current)
     setState(state => ({ ...state, resultId }));

@@ -40,14 +40,16 @@ export const Map: FC = memo(function Map() {
 
 
   const onLongPress = useCallback(({ nativeEvent }: LongPressEvent) => {
-    const { center, ...camera } = initialCamera;
-    map.mapRef.current?.animateCamera(camera, { duration: 500 });
-    map.requestAddPlace({
-      coordinate: {
+    const { coordinate } = nativeEvent;
+    const camera: Camera = {
+      ...initialCamera,
+      center: {
         latitude: nativeEvent.coordinate.latitude,
-        longitude: nativeEvent.coordinate.longitude
+        longitude: nativeEvent.coordinate.longitude,
       }
-    });
+    };
+    map.mapRef.current?.animateCamera(camera, { duration: 500 });
+    map.requestAddPlace({ coordinate });
   }, []);
 
 

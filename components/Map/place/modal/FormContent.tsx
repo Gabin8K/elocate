@@ -1,6 +1,7 @@
 import { useLocale } from "@/hooks";
 import { Place } from "../../MapContext";
 import { spacing } from "@/theme/spacing";
+import { common } from "@/theme/palette";
 import { ImageInput } from "./ImageInput";
 import { FC, Fragment, memo } from "react";
 import { useFormPlace } from "./useFormPlace";
@@ -41,6 +42,7 @@ export const FormContent: FC<FormContentProps> = memo(function FormContent(props
           placeholder={t('request-place-modal-form-placeholder-address')}
           dropdownItems={form.dropdownItems}
           onItemPress={item => form.setValue('address', item.value)}
+          containerStyle={form.errors ? { borderColor: common.error } : {}}
           placeholderStyle={{
             style: styles.placeholder,
           }}
