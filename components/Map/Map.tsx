@@ -96,15 +96,16 @@ export const Map: FC = memo(function Map() {
           places={map.places}
           requestItinerary={map.requestItinerary}
         />
+        <ItineraryComponent
+          radius={map.radius}
+          itinerary={map.itinerary}
+          location={location?.coords}
+          closeItinerary={map.closeItinerary}
+        />
       </MapView>
       <UserLocationButton
         mapRef={map.mapRef}
         camera={initialCamera}
-      />
-      <ItineraryComponent
-        radius={map.radius}
-        itinerary={map.itinerary}
-        location={location?.coords}
       />
       <LoadingMap
         loading={map.loading}

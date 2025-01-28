@@ -82,7 +82,12 @@ const RenderRequestItinerary: FC<RenderRequestItineraryProps> = memo(function Re
         <Text
           color={'primary'}
           variant={'body2_b'}
-          style={styles.address}
+          selectable
+          selectionColor={colors.primary_light}
+          style={[
+            styles.address,
+            { backgroundColor: mode === 'light' ? 'rgba(0,0,0,.03)' : 'rgba(0,0,0,.1)' }
+          ]}
         >
           {itinerary.index}: {itinerary.place.address}
         </Text>
@@ -131,7 +136,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: spacing.s,
     borderRadius: spacing.s,
-    backgroundColor: 'rgba(0,0,0,.15)',
   },
   buttons: {
     ...reusableStyle.row,
