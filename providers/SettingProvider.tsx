@@ -1,7 +1,7 @@
 import { useFonts } from "expo-font";
+import { Appearance } from "react-native";
 import { fonts } from "@/theme/typography";
 import { defaultLocale } from "@/locale/i18n";
-import { useColorScheme } from "react-native";
 import { AsyncStorageGetItem, AsyncStorageSetItem } from "@/utils/storage";
 import { FunctionComponent, PropsWithChildren, createContext, useCallback, useEffect, useState } from "react";
 
@@ -23,13 +23,12 @@ export const SettingContext = createContext<SettingCtx>({} as SettingCtx);
 
 
 const SettingProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
-  const schema = useColorScheme();
 
   const [fontsLoaded] = useFonts(fonts);
   const [setting, setSetting] = useState<Setting>({
     locale: 'en',
-    mode: 'light',
-    hasInitialized: false
+    hasInitialized: false,
+    mode: Appearance.getColorScheme() || 'light',
   })
 
   const setLocale = useCallback((locale: string) => {
@@ -66,8 +65,6 @@ const SettingProvider: FunctionComponent<PropsWithChildren> = ({ children }) => 
       if (setting) {
         setSetting(setting)
         defaultLocale(setting.locale)
-      } else {
-        setMode(schema || 'light');
       }
     }
     launchSetting()
