@@ -29,6 +29,14 @@ export default function PagesLayout() {
             title: t('setting-screen-title')
           }}
         />
+        <Stack.Screen
+          name={'image-modal'}
+          options={{
+            headerShown: false,
+            presentation: 'modal',
+            animation: 'slide_from_bottom',
+          }}
+        />
       </Stack>
     </HeaderProvider>
   );

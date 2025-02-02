@@ -1,17 +1,17 @@
 import { Text } from "@/components/ui";
-import { CardImage } from "./CardImage";
 import { common } from "@/theme/palette";
 import { spacing } from "@/theme/spacing";
 import { PlaceDoc } from "@/services/types";
 import { usePlaces } from "../PlacesContext";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocale, useTheme } from "@/hooks";
-import { StyleSheet, View } from "react-native";
 import { date, display } from "@/utils/formater";
 import { FC, memo, useCallback, useMemo } from "react";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { Button, IconButton } from "@/components/ui/buttons";
 import { component, reusableStyle } from "@/theme/reusables";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import { router } from "expo-router";
 
 
 export interface PlaceCardProps {
@@ -39,6 +39,16 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
   }, []);
 
 
+  const onPress = useCallback(() => {
+    router.navigate({
+      pathname: '/(pages)/image-modal',
+      params: {
+        uri: place.imageRef,
+      }
+    })
+  }, []);
+
+
   return (
     <Animated.View
       entering={
@@ -52,9 +62,15 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
       ]}
     >
       {place.imageRef ?
-        <CardImage
-          uri={place.imageRef}
-        /> :
+        <TouchableOpacity
+          activeOpacity={.7}
+          onPress={onPress}
+        >
+          <Image
+            style={styles.image}
+            source={{ uri: place.imageRef }}
+          />
+        </TouchableOpacity> :
         null
       }
       <View
@@ -159,6 +175,12 @@ const styles = StyleSheet.create({
     marginTop: spacing.s,
     borderRadius: spacing.m,
     paddingBottom: spacing.m,
+  },
+  image: {
+    width: '100%',
+    objectFit: 'cover',
+    ...component.shadow,
+    height: spacing.height * .15,
   },
   content: {
     rowGap: spacing.s,
