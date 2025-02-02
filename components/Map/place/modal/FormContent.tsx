@@ -7,6 +7,7 @@ import { FC, Fragment, memo } from "react";
 import { useFormPlace } from "./useFormPlace";
 import { StyleSheet, View } from "react-native";
 import { Button } from "@/components/ui/buttons";
+import { ModalSheetRef } from "@/components/ui/modal";
 import { Text, TextInput } from "@/components/ui";
 import { DropdownMenu } from "@/components/ui/dropdown";
 import { FormRequestCompleted } from "./FormRequestCompleted";
@@ -14,11 +15,11 @@ import { FormRequestCompleted } from "./FormRequestCompleted";
 
 type FormContentProps = {
   newPlace: Place;
-  onClose: () => void;
+  modalRef: React.RefObject<ModalSheetRef>;
 }
 
 export const FormContent: FC<FormContentProps> = memo(function FormContent(props) {
-  const { newPlace, onClose } = props;
+  const { newPlace, modalRef } = props;
 
   const { t } = useLocale();
   const form = useFormPlace(newPlace);
@@ -68,7 +69,7 @@ export const FormContent: FC<FormContentProps> = memo(function FormContent(props
             {t('request-place-modal-form-btn-submit')}
           </Button> :
           <FormRequestCompleted
-            onClose={onClose}
+            modalRef={modalRef}
           />
         }
       </View>

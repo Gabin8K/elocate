@@ -112,7 +112,7 @@ async function getPlacesWithinRadiusDirectly(location: Coordinate, radius: numbe
 
 
 async function checkIfPlaceExists(location: Coordinate) {
-  const radiusKm = 1;
+  const radiusKm = .8;
 
   const places = await getCoordsWithinRadiusDirectly(location, radiusKm);
   return places.length > 0;

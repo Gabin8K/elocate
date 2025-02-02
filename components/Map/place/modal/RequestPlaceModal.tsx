@@ -1,22 +1,23 @@
 import { spacing } from "@/theme/spacing";
 import { FormContent } from "./FormContent";
-import { FC, memo, useCallback } from "react";
 import { LoginContent } from "./LoginContent";
 import { StyleSheet, View } from "react-native";
 import { Place, useMap } from "../../MapContext";
-import { ModalSheet } from "@/components/ui/modal";
 import { useAuth } from "@/providers/AuthProvider";
+import { FC, memo, useCallback, useRef } from "react";
+import { ModalSheetRef, ModalSheet } from "@/components/ui/modal";
 
 
 type ContentProps = {
   newPlace?: Place;
-  onClose: () => void;
+  modalRef: React.RefObject<ModalSheetRef>;
 }
 
 
 
 export const RequestPlaceModal: FC = memo(function RequestPlaceModal() {
   const map = useMap();
+  const modalRef = useRef<ModalSheetRef>(null);
 
   const onClose = useCallback(() => {
     map.closeModal();
@@ -24,12 +25,13 @@ export const RequestPlaceModal: FC = memo(function RequestPlaceModal() {
 
   return (
     <ModalSheet
+      ref={modalRef}
       open={map.openModal}
       onClose={onClose}
     >
       <RequestPlaceModalContent
         newPlace={map.newPlace}
-        onClose={onClose}
+        modalRef={modalRef}
       />
     </ModalSheet>
   );
@@ -39,7 +41,7 @@ export const RequestPlaceModal: FC = memo(function RequestPlaceModal() {
 
 
 const RequestPlaceModalContent: FC<ContentProps> = memo(function RequestPlaceModalContent(props) {
-  const { newPlace, onClose } = props;
+  const { newPlace, modalRef } = props;
   const { auth } = useAuth();
 
   if (!newPlace) return null;
@@ -52,7 +54,7 @@ const RequestPlaceModalContent: FC<ContentProps> = memo(function RequestPlaceMod
         <LoginContent /> :
         <FormContent
           newPlace={newPlace}
-          onClose={onClose}
+          modalRef={modalRef}
         />
       }
     </View>

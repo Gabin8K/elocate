@@ -4,7 +4,7 @@ import { useTheme, useBackhandler } from '@/hooks';
 import { Portal } from '@/providers/PortalProvider';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { Pressable, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import React, { FC, PropsWithChildren, memo, useCallback, useEffect, useMemo } from 'react';
+import React, { PropsWithChildren, forwardRef, memo, useCallback, useEffect, useImperativeHandle, useMemo } from 'react';
 import Animated, { Easing, interpolate, LinearTransition, ReduceMotion, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 
@@ -15,7 +15,13 @@ type ModalConfig = {
   animationDuration: number;
 }
 
-interface ModalSheetProps extends PropsWithChildren {
+
+export type ModalSheetRef = {
+  close?: () => void;
+}
+
+
+export interface ModalSheetProps extends PropsWithChildren {
   open?: boolean;
   onClose?: () => void;
   config?: Partial<ModalConfig>;
@@ -36,7 +42,7 @@ const height = spacing.height;
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export const ModalSheet: FC<ModalSheetProps> = (props: ModalSheetProps) => {
+export const ModalSheet = forwardRef<ModalSheetRef, ModalSheetProps>(function ModalSheet(props, ref) {
   const { open } = props;
 
   return (
@@ -44,15 +50,18 @@ export const ModalSheet: FC<ModalSheetProps> = (props: ModalSheetProps) => {
       name={'modal-sheet'}
     >
       {open ?
-        <RenderModalSheet {...props} /> :
+        <RenderModalSheet
+          ref={ref}
+          {...props}
+        /> :
         null
       }
     </Portal>
   );
-}
+})
 
 
-const RenderModalSheet: FC<ModalSheetProps> = memo(function RenderModalSheet(props) {
+const RenderModalSheet = memo(forwardRef<ModalSheetRef, ModalSheetProps>(function RenderModalSheet(props, ref) {
   const { open, onClose, children, containerStyle, style, ...rest } = props;
 
   const config: ModalConfig = {
@@ -136,6 +145,13 @@ const RenderModalSheet: FC<ModalSheetProps> = memo(function RenderModalSheet(pro
   })
 
 
+  useImperativeHandle(ref, () => {
+    return {
+      close: onRequestClose
+    }
+  }, [onClose]);
+
+
   useEffect(() => {
     translateY.value = withTiming(0, {
       duration: config.enteringDuration,
@@ -180,7 +196,7 @@ const RenderModalSheet: FC<ModalSheetProps> = memo(function RenderModalSheet(pro
       </GestureDetector>
     </View>
   )
-});
+}));
 
 
 

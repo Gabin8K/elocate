@@ -9,7 +9,7 @@ export function useShareCard() {
   const { t } = useLocale();
 
   const launchHere = useCallback(async (placeId: string) => {
-    const url = `elocal://place/${placeId}`;
+    const url = `elocate://places/${placeId}`;
     const message = url;
     try {
       await Share.share({
