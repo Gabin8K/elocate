@@ -1,6 +1,7 @@
 import { places } from "./places";
 import { geocoding } from "./geocoding";
 import { Place } from "@/components/Map";
+import { useNavigation } from "expo-router";
 import { useLocale, useToast } from "@/hooks";
 import { Coordinate, PlaceDoc } from "./types";
 import { useLocation } from "@/hooks/useLocation";
@@ -8,7 +9,12 @@ import { useAuth } from "@/providers/AuthProvider";
 import { DropdownItem } from "@/components/ui/dropdown";
 import { useCallback, useEffect, useState } from "react";
 import { FormPlace } from "@/components/Map/place/modal/useFormPlace";
-import { useNavigation } from "expo-router";
+
+
+type LoadingPlaceList = {
+  loading?: boolean;
+  refresh?: boolean;
+}
 
 
 export function useAddressFromCoords(coords: Coordinate) {
@@ -149,24 +155,31 @@ export function useGetPlacesMappedAround(radius: number) {
   const isFocused = navigation.isFocused();
 
   const [places, setPlaces] = useState<PlaceDoc[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<LoadingPlaceList>({ loading: true });
 
   const onFetch = useCallback(async () => {
     if (!location || !isFocused) return;
     try {
-      setLoading(true);
+      setLoading({ refresh: true });
       const data = await geocoding.getPlacesWithinRadiusDirectly(location.coords, radius);
       setPlaces(data);
     } catch (error: any) {
       toast.show(String(error.message || error), 'error');
     }
     finally {
-      setLoading(false);
+      setLoading({
+        loading: false,
+        refresh: false,
+      });
     }
   }, [location, radius])
 
-  useEffect(() => {
+  const fetch = () => {
     onFetch();
+  }
+
+  useEffect(() => {
+    fetch();
   }, [isFocused, location, radius])
 
   return {

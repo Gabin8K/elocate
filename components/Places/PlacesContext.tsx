@@ -12,6 +12,7 @@ type State = {
 interface PlacesContextType {
   radius: number;
   loading?: boolean;
+  refreshing?: boolean;
   listOfPlaces: PlaceDoc[];
   itinerary?: PlaceDoc;
   sharePlace?: PlaceDoc;
@@ -75,13 +76,14 @@ export const PlacesProvider: FunctionComponent<PropsWithChildren> = ({ children 
   return (
     <PlacesContext.Provider
       value={{
-        loading,
         onFetch,
         setItinerary,
         setSharePlace,
         onRadiusChange,
         radius: state.radius,
         listOfPlaces: places,
+        loading: loading?.loading,
+        refreshing: loading?.refresh,
         itinerary: state.itinerary,
         sharePlace: state.sharePlace,
       }}

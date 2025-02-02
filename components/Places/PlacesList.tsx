@@ -59,8 +59,10 @@ export const PlacesList: FC<PlacesListProps> = memo(function PlacesList() {
       }
       refreshControl={
         <RefreshControl
+          progressViewOffset={150}
           onRefresh={places.onFetch}
-          refreshing={places.loading as boolean}
+          refreshing={!!places.refreshing}
+          progressBackgroundColor={colors.card}
           colors={[colors.primary, colors.text]}
         />
       }
