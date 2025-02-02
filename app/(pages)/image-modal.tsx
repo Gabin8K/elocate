@@ -1,7 +1,7 @@
-import { spacing } from "@/theme/spacing";
-import { IconButton } from "@/components/ui/buttons";
-import { Image, StyleSheet, View } from "react-native";
-import { router, useLocalSearchParams } from "expo-router";
+import { Fragment } from "react";
+import { useLocalSearchParams } from "expo-router";
+import { ImageComponent } from "@/components/Image-Modal";
+import { MapKeyRefresh } from "@/providers/MapKeyProvider";
 
 
 type Params = {
@@ -12,44 +12,12 @@ type Params = {
 export default function ImageModal() {
   const { uri } = useLocalSearchParams<Params>();
 
-  const onPress = () => {
-    router.back();
-  }
-
   return (
-    <View
-      style={styles.container}
-    >
-      <IconButton
-        onPress={onPress}
-        icon={'arrow-back'}
-        styleContainer={styles.icon}
+    <Fragment>
+      <ImageComponent
+        uri={uri}
       />
-      <Image
-        source={{ uri }}
-        style={styles.image}
-        resizeMode={'cover'}
-      />
-    </View>
+      <MapKeyRefresh />
+    </Fragment>
   )
 }
-
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  icon: {
-    top: spacing.xl,
-    left: spacing.s,
-    position: 'absolute',
-  },
-  image: {
-    width: '100%',
-    objectFit: 'cover',
-    backgroundColor: 'black',
-    height: spacing.height * .5,
-  },
-})

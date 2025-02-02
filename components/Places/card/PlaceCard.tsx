@@ -43,10 +43,10 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
     router.navigate({
       pathname: '/(pages)/image-modal',
       params: {
-        uri: place.imageRef,
+        uri: encodeURIComponent(place.imageRef ?? ''),
       }
     })
-  }, []);
+  }, [place.imageRef]);
 
 
   return (
