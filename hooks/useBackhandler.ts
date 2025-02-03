@@ -5,9 +5,9 @@ import { useHeaderBackHandler } from "@/components/layout/header/HeaderContext";
 
 export function useBackhandler(handler: () => boolean) {
   useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', handler)
+    const subscribe = BackHandler.addEventListener('hardwareBackPress', handler)
 
-    return () => BackHandler.removeEventListener('hardwareBackPress', handler)
+    return () => subscribe.remove();
   }, [handler])
 }
 

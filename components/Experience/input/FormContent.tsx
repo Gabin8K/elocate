@@ -2,33 +2,43 @@ import { TextInput } from "../../ui";
 import { FormReply } from "./FormReply";
 import { spacing } from "@/theme/spacing";
 import { IconButton } from "../../ui/buttons";
+import { CommentField } from "@/services/types";
 import { StyleSheet, View } from "react-native";
+import { useComments } from "../CommentContext";
 import { FormExperience } from "./FormExperience";
-import { FC, Fragment, memo, useState } from "react";
 import { useExperiences } from "../ExperienceContext";
+import { useExperienceForm } from "./useExperienceForm";
+import { FC, Fragment, memo, useCallback, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useKeyboard, useLocale, useTheme, useGlobalBackhandler } from "@/hooks";
 import Animated, { SlideInDown, SlideOutDown, useAnimatedStyle, withTiming, ZoomIn, ZoomOut } from "react-native-reanimated";
 
 
 type FormContentAnimatedProps = {
-  type: 'reply' | 'experience';
+  replyId?: string;
   children?: React.ReactNode;
+  onClose: (currentReply?: CommentField) => void;
+  setRootComments?: React.Dispatch<React.SetStateAction<CommentField[]>>;
 }
 
 
 
 export const FormContent: FC = memo(function FormContent() {
 
+  const comment = useComments();
   const experience = useExperiences();
-  const type = experience.showReply ? 'reply' : experience.showExperience ? 'experience' : 'none';
+  const type = experience.replyId ? 'reply' : experience.showExperience ? 'experience' : 'none';
+
+  const onClose = useCallback((currentReply?: CommentField) => {
+    experience.setReplyId(undefined, currentReply);
+    experience.setShowExperience(false);
+  }, []);
 
   useGlobalBackhandler(() => {
-    if (experience.showReply) {
-      experience.setShowReply(false);
+    if (experience.replyId) {
+      experience.setReplyId(undefined);
       return true;
-    }
-    if (experience.showExperience) {
+    } else if (experience.showExperience) {
       experience.setShowExperience(false);
       return true;
     }
@@ -39,13 +49,17 @@ export const FormContent: FC = memo(function FormContent() {
     <Fragment>
       {type === 'reply' ?
         <FormContentAnimated
-          type={'reply'}
+          key={'reply'}
+          onClose={onClose}
+          replyId={experience.replyId}
         >
           <FormExperience />
         </FormContentAnimated> :
         type === 'experience' ?
           <FormContentAnimated
-            type={'experience'}
+            key={'experience'}
+            onClose={onClose}
+            setRootComments={comment.setComments}
           >
             <FormReply />
           </FormContentAnimated> :
@@ -60,17 +74,36 @@ export const FormContent: FC = memo(function FormContent() {
 
 
 
+
 const FormContentAnimated: FC<FormContentAnimatedProps> = memo(function FormContentAnimated(props) {
-  const { type, children } = props;
+  const { replyId, children, onClose, setRootComments } = props;
 
   const { t } = useLocale();
   const { colors } = useTheme();
   const keyboard = useKeyboard();
   const insets = useSafeAreaInsets();
 
+  const form = useExperienceForm();
   const [text, setText] = useState('');
 
   const paddingBottom = insets.bottom + spacing.xs;
+
+  const onChangeText = useCallback((text: string) => {
+    setText(text);
+    form.setValue('text', text);
+  }, []);
+
+
+  const onSubmit = useCallback(() => {
+    form.handleSubmit(replyId)
+      .then(doc => {
+        if (doc) {
+          setRootComments?.(prev => [{ ...doc, childLength: 0 }, ...prev]);
+          setText('');
+          onClose({ ...doc, childLength: 0 });
+        }
+      });
+  }, [replyId]);
 
 
   const uas = useAnimatedStyle(() => {
@@ -106,8 +139,8 @@ const FormContentAnimated: FC<FormContentAnimatedProps> = memo(function FormCont
           <TextInput
             multiline
             style={styles.input}
-            onChangeText={setText}
-            placeholder={type === 'experience' ? t('experience-input-placeholder') : t('experience-input-reply-placeholder')}
+            onChangeText={onChangeText}
+            placeholder={!replyId ? t('experience-input-placeholder') : t('experience-input-reply-placeholder')}
           />
           {text.length > 0 ?
             <Animated.View
@@ -117,6 +150,8 @@ const FormContentAnimated: FC<FormContentAnimatedProps> = memo(function FormCont
               <IconButton
                 icon={'send'}
                 variant={'text'}
+                onPress={onSubmit}
+                loading={form.loading}
                 styleContainer={styles.icon}
                 iconProps={{
                   size: 20,

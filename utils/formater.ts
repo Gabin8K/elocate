@@ -1,12 +1,9 @@
-type Local = 'fr' | 'en';
-
-
 export function display(name: string, limit: number) {
   return name.length > limit ? `${name.slice(0, limit)}...` : name;
 }
 
 
-export function date(date: any, locale: Local = 'en'): string {
+export function date(date: any, locale: string = 'en'): string {
   const passed = new Date(date.seconds * 1000);
   const now = new Date();
 

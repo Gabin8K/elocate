@@ -1,10 +1,13 @@
 import { Text } from "@/components/ui";
+import { date } from "@/utils/formater";
 import { spacing } from "@/theme/spacing";
 import { useLocale, useTheme } from "@/hooks";
+import { CommentField } from "@/services/types";
 import { Button } from "@/components/ui/buttons";
 import { reusableStyle } from "@/theme/reusables";
 import { useExperiences } from "../ExperienceContext";
 import { FC, memo, useCallback, useMemo } from "react";
+import { useExperienceCard } from "./useExperienceCard";
 import { FlatList, Image, ListRenderItemInfo, StyleSheet, View } from "react-native";
 
 
@@ -12,7 +15,7 @@ import { FlatList, Image, ListRenderItemInfo, StyleSheet, View } from "react-nat
 export type ExperienceCardProps = {
   depth: number;
   index?: number;
-  item: any[] | any;
+  item: CommentField;
 }
 
 
@@ -20,19 +23,22 @@ export type ExperienceCardProps = {
 export const ExperienceCard: FC<ExperienceCardProps> = memo(function ExperienceCard(props) {
   const { item, depth } = props;
 
-  const { t } = useLocale();
   const { colors } = useTheme();
-  const { setShowReply } = useExperiences();
+  const { t, locale } = useLocale();
+  const { setReplyId, currentReply } = useExperiences();
 
-  const isList = useMemo(() => Array.isArray(item), [item]);
+  const subItem = useExperienceCard(item.id, currentReply);
+
+  const hasChild = item.childLength > 0 || subItem.comments.length > 0;
+  const seeMore = Math.abs(item.childLength - subItem.comments.length);
 
 
   const onReply = useCallback(() => {
-    setShowReply(true);
-  }, [setShowReply]);
+    setReplyId(item.id);
+  }, [item.id]);
 
 
-  const renderItem = useMemo(() => function renderItem({ item, index }: ListRenderItemInfo<ExperienceCardProps['item']>) {
+  const renderItem = useMemo(() => function renderItem({ item }: ListRenderItemInfo<ExperienceCardProps['item']>) {
     return (
       <ExperienceCard
         item={item}
@@ -50,7 +56,7 @@ export const ExperienceCard: FC<ExperienceCardProps> = memo(function ExperienceC
         depth === 0 ? styles.containerRoot : {},
       ]}
     >
-      {isList ?
+      {hasChild ?
         <View
           style={[
             styles.dash1,
@@ -72,7 +78,7 @@ export const ExperienceCard: FC<ExperienceCardProps> = memo(function ExperienceC
       }
       <Image
         style={depth === 0 ? styles.avatar : styles.avatarChild}
-        source={{ uri: 'https://picsum.photos/200/300' }}
+        source={{ uri: item.user.photoURL }}
       />
       <View
         style={styles.content}
@@ -86,12 +92,12 @@ export const ExperienceCard: FC<ExperienceCardProps> = memo(function ExperienceC
             },
           ]}
         >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
-          ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+          {item.text}
         </Text>
-        {isList ?
+        {hasChild ?
           <FlatList
-            data={item}
+            extraData={subItem.comments.length}
+            data={subItem.comments}
             renderItem={renderItem}
           /> :
           null
@@ -103,21 +109,25 @@ export const ExperienceCard: FC<ExperienceCardProps> = memo(function ExperienceC
             color={'gray3'}
             variant={'caption_m'}
           >
-            Il y a 2 jours
+            {date(item.createdAt, locale)}
           </Text>
           <View
             style={reusableStyle.row}
           >
-            <Button
-              variant={'transparent'}
-              containerStyle={styles.button}
-              textStyle={{
-                color: 'text',
-                variant: 'caption_m',
-              }}
-            >
-              {t('experience-card-seemore-btn')} (10)
-            </Button>
+            {seeMore ?
+              <Button
+                variant={'transparent'}
+                containerStyle={styles.button}
+                onPress={subItem.seeMore}
+                textStyle={{
+                  color: 'text',
+                  variant: 'caption_m',
+                }}
+              >
+                {t('experience-card-seemore-btn')} ({seeMore})
+              </Button> :
+              null
+            }
             <Button
               onPress={onReply}
               variant={'transparent'}

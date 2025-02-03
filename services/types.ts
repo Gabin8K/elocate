@@ -53,8 +53,12 @@ export interface CommentDoc {
   id?: string;
   user: User;
   text: string;
-  parentId: string;
+  parentId: string | null;
   createdAt?: string;
+}
+
+export interface CommentField extends CommentDoc {
+  childLength: number;
 }
 
 

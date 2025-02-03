@@ -1,14 +1,15 @@
 import { places } from "./places";
 import { geocoding } from "./geocoding";
 import { Place } from "@/components/Map";
+import { experience } from "./experience";
 import { useNavigation } from "expo-router";
 import { useLocale, useToast } from "@/hooks";
-import { Coordinate, PlaceDoc } from "./types";
 import { useLocation } from "@/hooks/useLocation";
 import { useAuth } from "@/providers/AuthProvider";
 import { DropdownItem } from "@/components/ui/dropdown";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FormPlace } from "@/components/Map/place/modal/useFormPlace";
+import { CommentDoc, CommentField, Coordinate, PlaceDoc } from "./types";
 
 
 type LoadingPlaceList = {
@@ -186,5 +187,125 @@ export function useGetPlacesMappedAround(radius: number) {
     places,
     loading,
     onFetch,
+  }
+}
+
+
+
+
+
+
+export function useFormCommentSubmit() {
+  const toast = useToast();
+  const { auth } = useAuth();
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = useCallback(async (text: string, parentId?: string) => {
+    setLoading(true);
+    try {
+      return await experience.createComment({
+        user: {
+          id: auth?.uid || '',
+          displayName: auth?.displayName || '',
+          photoURL: auth?.photoURL || '',
+        },
+        text,
+        parentId: parentId || null,
+      });
+    } catch (error: any) {
+      toast.show(String(error.message || error), 'error');
+    }
+    finally {
+      setLoading(false);
+    }
+  }, []);
+
+  return {
+    loading,
+    onSubmit,
+  }
+
+}
+
+
+
+
+
+export function useGetRootComments() {
+  const toast = useToast();
+
+  const [comments, setComments] = useState<CommentField[]>([]);
+  const [loading, setLoading] = useState(false);
+  const lastDoc = useRef<CommentDoc>();
+
+  const isEmtpy = comments.length === 0 && !loading;
+
+  const loadMore = useCallback(async () => {
+    setLoading(true);
+    try {
+      const data = await experience.getRootComments(lastDoc.current);
+      lastDoc.current = data[data.length - 1];
+      setComments(data);
+    } catch (error: any) {
+      toast.show(String(error.message || error), 'error');
+    }
+    finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadMore();
+  }, [])
+
+  return {
+    loading,
+    isEmtpy,
+    comments,
+    loadMore,
+    setComments,
+  }
+}
+
+
+
+
+
+
+
+
+
+
+export function useGetChildComments(parentId?: string, canSeeMore?: boolean) {
+  const toast = useToast();
+
+  const [comments, setComments] = useState<CommentField[]>([]);
+  const [loading, setLoading] = useState(false);
+  const lastDoc = useRef<CommentDoc>();
+
+  const loadMore = useCallback(async () => {
+    if (!parentId || !canSeeMore) return;
+    setLoading(true);
+    try {
+      const data = await experience.getComments(parentId, lastDoc.current);
+      lastDoc.current = data[data.length - 1];
+      setComments(data);
+    } catch (error: any) {
+      toast.show(String(error.message || error), 'error');
+    }
+    finally {
+      setLoading(false);
+    }
+  }, [parentId, canSeeMore]);
+
+  useEffect(() => {
+    loadMore();
+  }, [parentId, canSeeMore])
+
+  return {
+    loading,
+    comments,
+    loadMore,
+    setComments,
   }
 }

@@ -1,23 +1,35 @@
+import { CommentField } from "@/services/types";
+import { useGetRootComments } from "@/services/hooks";
 import { createContext, FunctionComponent, PropsWithChildren, useCallback, useContext, useState } from "react";
 
 
 type State = {
-  showReply?: boolean;
+  replyId?: string;
   showExperience?: boolean;
+  currentReply?: CommentField;
 }
 
 
 interface ExperienceContextType {
-  showReply?: boolean;
+  replyId?: string;
   showExperience?: boolean;
-  setShowReply: (show: boolean) => void;
+  currentReply?: CommentField;
+  rootComments: ReturnType<typeof useGetRootComments>;
+  setReplyId: (parentId?: string, currentRpely?: CommentField) => void;
   setShowExperience: (show: boolean) => void;
 }
 
 
 const initialValue: ExperienceContextType = {
-  setShowReply: () => { },
+  setReplyId: () => { },
   setShowExperience: () => { },
+  rootComments: {
+    isEmtpy: false,
+    comments: [],
+    loading: false,
+    loadMore: async () => { },
+    setComments: () => { },
+  }
 }
 
 
@@ -36,21 +48,27 @@ export const useExperiences = () => {
 
 export const ExperienceProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const [state, setState] = useState<State>({});
+  const rootComments = useGetRootComments();
 
-  const setShowReply = useCallback((showReply: boolean) => {
-    setState({ ...state, showReply });
+  const setReplyId = useCallback((replyId?: string, currentReply?: CommentField) => {
+    setState(state => ({
+      ...state,
+      replyId,
+      ...currentReply ? { currentReply } : {}
+    }));
   }, []);
 
   const setShowExperience = useCallback((showExperience: boolean) => {
-    setState({ ...state, showExperience });
+    setState(state => ({ ...state, showExperience }));
   }, []);
-
+  
 
   return (
     <ExperienceContext.Provider
       value={{
         ...state,
-        setShowReply,
+        rootComments,
+        setReplyId,
         setShowExperience,
       }}
     >

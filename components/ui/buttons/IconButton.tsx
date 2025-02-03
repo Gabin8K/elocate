@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
-import { useTheme } from '@/hooks/useTheme';
 import { Theme } from '@/theme';
+import { useTheme } from '@/hooks/useTheme';
 import { Ionicons } from '@expo/vector-icons';
 import { Pressable, PressableProps } from 'react-native-gesture-handler';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
@@ -45,7 +45,7 @@ export const IconButton = memo(function IconButton(props: Props) {
       ]}
     >
       <Pressable
-        unstable_pressDelay={100}
+        unstable_pressDelay={800}
         onPressIn={() => (active.value = true)}
         onPressOut={() => (active.value = false)}
         disabled={loading}
