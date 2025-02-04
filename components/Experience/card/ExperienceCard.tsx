@@ -113,7 +113,10 @@ export const ExperienceCard: FC<ExperienceCardProps> = memo(function ExperienceC
           null
         }
         <View
-          style={styles.footer}
+          style={[
+            styles.footer,
+            !seeMore || depth >= 2 ? styles.footerPadding : {}
+          ]}
         >
           <Text
             color={'gray3'}
@@ -221,6 +224,9 @@ const styles = StyleSheet.create({
   footer: {
     ...reusableStyle.row,
     justifyContent: 'space-between',
+  },
+  footerPadding: {
+    paddingVertical: spacing.xs
   },
   button: {
     boxShadow: undefined,
