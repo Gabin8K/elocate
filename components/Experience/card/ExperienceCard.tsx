@@ -67,7 +67,7 @@ export const ExperienceCard: FC<ExperienceCardProps> = memo(function ExperienceC
         depth === 0 ? styles.containerRoot : {},
       ]}
     >
-      {hasChild ?
+      {hasChild && depth < 3 ?
         <View
           style={[
             styles.dash1,
