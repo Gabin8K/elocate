@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { Text } from "@/components/ui";
 import { common } from "@/theme/palette";
 import { spacing } from "@/theme/spacing";
@@ -7,11 +8,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { useLocale, useTheme } from "@/hooks";
 import { date, display } from "@/utils/formater";
 import { FC, memo, useCallback, useMemo } from "react";
-import Animated, { FadeIn } from "react-native-reanimated";
 import { Button, IconButton } from "@/components/ui/buttons";
 import { component, reusableStyle } from "@/theme/reusables";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
-import { router } from "expo-router";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import Animated, { FadeIn, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 
 
 export interface PlaceCardProps {
@@ -27,6 +27,8 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
   const places = usePlaces();
   const { t, locale } = useLocale();
   const { colors, mode } = useTheme();
+
+  const scale = useSharedValue(1);
 
   const time = useMemo(() => date(place.createdAt, locale as any), [place.createdAt, locale]);
 
@@ -49,6 +51,16 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
   }, [place.imageRef]);
 
 
+  const uas = useAnimatedStyle(() => {
+    return {
+      transform: [
+        { scale: scale.value }
+      ]
+    }
+  }, []);
+
+
+
   return (
     <Animated.View
       entering={
@@ -63,11 +75,17 @@ export const PlaceCard: FC<PlaceCardProps> = memo(function PlaceCard(props) {
     >
       {place.imageRef ?
         <TouchableOpacity
-          activeOpacity={.7}
+          activeOpacity={.95}
+          onPressIn={() => (scale.value = withTiming(1.2))}
+          onPressOut={() => (scale.value = withTiming(1))}
           onPress={onPress}
+          style={styles.imageButton}
         >
-          <Image
-            style={styles.image}
+          <Animated.Image
+            style={[
+              uas,
+              styles.image,
+            ]}
             source={{ uri: place.imageRef }}
           />
         </TouchableOpacity> :
@@ -176,11 +194,14 @@ const styles = StyleSheet.create({
     borderRadius: spacing.m,
     paddingBottom: spacing.m,
   },
-  image: {
+  imageButton: {
     width: '100%',
-    objectFit: 'cover',
-    ...component.shadow,
+    overflow: 'hidden',
     height: spacing.height * .15,
+  },
+  image: {
+    ...StyleSheet.absoluteFillObject,
+    objectFit: 'cover',
   },
   content: {
     rowGap: spacing.s,

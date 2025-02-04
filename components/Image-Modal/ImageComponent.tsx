@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { Redirect } from "expo-router";
 import { useBackhandler } from "@/hooks";
 import { spacing } from "@/theme/spacing";
 import { StyleSheet } from "react-native";
@@ -20,6 +20,7 @@ export const ImageComponent: FC<ImageComponentProps> = memo(function ImageCompon
   const offset = useSharedValue(1);
 
   const [canBack, setCanBack] = useState(true);
+  const [forceBack, setForceBack] = useState(false);
 
   const gesture = Gesture.Pinch()
     .onUpdate(e => {
@@ -54,7 +55,7 @@ export const ImageComponent: FC<ImageComponentProps> = memo(function ImageCompon
     if (!canBack) {
       return goBack();
     }
-    router.back();
+    setForceBack(true);
   }, [canBack]);
 
 
@@ -62,9 +63,16 @@ export const ImageComponent: FC<ImageComponentProps> = memo(function ImageCompon
     if (!canBack) {
       return goBack();
     }
-    return false;
+    setForceBack(true);
+    return true;
   })
 
+
+  if (forceBack) {
+    return (
+      <Redirect href={'/(tabs)/places'} />
+    )
+  }
 
   return (
     <Fragment>
