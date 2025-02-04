@@ -11,7 +11,7 @@ import { reusableStyle } from "@/theme/reusables";
 export const DepthCard: FC = memo(function DepthCard() {
 
   const { t } = useLocale();
-  const { colors } = useTheme();
+  const { colors, mode } = useTheme();
 
   return (
     <View
@@ -19,13 +19,13 @@ export const DepthCard: FC = memo(function DepthCard() {
     >
       <Ionicons
         size={18}
-        color={colors.gray3}
+        color={colors[mode === 'light' ? 'gray3' : 'gray4']}
         name={'information-circle-outline'}
       />
       <Text
         variant={'caption'}
         style={styles.text}
-        color={'gray3'}
+        color={mode === 'light' ? 'gray3' : 'gray4'}
       >
         {t('experience-max-depth')}
       </Text>
