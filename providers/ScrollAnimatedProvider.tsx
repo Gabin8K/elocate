@@ -1,5 +1,5 @@
-import { SharedValue, useAnimatedScrollHandler, useSharedValue } from "react-native-reanimated";
-import { createContext, FC, FunctionComponent, PropsWithChildren, useContext, useEffect } from "react";
+import { runOnJS, SharedValue, useAnimatedScrollHandler, useSharedValue } from "react-native-reanimated";
+import { createContext, FC, FunctionComponent, PropsWithChildren, useContext, useEffect, useState } from "react";
 
 type Direction = 'up' | 'down';
 
@@ -18,7 +18,8 @@ export const ScrollAnimatedContext = createContext<ScrollAnimatedCtx>({
 export const useScrollAnimated = () => {
 
   const isScrolling = useSharedValue(false);
-  const context = useContext(ScrollAnimatedContext)
+  const context = useContext(ScrollAnimatedContext);
+  const [canGoToUp, setCanGoToUp] = useState(false);
 
   const onScroll = useAnimatedScrollHandler({
     onScroll: (e) => {
@@ -32,6 +33,13 @@ export const useScrollAnimated = () => {
         }
       }
       context.offsetY.value = e.contentOffset.y;
+
+      if (e.contentOffset.y > 450 && !canGoToUp) {
+        runOnJS(setCanGoToUp)(true);
+      }
+      if (e.contentOffset.y < 450 && canGoToUp) {
+        runOnJS(setCanGoToUp)(false);
+      }
     },
     onBeginDrag: () => {
       isScrolling.value = true;
@@ -39,15 +47,16 @@ export const useScrollAnimated = () => {
     onEndDrag: () => {
       isScrolling.value = false;
     },
-  }, []);
+  }, [canGoToUp]);
 
   if (!context) {
     throw new Error('useScrollAnimated must be used within an ScrollAnimatedProvider')
   }
-
+  
   return {
     ...context,
     onScroll,
+    canGoToUp,
   };
 }
 

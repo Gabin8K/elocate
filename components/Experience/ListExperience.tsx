@@ -2,12 +2,12 @@ import { useTheme } from "@/hooks";
 import { spacing } from "@/theme/spacing";
 import { Entypo } from "@expo/vector-icons";
 import Animated from "react-native-reanimated";
-import { FC, Fragment, memo, useMemo } from "react";
 import { ExperienceButton } from "./ExperienceButton";
 import { useExperienceList } from "./useExperienceList";
+import { FC, Fragment, memo, useMemo, useRef } from "react";
 import { ExperienceCard, ExperienceCardProps } from "./card";
 import { useScrollAnimated } from "@/providers/ScrollAnimatedProvider";
-import { ActivityIndicator, ListRenderItemInfo, StyleSheet } from "react-native";
+import { ActivityIndicator, FlatList, ListRenderItemInfo, StyleSheet } from "react-native";
 
 
 
@@ -16,8 +16,9 @@ import { ActivityIndicator, ListRenderItemInfo, StyleSheet } from "react-native"
 export const ListExperience: FC = memo(function ListExperience() {
 
   const { colors } = useTheme();
-  const { onScroll } = useScrollAnimated();
+  const { onScroll, canGoToUp } = useScrollAnimated();
   const rootComments = useExperienceList();
+  const listRef = useRef<FlatList>(null);
 
 
   const renderItem = useMemo(() => function renderItem({ item, index }: ListRenderItemInfo<ExperienceCardProps['item']>) {
@@ -41,6 +42,7 @@ export const ListExperience: FC = memo(function ListExperience() {
           size={spacing.height * .2}
         /> :
         <Animated.FlatList
+          ref={listRef}
           data={rootComments.comments}
           renderItem={renderItem}
           onScroll={onScroll}
@@ -60,7 +62,10 @@ export const ListExperience: FC = memo(function ListExperience() {
           }
         />
       }
-      <ExperienceButton />
+      <ExperienceButton
+        listRef={listRef}
+        canGoUp={canGoToUp}
+      />
     </Fragment>
   )
 })
