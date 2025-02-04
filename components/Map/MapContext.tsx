@@ -55,7 +55,7 @@ interface MapContextType {
 const initialValue: MapContextType = {
   loading: true,
   loadingPlaces: true,
-  radius: 2,
+  radius: 1,
   places: [],
   mapRef: {} as MapContextType['mapRef'],
   addPlace: () => { },

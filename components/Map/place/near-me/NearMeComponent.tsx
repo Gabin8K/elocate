@@ -31,7 +31,7 @@ export const NearMeComponent: FC = memo(function NearMeComponent() {
   return (
     <NearMeProvider>
       <NearMeContent
-        defaultValue={2}
+        defaultValue={map.radius}
         loading={map.loadingPlaces}
         showing={map.places.length}
         onRadiusChange={onRadiusChange}
