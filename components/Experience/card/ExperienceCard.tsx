@@ -115,7 +115,7 @@ export const ExperienceCard: FC<ExperienceCardProps> = memo(function ExperienceC
         <View
           style={[
             styles.footer,
-            !seeMore || depth >= 2 ? styles.footerPadding : {}
+            !seeMore && depth >= 2 ? styles.footerPadding : {}
           ]}
         >
           <Text
