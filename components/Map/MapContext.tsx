@@ -1,3 +1,4 @@
+import { geocoding } from "@/services";
 import MapView, { Camera } from "react-native-maps";
 import { useGetPlacesAround } from "@/services/hooks";
 import { Coordinate, PlaceDoc } from "@/services/types";
@@ -37,6 +38,7 @@ interface MapContextType {
   radius: number;
   places: PlaceDoc[];
   loadingPlaces: boolean;
+  addPlace: (place: PlaceDoc, location: Coordinate) => void;
   closePlace: () => void;
   closeItinerary: () => void;
   onMapLoaded: () => void;
@@ -56,6 +58,7 @@ const initialValue: MapContextType = {
   radius: 2,
   places: [],
   mapRef: {} as MapContextType['mapRef'],
+  addPlace: () => { },
   requestAddPlace: () => { },
   closePlace: () => { },
   setCurrentCamera: () => { },
@@ -188,6 +191,13 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
 
 
 
+  const addPlace = useCallback((place: PlaceDoc, location: Coordinate) => {
+    if (geocoding.calculateDistance(location, place.coordinate) <= state.radius) {
+      near.setPlaces((places) => [...places, place]);
+    }
+  }, [state.radius]);
+
+
 
   useMapParamsEffect((params) => {
     if (params.itinerary) {
@@ -206,6 +216,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
         openModal: state.openModal,
         radius: state.radius,
         places: near.places,
+        addPlace,
         itinerary: state.itinerary,
         loadingPlaces: near.loading,
         currentCamera: state.currentCamera,

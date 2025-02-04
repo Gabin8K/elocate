@@ -1,8 +1,10 @@
 import { spacing } from "@/theme/spacing";
 import { FormContent } from "./FormContent";
+import { PlaceDoc } from "@/services/types";
 import { LoginContent } from "./LoginContent";
 import { StyleSheet, View } from "react-native";
 import { Place, useMap } from "../../MapContext";
+import { useLocation } from "@/hooks/useLocation";
 import { useAuth } from "@/providers/AuthProvider";
 import { FC, memo, useCallback, useRef } from "react";
 import { ModalSheetRef, ModalSheet } from "@/components/ui/modal";
@@ -10,6 +12,7 @@ import { ModalSheetRef, ModalSheet } from "@/components/ui/modal";
 
 type ContentProps = {
   newPlace?: Place;
+  onNewPlace?: (place: PlaceDoc) => void;
   modalRef: React.RefObject<ModalSheetRef>;
 }
 
@@ -17,11 +20,18 @@ type ContentProps = {
 
 export const RequestPlaceModal: FC = memo(function RequestPlaceModal() {
   const map = useMap();
+  const location = useLocation();
   const modalRef = useRef<ModalSheetRef>(null);
 
   const onClose = useCallback(() => {
     map.closeModal();
   }, []);
+
+  const onNewPlace = useCallback((place: PlaceDoc) => {
+    if (!location?.coords) return;
+    map.addPlace(place, location.coords);
+  }, [location?.coords]);
+
 
   return (
     <ModalSheet
@@ -32,6 +42,7 @@ export const RequestPlaceModal: FC = memo(function RequestPlaceModal() {
       <RequestPlaceModalContent
         newPlace={map.newPlace}
         modalRef={modalRef}
+        onNewPlace={onNewPlace}
       />
     </ModalSheet>
   );
@@ -41,7 +52,7 @@ export const RequestPlaceModal: FC = memo(function RequestPlaceModal() {
 
 
 const RequestPlaceModalContent: FC<ContentProps> = memo(function RequestPlaceModalContent(props) {
-  const { newPlace, modalRef } = props;
+  const { newPlace, modalRef, onNewPlace } = props;
   const { auth } = useAuth();
 
   if (!newPlace) return null;
@@ -55,6 +66,7 @@ const RequestPlaceModalContent: FC<ContentProps> = memo(function RequestPlaceMod
         <FormContent
           newPlace={newPlace}
           modalRef={modalRef}
+          onNewPlace={onNewPlace}
         />
       }
     </View>

@@ -124,6 +124,7 @@ async function checkIfPlaceExists(location: Coordinate) {
 export const geocoding = {
   getAddressFromCoords,
   checkIfPlaceExists,
+  calculateDistance,
   getCoordsWithinRadiusDirectly,
   getPlacesWithinRadiusDirectly,
 }

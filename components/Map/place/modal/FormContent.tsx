@@ -4,11 +4,12 @@ import { spacing } from "@/theme/spacing";
 import { common } from "@/theme/palette";
 import { ImageInput } from "./ImageInput";
 import { FC, Fragment, memo } from "react";
+import { PlaceDoc } from "@/services/types";
 import { useFormPlace } from "./useFormPlace";
 import { StyleSheet, View } from "react-native";
 import { Button } from "@/components/ui/buttons";
-import { ModalSheetRef } from "@/components/ui/modal";
 import { Text, TextInput } from "@/components/ui";
+import { ModalSheetRef } from "@/components/ui/modal";
 import { DropdownMenu } from "@/components/ui/dropdown";
 import { FormRequestCompleted } from "./FormRequestCompleted";
 
@@ -16,16 +17,20 @@ import { FormRequestCompleted } from "./FormRequestCompleted";
 type FormContentProps = {
   newPlace: Place;
   modalRef: React.RefObject<ModalSheetRef>;
+  onNewPlace?: (place: PlaceDoc) => void;
 }
 
 export const FormContent: FC<FormContentProps> = memo(function FormContent(props) {
-  const { newPlace, modalRef } = props;
+  const { newPlace, modalRef, onNewPlace } = props;
 
   const { t } = useLocale();
   const form = useFormPlace(newPlace);
 
-  const onSubmit = () => {
-    form.handleSubmit();
+  const onSubmit = async () => {
+    const placeDoc = await form.handleSubmit();
+    if (placeDoc) {
+      onNewPlace?.(placeDoc);
+    }
   }
 
   return (
@@ -57,7 +62,7 @@ export const FormContent: FC<FormContentProps> = memo(function FormContent(props
         <ImageInput
           onImageChange={file => form.setValue('image', file)}
         />
-        {!form.resultId ?
+        {!form.placeDoc ?
           <Button
             layout
             onPress={onSubmit}

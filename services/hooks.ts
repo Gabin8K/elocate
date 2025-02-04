@@ -110,6 +110,7 @@ export function useGetPlacesAround(radius: number) {
   return {
     places,
     loading,
+    setPlaces,
   }
 }
 

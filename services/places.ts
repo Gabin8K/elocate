@@ -27,7 +27,10 @@ async function createPlace(place: PlaceDoc) {
       ...place,
       createdAt: firestore.FieldValue.serverTimestamp(),
     })
-  return result.id;
+  return await {
+    id: result.id,
+    ...(await result.get()).data(),
+  } as PlaceDoc;
 }
 
 
