@@ -166,10 +166,11 @@ const styles = StyleSheet.create({
   },
   text: {
     flex: 1,
+    height: spacing.xl,
   },
   ripples: {
-    ...reusableStyle.row,
     width: spacing.l,
+    ...reusableStyle.row,
   },
   buttons: {
     ...reusableStyle.row,

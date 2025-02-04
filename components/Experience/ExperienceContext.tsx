@@ -1,5 +1,4 @@
 import { CommentField } from "@/services/types";
-import { useGetRootComments } from "@/services/hooks";
 import { createContext, FunctionComponent, PropsWithChildren, useCallback, useContext, useState } from "react";
 
 
@@ -9,13 +8,16 @@ type State = {
   currentReply?: CommentField;
 }
 
+type ReplyParams = {
+  replyId?: string;
+  currentReply?: CommentField;
+}
 
 interface ExperienceContextType {
   replyId?: string;
   showExperience?: boolean;
   currentReply?: CommentField;
-  rootComments: ReturnType<typeof useGetRootComments>;
-  setReplyId: (parentId?: string, currentRpely?: CommentField) => void;
+  setReplyId: (params: ReplyParams) => void;
   setShowExperience: (show: boolean) => void;
 }
 
@@ -23,13 +25,6 @@ interface ExperienceContextType {
 const initialValue: ExperienceContextType = {
   setReplyId: () => { },
   setShowExperience: () => { },
-  rootComments: {
-    isEmtpy: false,
-    comments: [],
-    loading: false,
-    loadMore: async () => { },
-    setComments: () => { },
-  }
 }
 
 
@@ -48,9 +43,8 @@ export const useExperiences = () => {
 
 export const ExperienceProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const [state, setState] = useState<State>({});
-  const rootComments = useGetRootComments();
 
-  const setReplyId = useCallback((replyId?: string, currentReply?: CommentField) => {
+  const setReplyId = useCallback(({ replyId, currentReply }: ReplyParams) => {
     setState(state => ({
       ...state,
       replyId,
@@ -61,13 +55,12 @@ export const ExperienceProvider: FunctionComponent<PropsWithChildren> = ({ child
   const setShowExperience = useCallback((showExperience: boolean) => {
     setState(state => ({ ...state, showExperience }));
   }, []);
-  
+
 
   return (
     <ExperienceContext.Provider
       value={{
         ...state,
-        rootComments,
         setReplyId,
         setShowExperience,
       }}

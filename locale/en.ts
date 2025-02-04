@@ -20,7 +20,7 @@ export default {
   "slider-showing-end": "locations",
   "slider-within": "Within",
   "slider-km": "km",
-  
+
   // --Home Screen--
   // Request Place Modal
   "request-itinerary-modal-title": "Do you want to get directions to this place ?",
@@ -52,6 +52,8 @@ export default {
   "experience-input-placeholder": "Describe your experience...",
   "experience-input-reply-placeholder": "Your reply",
   "experience-input-reply-title": "Reply to",
+  "experience-max-depth": "You can't reply at this depth.",
+
 
   // --Setting Screen--
   "setting-screen-title": "Settings",

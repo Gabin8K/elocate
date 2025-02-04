@@ -1,24 +1,39 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { CommentField } from "@/services/types";
 import { useGetChildComments } from "@/services/hooks";
 
+type Props = {
+  id?: string;
+  currentReply?: CommentField;
+  setComments?: React.Dispatch<React.SetStateAction<CommentField[]>>;
+}
 
-export function useExperienceCard(id?: string, currentReply?: CommentField) {
-  const [canSeeMore, setCanSeeMore] = useState(false);
 
-  const subItem = useGetChildComments(id, canSeeMore);
+export function useExperienceCard(props: Props) {
+  const { id, currentReply, setComments } = props;
+
+  const subItem = useGetChildComments(id);
 
   const seeMore = () => {
-    setCanSeeMore(true);
+    subItem.loadMore();
   }
 
   useEffect(() => {
     if (id && currentReply) {
       if (id === currentReply.parentId) {
         subItem.setComments(prev => [currentReply, ...prev]);
+        setComments?.(prev => prev.map(comment => {
+          if (comment.id === id) {
+            return {
+              ...comment,
+              childLength: comment.childLength + 1,
+            }
+          }
+          return comment;
+        }))
       }
     }
-  }, [id, currentReply, subItem.setComments]);
+  }, [id, currentReply]);
 
   return {
     ...subItem,

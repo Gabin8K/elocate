@@ -1,12 +1,12 @@
 import { useTheme } from "@/hooks";
 import { spacing } from "@/theme/spacing";
 import { Entypo } from "@expo/vector-icons";
-import { useComments } from "./CommentContext";
 import Animated from "react-native-reanimated";
 import { FC, Fragment, memo, useMemo } from "react";
 import { ExperienceButton } from "./ExperienceButton";
-import { useScrollAnimated } from "@/providers/ScrollAnimatedProvider";
+import { useExperienceList } from "./useExperienceList";
 import { ExperienceCard, ExperienceCardProps } from "./card";
+import { useScrollAnimated } from "@/providers/ScrollAnimatedProvider";
 import { ActivityIndicator, ListRenderItemInfo, StyleSheet } from "react-native";
 
 
@@ -16,8 +16,8 @@ import { ActivityIndicator, ListRenderItemInfo, StyleSheet } from "react-native"
 export const ListExperience: FC = memo(function ListExperience() {
 
   const { colors } = useTheme();
-  const rootComments = useComments();
   const { onScroll } = useScrollAnimated();
+  const rootComments = useExperienceList();
 
 
   const renderItem = useMemo(() => function renderItem({ item, index }: ListRenderItemInfo<ExperienceCardProps['item']>) {
@@ -47,6 +47,8 @@ export const ListExperience: FC = memo(function ListExperience() {
           scrollEventThrottle={16}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainerStyle}
+          onEndReachedThreshold={0.1}
+          onEndReached={rootComments.loadMore}
           ListFooterComponent={
             rootComments.loading ?
               <ActivityIndicator
@@ -70,6 +72,7 @@ const styles = StyleSheet.create({
     paddingTop: spacing.lg * 6,
     paddingHorizontal: spacing.s,
     paddingBottom: spacing.xl * 3,
+    minHeight: spacing.height * .8,
   },
   empty: {
     margin: 'auto',

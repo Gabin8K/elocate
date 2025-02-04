@@ -1,3 +1,5 @@
+import { MutableRefObject } from "react";
+
 export interface Auth {
   uid: string
   displayName: string,
@@ -54,6 +56,7 @@ export interface CommentDoc {
   user: User;
   text: string;
   parentId: string | null;
+  parentIdIsNull: boolean;
   createdAt?: string;
 }
 
@@ -67,3 +70,6 @@ export interface User {
   photoURL: string;
   displayName: string;
 }
+
+
+export type LastDoc<T> = MutableRefObject<Partial<T> | undefined>;

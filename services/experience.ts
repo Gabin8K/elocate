@@ -1,4 +1,4 @@
-import { CommentDoc, CommentField } from "./types";
+import { CommentDoc, CommentField, LastDoc } from "./types";
 import firestore, { getCountFromServer } from '@react-native-firebase/firestore';
 
 async function createComment(comment: CommentDoc) {
@@ -16,16 +16,20 @@ async function createComment(comment: CommentDoc) {
 }
 
 
-async function getRootComments(lastDoc?: any) {
+async function getRootComments(lastDoc: LastDoc<CommentDoc>) {
   let query = firestore()
     .collection('comments')
-    .where('parentId', '==', null)
-    .orderBy('createdAt', 'desc');
+    .where('parentIdIsNull', '==', true)
+    .orderBy('createdAt', 'desc')
+    .limit(10);
 
-  if (lastDoc) {
-    query = query.startAfter(lastDoc);
+  if (lastDoc.current) {
+    query = query.startAfter(lastDoc.current);
   }
-  const result = await query.limit(5).get();
+  const result = await query.get();
+  if(result.docs.length === 0) return [];
+
+  lastDoc.current = result.docs[result.docs.length - 1];
   const comments = await result.docs.map(async (doc) => {
     return {
       id: doc.id,
@@ -37,7 +41,7 @@ async function getRootComments(lastDoc?: any) {
       })(),
     } as CommentField;
   });
-  return await Promise.all(comments);
+  return await Promise.all(comments)
 }
 
 
@@ -45,16 +49,21 @@ async function getRootComments(lastDoc?: any) {
 
 
 
-async function getComments(parentId: string, lastDoc?: any) {
+async function getComments(parentId: string, lastDoc: LastDoc<CommentDoc>) {
   let query = firestore()
     .collection('comments')
     .orderBy('createdAt', 'desc')
-    .where('parentId', '==', parentId);
+    .where('parentId', '==', parentId)
+    .limit(5);
 
-  if (lastDoc) {
-    query = query.startAfter(lastDoc);
+  if (lastDoc.current) {
+    query = query.startAfter(lastDoc.current);
   }
-  const result = await query.limit(5).get();
+
+  const result = await query.get();
+  if(result.docs.length === 0) return [];
+
+  lastDoc.current = result.docs[result.docs.length - 1];
   const comments = await result.docs.map(async (doc) => {
     return {
       id: doc.id,

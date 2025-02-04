@@ -11,82 +11,82 @@ export const typography = StyleSheet.create({
   title_eb: {
     fontSize: 22,
     fontFamily: 'WsEb',
-    lineHeight: 22,
+    lineHeight: 24,
   },
   title_b: {
     fontSize: 22,
     fontFamily: 'WsB',
-    lineHeight: 22,
+    lineHeight: 24,
   },
   title_m: {
     fontSize: 22,
     fontFamily: 'WsM',
-    lineHeight: 22,
+    lineHeight: 24,
   },
   title: {
     fontSize: 22,
     fontFamily: 'WsR',
-    lineHeight: 22,
+    lineHeight: 24,
   },
   body1_eb: {
     fontSize: 19,
     fontFamily: 'WsEb',
-    lineHeight: 19,
+    lineHeight: 22,
   },
   body1_b: {
     fontSize: 19,
     fontFamily: 'WsB',
-    lineHeight: 19,
+    lineHeight: 22,
   },
   body1_m: {
     fontSize: 19,
     fontFamily: 'WsM',
-    lineHeight: 19,
+    lineHeight: 22,
   },
   body1: {
     fontSize: 19,
     fontFamily: 'WsR',
-    lineHeight: 19,
+    lineHeight: 22,
   },
   body2_eb: {
     fontSize: 16,
     fontFamily: 'WsEb',
-    lineHeight:16,
+    lineHeight: 18,
   },
   body2_b: {
     fontSize: 16,
     fontFamily: 'WsB',
-    lineHeight:16,
+    lineHeight: 18,
   },
   body2_m: {
     fontSize: 16,
     fontFamily: 'WsM',
-    lineHeight:16,
+    lineHeight: 18,
   },
   body2: {
     fontSize: 16,
     fontFamily: 'WsR',
-    lineHeight:16,
+    lineHeight: 18,
   },
   caption_eb: {
     fontSize: 12,
     fontFamily: 'WsEb',
-    lineHeight: 12,
+    lineHeight: 14,
   },
   caption_b: {
     fontSize: 12,
     fontFamily: 'WsB',
-    lineHeight: 12,
+    lineHeight: 14,
   },
   caption_m: {
     fontSize: 12,
     fontFamily: 'WsM',
-    lineHeight: 12,
+    lineHeight: 14,
   },
   caption: {
     fontSize: 12,
     fontFamily: 'WsR',
-    lineHeight: 12,
+    lineHeight: 14,
   }
 });
 

@@ -1,13 +1,14 @@
 import { Text } from "@/components/ui";
 import { date } from "@/utils/formater";
+import { DepthCard } from "./DepthCard";
 import { spacing } from "@/theme/spacing";
 import { useLocale, useTheme } from "@/hooks";
 import { CommentField } from "@/services/types";
 import { Button } from "@/components/ui/buttons";
 import { reusableStyle } from "@/theme/reusables";
 import { useExperiences } from "../ExperienceContext";
-import { FC, memo, useCallback, useMemo } from "react";
 import { useExperienceCard } from "./useExperienceCard";
+import React, { FC, memo, useCallback, useMemo } from "react";
 import { FlatList, Image, ListRenderItemInfo, StyleSheet, View } from "react-native";
 
 
@@ -16,25 +17,27 @@ export type ExperienceCardProps = {
   depth: number;
   index?: number;
   item: CommentField;
+  maxDepth?: boolean;
+  setComments?: React.Dispatch<React.SetStateAction<CommentField[]>>;
 }
 
 
 
 export const ExperienceCard: FC<ExperienceCardProps> = memo(function ExperienceCard(props) {
-  const { item, depth } = props;
+  const { item, depth, maxDepth } = props;
 
   const { colors } = useTheme();
   const { t, locale } = useLocale();
   const { setReplyId, currentReply } = useExperiences();
 
-  const subItem = useExperienceCard(item.id, currentReply);
+  const subItem = useExperienceCard({ id: item.id, currentReply, setComments: props.setComments });
 
-  const hasChild = item.childLength > 0 || subItem.comments.length > 0;
-  const seeMore = Math.abs(item.childLength - subItem.comments.length);
+  const hasChild = item.childLength > 0;
+  const seeMore = item.childLength - subItem.comments.length;
 
 
   const onReply = useCallback(() => {
-    setReplyId(item.id);
+    setReplyId({ replyId: item.id });
   }, [item.id]);
 
 
@@ -43,10 +46,18 @@ export const ExperienceCard: FC<ExperienceCardProps> = memo(function ExperienceC
       <ExperienceCard
         item={item}
         depth={depth + 1}
+        maxDepth={depth === 3}
+        setComments={subItem.setComments}
       />
     )
   }, [item]);
 
+
+  if (maxDepth) {
+    return (
+      <DepthCard />
+    )
+  }
 
 
   return (
@@ -96,7 +107,6 @@ export const ExperienceCard: FC<ExperienceCardProps> = memo(function ExperienceC
         </Text>
         {hasChild ?
           <FlatList
-            extraData={subItem.comments.length}
             data={subItem.comments}
             renderItem={renderItem}
           /> :
@@ -128,23 +138,27 @@ export const ExperienceCard: FC<ExperienceCardProps> = memo(function ExperienceC
               </Button> :
               null
             }
-            <Button
-              onPress={onReply}
-              variant={'transparent'}
-              containerStyle={styles.button}
-              textStyle={{
-                color: 'text',
-                variant: 'caption_m',
-              }}
-            >
-              {t('experience-card-reply-btn')}
-            </Button>
+            {depth < 3 ?
+              <Button
+                onPress={onReply}
+                variant={'transparent'}
+                containerStyle={styles.button}
+                textStyle={{
+                  color: 'text',
+                  variant: 'caption_m',
+                }}
+              >
+                {t('experience-card-reply-btn')}
+              </Button> :
+              null
+            }
           </View>
         </View>
       </View>
     </View>
   )
 })
+
 
 
 

@@ -211,6 +211,7 @@ export function useFormCommentSubmit() {
         },
         text,
         parentId: parentId || null,
+        parentIdIsNull: !parentId,
       });
     } catch (error: any) {
       toast.show(String(error.message || error), 'error');
@@ -236,6 +237,7 @@ export function useGetRootComments() {
 
   const [comments, setComments] = useState<CommentField[]>([]);
   const [loading, setLoading] = useState(false);
+  const [canFetch, setCanFetch] = useState(true);
   const lastDoc = useRef<CommentDoc>();
 
   const isEmtpy = comments.length === 0 && !loading;
@@ -243,9 +245,9 @@ export function useGetRootComments() {
   const loadMore = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await experience.getRootComments(lastDoc.current);
-      lastDoc.current = data[data.length - 1];
-      setComments(data);
+      const data = await experience.getRootComments(lastDoc);
+      setComments(prev => [...data, ...prev]);
+      setCanFetch(data.length > 0);
     } catch (error: any) {
       toast.show(String(error.message || error), 'error');
     }
@@ -263,6 +265,7 @@ export function useGetRootComments() {
     isEmtpy,
     comments,
     loadMore,
+    canFetch,
     setComments,
   }
 }
@@ -276,7 +279,7 @@ export function useGetRootComments() {
 
 
 
-export function useGetChildComments(parentId?: string, canSeeMore?: boolean) {
+export function useGetChildComments(parentId?: string) {
   const toast = useToast();
 
   const [comments, setComments] = useState<CommentField[]>([]);
@@ -284,23 +287,18 @@ export function useGetChildComments(parentId?: string, canSeeMore?: boolean) {
   const lastDoc = useRef<CommentDoc>();
 
   const loadMore = useCallback(async () => {
-    if (!parentId || !canSeeMore) return;
+    if (!parentId) return;
     setLoading(true);
     try {
-      const data = await experience.getComments(parentId, lastDoc.current);
-      lastDoc.current = data[data.length - 1];
-      setComments(data);
+      const data = await experience.getComments(parentId, lastDoc);
+      setComments(prev => [...data, ...prev]);
     } catch (error: any) {
       toast.show(String(error.message || error), 'error');
     }
     finally {
       setLoading(false);
     }
-  }, [parentId, canSeeMore]);
-
-  useEffect(() => {
-    loadMore();
-  }, [parentId, canSeeMore])
+  }, [parentId]);
 
   return {
     loading,

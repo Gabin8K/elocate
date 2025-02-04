@@ -52,6 +52,7 @@ export default {
   "experience-input-placeholder": "Décrivez votre expérience...",
   "experience-input-reply-placeholder": "Votre répondre",
   "experience-input-reply-title": "Répondre à",
+  "experience-max-depth": "Vous ne pouvez plus répondre à cette profondeur.",
 
   // --Setting Screen--
   "setting-screen-title": "Paramètres",

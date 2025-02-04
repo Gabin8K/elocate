@@ -4,7 +4,6 @@ import { spacing } from "@/theme/spacing";
 import { IconButton } from "../../ui/buttons";
 import { CommentField } from "@/services/types";
 import { StyleSheet, View } from "react-native";
-import { useComments } from "../CommentContext";
 import { FormExperience } from "./FormExperience";
 import { useExperiences } from "../ExperienceContext";
 import { useExperienceForm } from "./useExperienceForm";
@@ -18,25 +17,23 @@ type FormContentAnimatedProps = {
   replyId?: string;
   children?: React.ReactNode;
   onClose: (currentReply?: CommentField) => void;
-  setRootComments?: React.Dispatch<React.SetStateAction<CommentField[]>>;
 }
 
 
 
 export const FormContent: FC = memo(function FormContent() {
 
-  const comment = useComments();
   const experience = useExperiences();
   const type = experience.replyId ? 'reply' : experience.showExperience ? 'experience' : 'none';
 
   const onClose = useCallback((currentReply?: CommentField) => {
-    experience.setReplyId(undefined, currentReply);
+    experience.setReplyId({ replyId: undefined, currentReply });
     experience.setShowExperience(false);
   }, []);
 
   useGlobalBackhandler(() => {
     if (experience.replyId) {
-      experience.setReplyId(undefined);
+      experience.setReplyId({ replyId: undefined });
       return true;
     } else if (experience.showExperience) {
       experience.setShowExperience(false);
@@ -59,7 +56,6 @@ export const FormContent: FC = memo(function FormContent() {
           <FormContentAnimated
             key={'experience'}
             onClose={onClose}
-            setRootComments={comment.setComments}
           >
             <FormReply />
           </FormContentAnimated> :
@@ -76,7 +72,7 @@ export const FormContent: FC = memo(function FormContent() {
 
 
 const FormContentAnimated: FC<FormContentAnimatedProps> = memo(function FormContentAnimated(props) {
-  const { replyId, children, onClose, setRootComments } = props;
+  const { replyId, children, onClose } = props;
 
   const { t } = useLocale();
   const { colors } = useTheme();
@@ -98,7 +94,6 @@ const FormContentAnimated: FC<FormContentAnimatedProps> = memo(function FormCont
     form.handleSubmit(replyId)
       .then(doc => {
         if (doc) {
-          setRootComments?.(prev => [{ ...doc, childLength: 0 }, ...prev]);
           setText('');
           onClose({ ...doc, childLength: 0 });
         }
