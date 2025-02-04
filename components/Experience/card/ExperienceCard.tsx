@@ -24,13 +24,13 @@ export type ExperienceCardProps = {
 
 
 export const ExperienceCard: FC<ExperienceCardProps> = memo(function ExperienceCard(props) {
-  const { item, depth, maxDepth } = props;
+  const { item, depth, maxDepth, setComments } = props;
 
   const { colors } = useTheme();
   const { t, locale } = useLocale();
   const { setReplyId, currentReply } = useExperiences();
 
-  const subItem = useExperienceCard({ id: item.id, currentReply, setComments: props.setComments });
+  const subItem = useExperienceCard({ id: item.id, currentReply, setComments });
 
   const hasChild = item.childLength > 0;
   const seeMore = item.childLength - subItem.comments.length;
