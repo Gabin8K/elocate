@@ -29,7 +29,7 @@ export default function AppUri() {
             <IconButton
               shadow
               onPress={goBack}
-              variant={'error'}
+              variant={'primary'}
               backgroundColor={'card'}
               icon={'warning-outline'}
             />
@@ -60,8 +60,4 @@ const styles = StyleSheet.create({
     rowGap: spacing.s,
     alignItems: 'center',
   },
-  button: {
-    marginTop: spacing.m,
-    paddingHorizontal: spacing.xxl,
-  }
 })

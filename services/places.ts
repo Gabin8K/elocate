@@ -51,14 +51,12 @@ async function getPlaces(): Promise<PlaceDoc[]> {
 
 
 async function getPlace(placeId: string): Promise<PlaceDoc | undefined> {
-  let place: PlaceDoc | undefined = undefined;
   const query = await firestore().collection('places').doc(placeId).get();
-
-  place = {
+  if (!query.exists) return;
+  return {
     id: query.id,
     ...query.data() as PlaceDoc,
   };
-  return place;
 }
 
 

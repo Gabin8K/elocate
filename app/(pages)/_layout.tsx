@@ -37,6 +37,12 @@ export default function PagesLayout() {
             animation: 'slide_from_bottom',
           }}
         />
+        <Stack.Screen
+          name={'[uri]'}
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack>
     </HeaderProvider>
   );

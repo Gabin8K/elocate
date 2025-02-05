@@ -26,14 +26,13 @@ export function useAppUri() {
   const fetchPlace = useCallback(async (placeId: string) => {
     try {
       const place = await places.getPlace(placeId);
-      if (place) {
-        router.replace({
-          pathname: '/(tabs)',
-          params: {
-            itinerary: JSON.stringify(place)
-          }
-        })
-      }
+      if (!place) throw new Error('Place not found');
+      router.replace({
+        pathname: '/(tabs)',
+        params: {
+          itinerary: JSON.stringify(place)
+        }
+      })
     } catch (error: any) {
       setError(true);
     }
