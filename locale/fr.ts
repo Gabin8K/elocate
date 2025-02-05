@@ -53,6 +53,8 @@ export default {
   "experience-input-reply-placeholder": "Votre répondre",
   "experience-input-reply-title": "Répondre à",
   "experience-max-depth": "Vous ne pouvez plus répondre à cette profondeur.",
+  "experience-login-reply": "Connectez-vous pour répondre",
+  "experience-login-experience": "Connectez-vous pour partager votre expérience",
 
   // --Setting Screen--
   "setting-screen-title": "Paramètres",
@@ -65,5 +67,5 @@ export default {
 
 
   // --Uri--
-  "uri-error":"Ressource partagée introuvable!",
+  "uri-error": "Ressource partagée introuvable!",
 }

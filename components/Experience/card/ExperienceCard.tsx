@@ -28,7 +28,7 @@ export const ExperienceCard: FC<ExperienceCardProps> = memo(function ExperienceC
 
   const { colors } = useTheme();
   const { t, locale } = useLocale();
-  const { setReplyId, currentReply } = useExperiences();
+  const { setReply, currentReply } = useExperiences();
 
   const subItem = useExperienceCard({ id: item.id, currentReply, setComments });
 
@@ -37,7 +37,7 @@ export const ExperienceCard: FC<ExperienceCardProps> = memo(function ExperienceC
 
 
   const onReply = useCallback(() => {
-    setReplyId({ replyId: item.id });
+    setReply({ reply: item });
   }, [item.id]);
 
 
@@ -87,10 +87,26 @@ export const ExperienceCard: FC<ExperienceCardProps> = memo(function ExperienceC
         /> :
         null
       }
-      <Image
-        style={depth === 0 ? styles.avatar : styles.avatarChild}
-        source={{ uri: item.user.photoURL }}
-      />
+      {item.user.photoURL ?
+        <Image
+          style={depth === 0 ? styles.avatar : styles.avatarChild}
+          source={{ uri: item.user.photoURL }}
+        /> :
+        <View
+          style={[
+            styles.rounded,
+            depth === 0 ? styles.avatar : styles.avatarChild,
+            { backgroundColor: colors.card },
+          ]}
+        >
+          <Text
+            variant={'caption_m'}
+          >
+            {item.user.displayName[0]}
+          </Text>
+        </View>
+
+      }
       <View
         style={styles.content}
       >
@@ -231,5 +247,9 @@ const styles = StyleSheet.create({
   button: {
     boxShadow: undefined,
     paddingHorizontal: spacing.xs,
+  },
+  rounded: {
+    borderRadius: spacing.m,
+    ...reusableStyle.center,
   }
 })

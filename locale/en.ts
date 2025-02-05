@@ -53,6 +53,8 @@ export default {
   "experience-input-reply-placeholder": "Your reply",
   "experience-input-reply-title": "Reply to",
   "experience-max-depth": "You can't reply at this depth.",
+  "experience-login-reply": "Log in to reply",
+  "experience-login-experience": "Log in to share your experience",
 
 
   // --Setting Screen--

@@ -1,30 +1,36 @@
-import { CommentField } from "@/services/types";
+import { CommentDoc, CommentField } from "@/services/types";
 import { createContext, FunctionComponent, PropsWithChildren, useCallback, useContext, useState } from "react";
 
 
 type State = {
-  replyId?: string;
+  reply?: CommentDoc;
+  showLoginModal?: boolean;
   showExperience?: boolean;
   currentReply?: CommentField;
 }
 
 type ReplyParams = {
-  replyId?: string;
+  reply?: CommentDoc;
   currentReply?: CommentField;
 }
 
 interface ExperienceContextType {
-  replyId?: string;
+  reply?: CommentDoc;
   showExperience?: boolean;
+  showLoginModal?: boolean;
   currentReply?: CommentField;
-  setReplyId: (params: ReplyParams) => void;
+  closeLoginModal: () => void;
+  openLoginModal: () => void;
+  setReply: (params: ReplyParams) => void;
   setShowExperience: (show: boolean) => void;
 }
 
 
 const initialValue: ExperienceContextType = {
-  setReplyId: () => { },
+  setReply: () => { },
   setShowExperience: () => { },
+  closeLoginModal: () => { },
+  openLoginModal: () => { },
 }
 
 
@@ -44,10 +50,10 @@ export const useExperiences = () => {
 export const ExperienceProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const [state, setState] = useState<State>({});
 
-  const setReplyId = useCallback(({ replyId, currentReply }: ReplyParams) => {
+  const setReply = useCallback(({ reply, currentReply }: ReplyParams) => {
     setState(state => ({
       ...state,
-      replyId,
+      reply,
       ...currentReply ? { currentReply } : {}
     }));
   }, []);
@@ -56,12 +62,22 @@ export const ExperienceProvider: FunctionComponent<PropsWithChildren> = ({ child
     setState(state => ({ ...state, showExperience }));
   }, []);
 
+  const closeLoginModal = useCallback(() => {
+    setState(state => ({ ...state, showLoginModal: false }));
+  }, []);
+
+  const openLoginModal = useCallback(() => {
+    setState(state => ({ ...state, showLoginModal: true }));
+  }, []);
+
 
   return (
     <ExperienceContext.Provider
       value={{
         ...state,
-        setReplyId,
+        setReply,
+        openLoginModal,
+        closeLoginModal,
         setShowExperience,
       }}
     >

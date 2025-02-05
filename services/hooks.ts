@@ -247,7 +247,7 @@ export function useGetRootComments() {
     setLoading(true);
     try {
       const data = await experience.getRootComments(lastDoc);
-      setComments(prev => [...data, ...prev]);
+      setComments(prev => [...prev, ...data]);
       setCanFetch(data.length > 0);
     } catch (error: any) {
       toast.show(String(error.message || error), 'error');
@@ -292,7 +292,7 @@ export function useGetChildComments(parentId?: string) {
     setLoading(true);
     try {
       const data = await experience.getComments(parentId, lastDoc);
-      setComments(prev => [...data, ...prev]);
+      setComments(prev => [...prev, ...data]);
     } catch (error: any) {
       toast.show(String(error.message || error), 'error');
     }

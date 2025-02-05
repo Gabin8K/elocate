@@ -1,9 +1,10 @@
+import { Fragment } from "react";
 import { useLocale } from "@/hooks";
-import { Text } from "@/components/ui";
 import { spacing } from "@/theme/spacing";
 import { palette } from "@/theme/palette";
 import { useAppUri } from "@/components/Uri";
 import { IconButton } from "@/components/ui/buttons";
+import { NavigationBar, Text } from "@/components/ui";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 
 
@@ -14,36 +15,41 @@ export default function AppUri() {
 
 
   return (
-    <View
-      style={styles.container}
-    >
-      {loading ?
-        <ActivityIndicator
-          size={spacing.xl}
-          color={palette.light.primary}
-        /> :
-        error ?
-          <View
-            style={styles.error}
-          >
-            <IconButton
-              shadow
-              onPress={goBack}
-              variant={'primary'}
-              backgroundColor={'card'}
-              icon={'warning-outline'}
-            />
-            <Text
-              variant={'body1_m'}
-              color={'gray3'}
+    <Fragment>
+      <NavigationBar
+        color={'background'}
+      />
+      <View
+        style={styles.container}
+      >
+        {loading ?
+          <ActivityIndicator
+            size={spacing.xl}
+            color={palette.light.primary}
+          /> :
+          error ?
+            <View
+              style={styles.error}
             >
-              {t('uri-error')}
-            </Text>
-          </View>
-          :
-          null
-      }
-    </View>
+              <IconButton
+                shadow
+                onPress={goBack}
+                variant={'primary'}
+                backgroundColor={'card'}
+                icon={'warning-outline'}
+              />
+              <Text
+                variant={'body1_m'}
+                color={'gray3'}
+              >
+                {t('uri-error')}
+              </Text>
+            </View>
+            :
+            null
+        }
+      </View>
+    </Fragment>
   );
 }
 

@@ -9,9 +9,13 @@ import { useLocale, useTheme, useToast } from "@/hooks";
 import { FC, Fragment, memo, useCallback, useState } from "react";
 
 
+type LoginContentProps = {
+  label?: string;
+}
 
 
-export const LoginContent: FC = memo(function LoginContent() {
+export const LoginContent: FC<LoginContentProps> = memo(function LoginContent(props) {
+  const { label } = props;
 
   const toast = useToast();
   const { t } = useLocale();
@@ -40,7 +44,7 @@ export const LoginContent: FC = memo(function LoginContent() {
           { borderColor: colors.divider }
         ]}
       >
-        {t('login-content-login-to-add-place')}
+        {label || t('login-content-login-to-add-place')}
       </Text>
       <Button
         onPress={onLogin}

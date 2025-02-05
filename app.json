@@ -22,7 +22,16 @@
     "ios": {
       "bundleIdentifier": "com.dnfg.elocate",
       "googleServicesFile": "./GoogleService-Info.plist",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationAlwaysUsageDescription": "Allow Elocate to use your location.",
+        "NSLocationWhenInUseUsageDescription": "Allow Elocate to use your location.",
+        "NSPhotoLibraryUsageDescription": "The app accesses your photos to let you share them with your friends.",
+        "UIApplicationExitsOnSuspend": true,
+        "LSApplicationQueriesSchemes": [
+          "elocate"
+        ]
+      }
     },
     "android": {
       "package": "com.dnfg.elocate",
@@ -44,6 +53,16 @@
           ],
           "category": [
             "BROWSABLE",
+            "DEFAULT"
+          ]
+        },
+        {
+          "action": "SEND",
+          "data": {
+            "mimeType": "text/plain",
+            "scheme": "elocate"
+          },
+          "category": [
             "DEFAULT"
           ]
         }
