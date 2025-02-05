@@ -63,4 +63,8 @@ export default {
   "setting-screen-theme-light": "Light",
   "setting-screen-language-title": "Language",
   "setting-screen-language-placeholder": "Select language",
+
+
+  // --Uri--
+  "uri-error": "Shared resource not found!",
 }

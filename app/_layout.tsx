@@ -1,5 +1,5 @@
-import Providers from "@/providers/Providers";
 import { Slot } from "expo-router";
+import Providers from "@/providers/Providers";
 
 export default function RootLayout() {
 

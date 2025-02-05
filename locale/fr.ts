@@ -62,4 +62,8 @@ export default {
   "setting-screen-theme-light": "Clair",
   "setting-screen-language-title": "Langue",
   "setting-screen-language-placeholder": "Sélectionner la langue",
+
+
+  // --Uri--
+  "uri-error":"Ressource partagée introuvable!",
 }
