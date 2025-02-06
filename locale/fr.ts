@@ -8,7 +8,7 @@ export default {
   "no": "Non",
   "elocate-share-title": "Itinéraire Easy Locate (Elocate)",
   "error-sharing": "Erreur lors du partage:",
-  "error-file-canceled": "Ajout du media annulé",
+  "error-file-canceled": "Ajout du media annulé!",
   "error-file-size": "Taille de fichier trop grande (max 2.3MB)",
 
   // --Drawer--
