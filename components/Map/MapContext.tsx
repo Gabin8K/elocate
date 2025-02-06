@@ -3,6 +3,7 @@ import MapView, { Camera } from "react-native-maps";
 import { useGetPlacesAround } from "@/services/hooks";
 import { Coordinate, PlaceDoc } from "@/services/types";
 import { useMapParamsEffect } from "./useMapParamsEffect";
+import { MapDirectionsResponse } from "react-native-maps-directions";
 import { createContext, FunctionComponent, PropsWithChildren, useCallback, useContext, useRef, useState } from "react";
 
 
@@ -22,6 +23,7 @@ export type Itinerary = {
 type MapState = {
   newPlace?: Place;
   itinerary?: Itinerary;
+  itineraryResult: MapDirectionsResponse[];
   openModal?: boolean;
   loading: boolean;
   radius: number;
@@ -33,11 +35,13 @@ interface MapContextType {
   newPlace?: Place;
   openModal?: boolean;
   itinerary?: Itinerary;
+  itineraryResult: MapDirectionsResponse[];
   currentCamera?: Camera;
   mapRef: React.RefObject<MapView>;
   radius: number;
   places: PlaceDoc[];
   loadingPlaces: boolean;
+  onItineraryReady: (...result: MapDirectionsResponse[]) => void;
   addPlace: (place: PlaceDoc, location: Coordinate) => void;
   closePlace: () => void;
   closeItinerary: () => void;
@@ -58,6 +62,7 @@ const initialValue: MapContextType = {
   radius: 1,
   places: [],
   mapRef: {} as MapContextType['mapRef'],
+  itineraryResult: [],
   addPlace: () => { },
   requestAddPlace: () => { },
   closePlace: () => { },
@@ -69,6 +74,7 @@ const initialValue: MapContextType = {
   closeItinerary: () => { },
   requestItinerary: () => { },
   confirmRequestItinerary: () => { },
+  onItineraryReady: () => { },
 }
 
 
@@ -199,6 +205,15 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
 
 
 
+  const onItineraryReady = useCallback((...itineraryResult: MapDirectionsResponse[]) => {
+    setState(state => ({
+      ...state,
+      itineraryResult,
+    }));
+  }, []);
+
+
+
   useMapParamsEffect((params) => {
     if (params.itinerary) {
       requestItinerary(params.itinerary);
@@ -220,6 +235,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
         itinerary: state.itinerary,
         loadingPlaces: near.loading,
         currentCamera: state.currentCamera,
+        itineraryResult: state.itineraryResult,
         confirmRequestPlace,
         requestAddPlace,
         closePlace,
@@ -230,6 +246,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
         closeItinerary,
         requestItinerary,
         confirmRequestItinerary,
+        onItineraryReady,
       }}
     >
       {children}

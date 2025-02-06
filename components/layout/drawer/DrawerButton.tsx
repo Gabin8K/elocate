@@ -1,11 +1,11 @@
 import { Text } from "@/components/ui";
-import { useTheme } from "@/hooks";
-import { reusableStyle } from "@/theme/reusables";
 import { spacing } from "@/theme/spacing";
 import { display } from "@/utils/formater";
-import { Ionicons } from "@expo/vector-icons";
 import { Href, router } from "expo-router";
 import { FC, memo, ReactNode } from "react";
+import { useLocale, useTheme } from "@/hooks";
+import { Ionicons } from "@expo/vector-icons";
+import { reusableStyle } from "@/theme/reusables";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 
 
@@ -72,6 +72,7 @@ export const DrawerButton: FC<DrawerButtonProps> = memo(function DrawerLayout(pr
 export const DrawerUser: FC<DrawerUserProps> = (function DrawerUser(props) {
   const { uri, username } = props;
 
+  const { t } = useLocale();
   const { colors } = useTheme();
 
   return (
@@ -98,7 +99,7 @@ export const DrawerUser: FC<DrawerUserProps> = (function DrawerUser(props) {
         <Text
           variant={'body1_m'}
         >
-          {display(username || 'Non connecté', 13)}
+          {display(username || t('drawer-not-login'), 13)}
         </Text>
       </View>
       <View

@@ -3,7 +3,7 @@ import { Itinerary } from "../MapContext";
 import { palette } from "@/theme/palette";
 import { Coordinate } from "@/services/types";
 import { useBackhandler, useLocale } from "@/hooks";
-import MapViewDirections from "react-native-maps-directions";
+import MapViewDirections, { MapDirectionsResponse } from "react-native-maps-directions";
 
 
 type RenderItitneraryProps = Required<ItineraryComponentProps>;
@@ -12,12 +12,13 @@ type ItineraryComponentProps = {
   itinerary?: Itinerary;
   location?: Coordinate;
   closeItinerary: () => void;
+  onItineraryReady?: (...result: MapDirectionsResponse[]) => void;
 }
 
 
 
 export const ItineraryComponent: FC<ItineraryComponentProps> = memo(function ItineraryComponent(props) {
-  const { itinerary, location, radius, closeItinerary } = props;
+  const { itinerary, location, radius, closeItinerary, onItineraryReady } = props;
 
   if (!location || !itinerary?.confirm) return null;
 
@@ -27,6 +28,7 @@ export const ItineraryComponent: FC<ItineraryComponentProps> = memo(function Iti
       location={location}
       radius={radius}
       closeItinerary={closeItinerary}
+      onItineraryReady={onItineraryReady || (() => { })}
     />
   );
 });
@@ -36,7 +38,7 @@ export const ItineraryComponent: FC<ItineraryComponentProps> = memo(function Iti
 
 
 const RenderItitnerary: FC<RenderItitneraryProps> = memo(function RenderItitnerary(props) {
-  const { itinerary, location, radius, closeItinerary } = props;
+  const { itinerary, location, radius, closeItinerary, onItineraryReady } = props;
 
   const { locale } = useLocale();
 
@@ -57,6 +59,7 @@ const RenderItitnerary: FC<RenderItitneraryProps> = memo(function RenderItitnera
       origin={location}
       strokeWidth={3}
       language={locale}
+      onReady={onItineraryReady}
       strokeColor={palette.light.primary}
       destination={itinerary.place.coordinate}
       apikey={process.env.EXPO_PUBLIC_GOOGLE_MAP_API_KEY as string}

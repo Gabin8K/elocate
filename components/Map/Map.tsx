@@ -105,6 +105,7 @@ export const Map: FC = memo(function Map() {
           itinerary={map.itinerary}
           location={location?.coords}
           closeItinerary={map.closeItinerary}
+          onItineraryReady={map.onItineraryReady}
         />
       </MapView>
       <UserLocationButton

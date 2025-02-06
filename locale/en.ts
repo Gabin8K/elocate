@@ -14,6 +14,7 @@ export default {
   "drawer-user-logout": "Log out",
   "drawer-experience": "Experiences",
   "drawer-setting": "Settings",
+  "drawer-not-login": "Not connected",
 
   // Slider Component
   "slider-showing": "Showing",
