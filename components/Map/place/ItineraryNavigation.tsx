@@ -84,7 +84,7 @@ const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavi
         {distance.text}
       </Text>
       <MaterialCommunityIcons
-        size={28}
+        size={30}
         name={directionIcon}
         color={colors.primary}
       />
