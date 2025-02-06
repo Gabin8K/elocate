@@ -37,7 +37,7 @@ export function useMediaFile() {
       throw new Error(t('error-file-canceled'));
     }
     const size = (document.assets[0].fileSize ?? 0) / 1024 / 1024;
-    if (size > 2.3) {
+    if (size > 3.5) {
       throw new Error(t('error-file-size'));
     }
     const _file: File = {
