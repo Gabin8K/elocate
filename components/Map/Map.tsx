@@ -87,6 +87,7 @@ export const Map: FC = memo(function Map() {
           coordinate={map.newPlace?.coordinate}
         />
         <MarkerCurrentPosition
+          itinerary={map.itinerary}
           coordinate={location?.coords}
           currentCamera={map.currentCamera}
         />

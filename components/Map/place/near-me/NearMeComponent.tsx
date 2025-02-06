@@ -22,8 +22,11 @@ type NearMeContentProps = {
 export const NearMeComponent: FC = memo(function NearMeComponent() {
   const map = useMap();
 
-  const onRadiusChange = useCallback((value: number) => {
+  const onRadiusChange = useCallback(async (value: number) => {
     map.onRadiusChange(value);
+    const camera = await map.mapRef.current?.getCamera();
+    const zoom = 10;
+    map.mapRef.current?.animateCamera({ ...camera, zoom }, { duration: 500 });
   }, []);
 
   if (map.loading) return null;

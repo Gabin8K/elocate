@@ -1,13 +1,15 @@
 import { palette } from "@/theme/palette";
+import { Itinerary } from "../MapContext";
 import { Coordinate } from "@/services/types";
 import { reusableStyle } from "@/theme/reusables";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Marker3DContent } from "./Marker3DContent";
 import { Animated, StyleSheet } from "react-native";
 import { FC, memo, useCallback, useEffect, useRef } from "react";
 import { Camera, Circle, MarkerAnimated } from "react-native-maps";
+import { Marker3DContent, Marker3DContentItinerary } from "./Marker3DContent";
 
 type MarkerCurrentPositionProps = {
+  itinerary?: Itinerary;
   currentCamera?: Camera;
   coordinate?: Coordinate;
 }
@@ -23,24 +25,35 @@ type RadiusCurrentPositionProps = {
 
 
 export const MarkerCurrentPosition: FC<MarkerCurrentPositionProps> = memo(function MarkerCurrentPosition(props) {
-  const { coordinate, currentCamera } = props;
+  const { itinerary, coordinate, currentCamera } = props;
 
   if (!coordinate) return null;
+
+  const children = (
+    <MaterialIcons
+      size={20}
+      name={'navigation'}
+      color={palette.light.primary}
+    />
+  )
 
   return (
     <MarkerAnimated
       coordinate={coordinate}
     >
-      <Marker3DContent
-        currentCamera={currentCamera}
-        style={styles.container}
-      >
-        <MaterialIcons
-          size={20}
-          name={'navigation'}
-          color={palette.light.primary}
-        />
-      </Marker3DContent>
+      {itinerary?.confirm ?
+        <Marker3DContentItinerary
+          style={styles.container}
+        >
+          {children}
+        </Marker3DContentItinerary> :
+        <Marker3DContent
+          currentCamera={currentCamera}
+          style={styles.container}
+        >
+          {children}
+        </Marker3DContent>
+      }
     </MarkerAnimated>
   );
 });
@@ -69,7 +82,7 @@ export const RadiusCurrentPosition: FC<RadiusCurrentPositionProps> = memo(functi
   useEffect(() => {
     animate()
   }, [radius])
-  
+
 
   if (!coordinate || !currentCamera) return null;
 
