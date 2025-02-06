@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import * as Location from 'expo-location';
 import { useToast } from "./useToast";
+import * as Location from 'expo-location';
+import { useEffect, useState } from "react";
 
 
 export function useLocation() {
@@ -9,23 +9,25 @@ export function useLocation() {
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
 
   useEffect(() => {
-    async function getCurrentLocation() {
 
+    (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         toast.show('Permission to access location was denied');
         return;
       }
 
-      const location = await Location.getCurrentPositionAsync({
+      await Location.watchPositionAsync({
         accuracy: Location.Accuracy.BestForNavigation,
-        timeInterval: 5000,
+        timeInterval: 2500,
+      }, (location) => {
+        setLocation(location);
       });
-      setLocation(location);
+    })();
+
+    return () => {
+      Location.stopLocationUpdatesAsync('location');
     }
-
-    getCurrentLocation();
   }, []);
-
   return location;
 }

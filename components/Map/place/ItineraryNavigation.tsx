@@ -20,7 +20,7 @@ export const ItineraryNavigation: FC = memo(function ItineraryNavigation() {
   const map = useMap();
 
   if (map.itineraryResult.length === 0 || !map.itinerary?.confirm) return null;
-  
+
   return (
     <Portal
       name={'itinerary-navigation'}
@@ -88,6 +88,15 @@ const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavi
         name={directionIcon}
         color={colors.primary}
       />
+      {currentStep.maneuver ?
+        <Text
+          color={'primary'}
+          variant={'body2_eb'}
+        >
+          {currentStep.maneuver}
+        </Text> :
+        null
+      }
     </Animated.View>
   );
 });
@@ -104,14 +113,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     borderRadius: spacing.m,
+    width: spacing.width * .35,
     paddingVertical: spacing.m,
-    marginHorizontal: spacing.l,
-    paddingHorizontal: spacing.m,
   },
   content1: {
     ...reusableStyle.row,
     columnGap: spacing.xs,
-  }
+  },
 })
 
 

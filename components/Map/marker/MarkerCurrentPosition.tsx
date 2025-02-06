@@ -23,9 +23,34 @@ type RadiusCurrentPositionProps = {
 
 
 
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+const AnimatedMarker = Animated.createAnimatedComponent(MarkerAnimated);
+
+
 
 export const MarkerCurrentPosition: FC<MarkerCurrentPositionProps> = memo(function MarkerCurrentPosition(props) {
   const { itinerary, coordinate, currentCamera } = props;
+
+  const animateLatitude = useRef(new Animated.Value(0)).current;
+  const animateLongitude = useRef(new Animated.Value(0)).current;
+
+  const animate = useCallback(() => {
+    Animated.timing(animateLatitude, {
+      toValue: coordinate?.latitude || 0,
+      duration: 300,
+      useNativeDriver: false
+    }).start();
+
+    Animated.timing(animateLongitude, {
+      toValue: coordinate?.longitude || 0,
+      duration: 300,
+      useNativeDriver: false
+    }).start();
+  }, [coordinate]);
+
+  useEffect(() => {
+    animate()
+  }, [coordinate])
 
   if (!coordinate) return null;
 
@@ -38,8 +63,11 @@ export const MarkerCurrentPosition: FC<MarkerCurrentPositionProps> = memo(functi
   )
 
   return (
-    <MarkerAnimated
-      coordinate={coordinate}
+    <AnimatedMarker
+      coordinate={{
+        latitude: animateLatitude,
+        longitude: animateLongitude
+      }}
     >
       {itinerary?.confirm ?
         <Marker3DContentItinerary
@@ -54,7 +82,7 @@ export const MarkerCurrentPosition: FC<MarkerCurrentPositionProps> = memo(functi
           {children}
         </Marker3DContent>
       }
-    </MarkerAnimated>
+    </AnimatedMarker>
   );
 });
 
@@ -62,7 +90,6 @@ export const MarkerCurrentPosition: FC<MarkerCurrentPositionProps> = memo(functi
 
 
 
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 export const RadiusCurrentPosition: FC<RadiusCurrentPositionProps> = memo(function RadiusCurrentPosition(props) {
   const { radius, coordinate, currentCamera } = props;

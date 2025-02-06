@@ -71,7 +71,7 @@ export const Marker3DContentItinerary: FC<ContentItineraryProps> = memo(function
   useEffect(() => {
     const subscribe = DeviceMotion.addListener((motion) => {
       const { alpha } = motion.rotation;
-      const rotation = alpha ? (alpha * 180) / Math.PI : 0;
+      const rotation = alpha ? -(alpha * 180) / Math.PI : 0;
       setRotation(rotation);
     })
     return () => {

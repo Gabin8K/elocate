@@ -7,7 +7,8 @@ import { reusableStyle } from "@/theme/reusables";
 import { useMapKey } from "@/providers/MapKeyProvider";
 import { FC, Fragment, memo, useCallback } from "react";
 import { UserLocationButton } from "./UserLocationButton";
-import MapView, { Camera, LongPressEvent, PROVIDER_GOOGLE, Region } from "react-native-maps";
+import { useInitialCamera, useInitialRegion } from "./useInitialMapConfig";
+import MapView, { Camera, LongPressEvent, PROVIDER_GOOGLE } from "react-native-maps";
 import { ItineraryComponent, MarkerCurrentPosition, MarkerPlace, MarkerPlaceNearMe, RadiusCurrentPosition } from "./marker";
 
 
@@ -20,23 +21,8 @@ export const Map: FC = memo(function Map() {
   const { mode } = useTheme();
   const location = useLocation();
 
-  const initialRegion: Region = {
-    latitude: location?.coords.latitude || 0,
-    longitude: location?.coords.longitude || 0,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  }
-
-
-  const initialCamera: Camera = {
-    center: {
-      latitude: location?.coords.latitude || 0,
-      longitude: location?.coords.longitude || 0,
-    },
-    heading: 30,
-    pitch: 60,
-    zoom: 17,
-  }
+  const initialCamera = useInitialCamera(location?.coords);
+  const initialRegion = useInitialRegion(location?.coords);
 
 
   const onLongPress = useCallback(({ nativeEvent }: LongPressEvent) => {
