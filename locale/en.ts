@@ -8,6 +8,8 @@ export default {
   "no": "No",
   "elocate-share-title": "Easy Locate Itinerary (Elocate)",
   "error-sharing": "Error sharing:",
+  "error-file-canceled": "Media addition canceled",
+  "error-file-size": "File size too large (max 2.3MB)",
 
   // --Drawer--
   "drawer-user-status": "Not connected",
