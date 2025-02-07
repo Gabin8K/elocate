@@ -2,9 +2,9 @@ import { useTheme } from "@/hooks";
 import { Text } from "@/components/ui";
 import { spacing } from "@/theme/spacing";
 import { useHeader } from "./HeaderContext";
-import { StyleSheet, View } from "react-native";
 import React, { FC, memo, useCallback } from "react";
 import { IconButton } from "@/components/ui/buttons";
+import { Platform, StyleSheet, View } from "react-native";
 import { component, reusableStyle } from "@/theme/reusables";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
@@ -17,7 +17,10 @@ export const HeaderLayout: FC<NativeStackHeaderProps> = memo(function HeaderLayo
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
 
-  const paddingTop = insets.top + 20;
+  const paddingTop = Platform.select({
+    ios: insets.top,
+    android: insets.top + 20,
+  });
 
   const onPress = useCallback(() => {
     const backHandler = header.canBackHandler.current();

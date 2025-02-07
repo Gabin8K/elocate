@@ -16,24 +16,9 @@ export const mapStyles = {
       stylers: [{ color: "#d59563", visibility: "off" }],
     },
     {
-      featureType: "poi.business",
-      elementType: "labels",
-      stylers: [{ visibility: "off" }]
-    },
-    {
       featureType: "poi",
       elementType: "labels",
-      stylers: [{ color: "#d59563", visibility: "off" }],
-    },
-    {
-      featureType: "poi.park",
-      elementType: "geometry",
-      stylers: [{ color: "#263c3f", visibility: "off" }],
-    },
-    {
-      featureType: "poi.park",
-      elementType: "labels.text.fill",
-      stylers: [{ color: "#6b9a76", visibility: "off" }],
+      stylers: [{ visibility: "off" }]
     },
     {
       featureType: "road",

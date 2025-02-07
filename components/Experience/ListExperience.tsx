@@ -7,7 +7,7 @@ import { useExperienceList } from "./useExperienceList";
 import { FC, Fragment, memo, useMemo, useRef } from "react";
 import { ExperienceCard, ExperienceCardProps } from "./card";
 import { useScrollAnimated } from "@/providers/ScrollAnimatedProvider";
-import { ActivityIndicator, FlatList, ListRenderItemInfo, StyleSheet } from "react-native";
+import { ActivityIndicator, FlatList, ListRenderItemInfo, Platform, StyleSheet } from "react-native";
 
 
 
@@ -74,7 +74,7 @@ export const ListExperience: FC = memo(function ListExperience() {
 
 const styles = StyleSheet.create({
   contentContainerStyle: {
-    paddingTop: spacing.lg * 6,
+    paddingTop: Platform.OS === 'android' ? spacing.lg * 6 : spacing.lg * 6.5,
     paddingHorizontal: spacing.s,
     paddingBottom: spacing.xl * 3,
     minHeight: spacing.height * .8,
