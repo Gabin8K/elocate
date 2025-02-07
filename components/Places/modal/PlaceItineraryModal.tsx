@@ -19,6 +19,7 @@ export const PlaceItineraryModal: FC = memo(function PlaceItineraryModal() {
     router.navigate({
       pathname: '/(tabs)',
       params: {
+        refresh: String(Date.now()),
         itinerary: JSON.stringify(places.itinerary)
       }
     });

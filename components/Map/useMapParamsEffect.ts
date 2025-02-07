@@ -4,6 +4,7 @@ import { PlaceDoc } from "@/services/types";
 import { useLocalSearchParams } from "expo-router";
 
 type Params = {
+  refresh?: string;
   itinerary?: Itinerary;
 }
 
@@ -11,7 +12,7 @@ type Params = {
 export function useMapParamsEffect(callback: (params: Params) => void) {
   const params = useLocalSearchParams();
 
-  const refresh = params.itinerary;
+  const refresh = params.refresh;
 
   const values = useMemo<Params>(() => {
     let itinerary: Itinerary | undefined = undefined;

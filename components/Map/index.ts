@@ -1,4 +1,4 @@
 export * from './Map';
 export * from './MapContext';
-export * from './MapSensor';
+export * from './MapMotion';
 export * from './UserLocationButton';

@@ -57,7 +57,7 @@ const RenderItitnerary: FC<RenderItitneraryProps> = memo(function RenderItitnera
     <MapViewDirections
       mode={mode}
       origin={location}
-      strokeWidth={3}
+      strokeWidth={4}
       language={locale}
       onReady={onItineraryReady}
       strokeColor={palette.light.primary}

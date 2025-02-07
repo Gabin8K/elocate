@@ -4,12 +4,11 @@ import { useEffect, useState } from "react";
 
 
 export function useLocation() {
-
   const toast = useToast();
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
 
   useEffect(() => {
-
+    let subscribe: Location.LocationSubscription | null = null;
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
@@ -17,17 +16,40 @@ export function useLocation() {
         return;
       }
 
-      await Location.watchPositionAsync({
+      subscribe = await Location.watchPositionAsync({
         accuracy: Location.Accuracy.BestForNavigation,
-        timeInterval: 2500,
+        timeInterval: 1500,
       }, (location) => {
         setLocation(location);
       });
     })();
 
     return () => {
-      Location.stopLocationUpdatesAsync('location');
+      subscribe?.remove();
     }
   }, []);
+
   return location;
+}
+
+
+
+
+export function useHeading(intialHeading: number = 30) {
+  const [heading, setHeading] = useState(intialHeading);
+
+  useEffect(() => {
+    let subscribe: Location.LocationSubscription | null = null;
+    (async () => {
+      subscribe = await Location.watchHeadingAsync(({ trueHeading }) => {
+        setHeading(trueHeading);
+      });
+    })();
+
+    return () => {
+      subscribe?.remove();
+    }
+  }, []);
+
+  return heading;
 }

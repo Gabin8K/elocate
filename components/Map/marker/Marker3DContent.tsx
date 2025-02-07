@@ -1,7 +1,7 @@
 import { Camera } from "react-native-maps";
-import { DeviceMotion } from "expo-sensors";
+import { FC, memo, ReactNode } from "react";
+import { useHeading } from "@/hooks/useLocation";
 import { StyleProp, ViewStyle } from "react-native";
-import { FC, memo, ReactNode, useEffect, useState } from "react";
 import Animated, { useAnimatedStyle, useDerivedValue, withTiming } from "react-native-reanimated";
 
 type ContentProps = {
@@ -52,33 +52,17 @@ export const Marker3DContent: FC<ContentProps> = memo(function Marker3DContent(p
 export const Marker3DContentItinerary: FC<ContentItineraryProps> = memo(function Marker3DContentItinerary(props) {
   const { style, children } = props;
 
-  const [rotation, setRotation] = useState(0);
-
-  const rotate = useDerivedValue(() => {
-    return withTiming(rotation);
-  }, [rotation]);
+  const rotation = useHeading(0);
 
   const uas = useAnimatedStyle(() => {
     return {
       transform: [
         { rotateX: '60deg' },
-        { rotate: `${rotate.value}deg` },
+        { rotate: `${rotation}deg` },
       ],
     }
   }, []);
 
-
-  useEffect(() => {
-    const subscribe = DeviceMotion.addListener((motion) => {
-      const { alpha } = motion.rotation;
-      const rotation = alpha ? -(alpha * 180) / Math.PI : 0;
-      setRotation(rotation);
-    })
-    return () => {
-      subscribe.remove();
-    }
-  }, []);
-  
 
   return (
     <Animated.View
