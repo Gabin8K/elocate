@@ -1,6 +1,6 @@
 import { useToast } from "./useToast";
 import * as Location from 'expo-location';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 
 export function useLocation() {
@@ -37,12 +37,17 @@ export function useLocation() {
 
 export function useHeading(intialHeading: number = 30) {
   const [heading, setHeading] = useState(intialHeading);
+  const headingHistory = useRef<number[]>([]).current;
 
   useEffect(() => {
     let subscribe: Location.LocationSubscription | null = null;
     (async () => {
       subscribe = await Location.watchHeadingAsync(({ trueHeading }) => {
-        setHeading(trueHeading);
+        headingHistory.push(trueHeading);
+        if (headingHistory.length > 4) headingHistory.shift();
+
+        const smoothHeading = headingHistory.reduce((acc, curr) => acc + curr, 0) / headingHistory.length;
+        setHeading(smoothHeading);
       });
     })();
 

@@ -92,3 +92,26 @@ export const mapStyles = {
     },
   ]
 }
+
+
+
+
+export const maneuvers = {
+  // if the maneuver is not in the list, use 'dots-horizontal'
+  "dots-horizontal": "dots-horizontal",
+
+  "turn-left": "arrow-left-top",
+  "turn-right": "arrow-right-top",
+  "straight": "arrow-up",
+  "uturn-left": "arrow-u-left-top",
+  "uturn-right": "arrow-u-right-top",
+  "fork-left": "arrow-split-vertical",
+  "fork-right": "arrow-split-vertical",
+  "roundabout-left": "rotate-left",
+  "roundabout-right": "rotate-right",
+  "merge": "arrow-decision",
+  "ramp-left": "arrow-left",
+  "ramp-right": "arrow-right",
+  "keep-left": "arrow-left-circle",
+  "keep-right": "arrow-right-circle",
+};

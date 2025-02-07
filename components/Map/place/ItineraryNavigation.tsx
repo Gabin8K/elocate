@@ -2,8 +2,9 @@ import { FC, memo } from "react";
 import { useTheme } from "@/hooks";
 import { useMap } from "../MapContext";
 import { Text } from "@/components/ui";
-import { StyleSheet, View } from "react-native";
+import { maneuvers } from "../map.styles";
 import { spacing } from "@/theme/spacing";
+import { StyleSheet, View } from "react-native";
 import { Portal } from "@/providers/PortalProvider";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { component, reusableStyle } from "@/theme/reusables";
@@ -45,9 +46,7 @@ const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavi
   const { distance, duration } = itineraryReady.legs[0];
 
   const travelModeIcon = currentStep.travel_mode === 'WALKING' ? 'walk' : 'car';
-  const directionIcon = currentStep.maneuver === 'turn-left' ?
-    'arrow-left-top' : currentStep.maneuver === 'turn-right' ?
-      'arrow-right-top' : 'arrow-up';
+  const directionIcon = maneuvers[currentStep.maneuver as keyof typeof maneuvers || 'dots-horizontal'];
 
   return (
     <Animated.View
@@ -85,7 +84,7 @@ const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavi
       </Text>
       <MaterialCommunityIcons
         size={30}
-        name={directionIcon}
+        name={directionIcon as any}
         color={colors.primary}
       />
       {currentStep.maneuver ?
