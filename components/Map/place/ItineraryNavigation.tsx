@@ -1,12 +1,12 @@
-import { FC, memo } from "react";
-import { useTheme } from "@/hooks";
 import { useMap } from "../MapContext";
 import { Text } from "@/components/ui";
 import { maneuvers } from "../map.styles";
 import { spacing } from "@/theme/spacing";
+import { FC, memo, useEffect } from "react";
+import { useLocale, useTheme } from "@/hooks";
 import { StyleSheet, View } from "react-native";
 import { Portal } from "@/providers/PortalProvider";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { component, reusableStyle } from "@/theme/reusables";
 import { MapDirectionsResponse } from "react-native-maps-directions";
 import Animated, { Easing, SlideInDown, SlideOutDown } from "react-native-reanimated";
@@ -16,22 +16,87 @@ type ContentProps = {
   itineraryReady: MapDirectionsResponse;
 }
 
+type ArrivedProps = {
+  closeItinerary: () => void;
+}
+
 
 export const ItineraryNavigation: FC = memo(function ItineraryNavigation() {
   const map = useMap();
 
   if (map.itineraryResult.length === 0 || !map.itinerary?.confirm) return null;
 
+  const isArrived = map.itineraryResult[0].legs[0].distance.value <= 50;
+
   return (
     <Portal
       name={'itinerary-navigation'}
     >
-      <ItineraryNavigationContent
-        itineraryReady={map.itineraryResult[0]}
-      />
+      {isArrived ?
+        <ItineraryArrived 
+          closeItinerary={map.closeItinerary}
+        /> :
+        <ItineraryNavigationContent
+          itineraryReady={map.itineraryResult[0]}
+        />
+      }
     </Portal>
   );
 });
+
+
+
+
+
+
+
+const ItineraryArrived: FC<ArrivedProps> = memo(function ItineraryArrived(props) {
+  const { closeItinerary } = props;
+
+  const { t } = useLocale();
+  const { colors } = useTheme();
+
+  useEffect(() => {
+    setTimeout(() => closeItinerary(), 3000);
+  }, []);
+
+  return (
+    <Animated.View
+      entering={
+        SlideInDown
+          .springify()
+          .damping(50)
+      }
+      exiting={
+        SlideOutDown
+          .duration(1000)
+          .easing(Easing.ease)
+      }
+      style={[
+        styles.container,
+        {
+          width: '65%',
+          backgroundColor: colors.card,
+        }
+      ]}
+    >
+      <Ionicons
+        size={30}
+        color={colors.primary}
+        name={'checkmark-circle'}
+      />
+      <Text
+        variant={'body2_b'}
+        style={styles.textArrived}
+      >
+        {t('place-itinerary-arrived')}
+      </Text>
+    </Animated.View>
+  );
+});
+
+
+
 
 
 
@@ -119,6 +184,9 @@ const styles = StyleSheet.create({
     ...reusableStyle.row,
     columnGap: spacing.xs,
   },
+  textArrived: {
+    textAlign: 'center',
+  }
 })
 
 

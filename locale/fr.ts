@@ -33,6 +33,7 @@ export default {
   "request-place-modal-form-placeholder-description": "Description...",
   "request-place-modal-form-file": "Ajouter une image",
   "request-place-modal-form-btn-submit": "Soumettre",
+  "place-itinerary-arrived": "Vous êtes arrivé à destination.",
   // Login Content
   "login-content-required-account": "Compte requis",
   "login-content-login-to-add-place": "Vous devez vous connecter pour ajouter un lieu.",
