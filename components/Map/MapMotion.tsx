@@ -1,11 +1,14 @@
 import { useMap } from "./MapContext";
 import { FC, memo, RefObject } from "react";
 import MapView, { } from "react-native-maps";
+import { Coordinate } from "@/services/types";
 import { useHeading, useLocation } from "@/hooks/useLocation";
 
 
 type ContentProps = {
   mapRef: RefObject<MapView>;
+  itineraryTarget: Coordinate;
+  showTargetItinerary?: boolean;
 }
 
 
@@ -17,6 +20,8 @@ export const MapMotion: FC = memo(function MapMotion() {
   return (
     <MapMotionContent
       mapRef={map.mapRef}
+      showTargetItinerary={map.showTargetItinerary}
+      itineraryTarget={map.itinerary.place.coordinate}
     />
   );
 })
@@ -26,7 +31,7 @@ export const MapMotion: FC = memo(function MapMotion() {
 
 
 const MapMotionContent: FC<ContentProps> = memo(function MapMotionContent(props) {
-  const { mapRef } = props;
+  const { mapRef, showTargetItinerary, itineraryTarget } = props;
   const location = useLocation();
   const heading = useHeading(30);
 
@@ -35,10 +40,12 @@ const MapMotionContent: FC<ContentProps> = memo(function MapMotionContent(props)
   const { latitude, longitude } = location.coords;
   mapRef.current?.animateCamera(
     {
-      center: {
-        latitude,
-        longitude,
-      },
+      center: showTargetItinerary ?
+        itineraryTarget :
+        {
+          latitude,
+          longitude
+        },
       heading,
       pitch: 60,
       zoom: 18,

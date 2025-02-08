@@ -2,18 +2,23 @@ import { useMap } from "../MapContext";
 import { Text } from "@/components/ui";
 import { maneuvers } from "../map.styles";
 import { spacing } from "@/theme/spacing";
-import { FC, memo, useEffect } from "react";
 import { useLocale, useTheme } from "@/hooks";
 import { StyleSheet, View } from "react-native";
 import { Portal } from "@/providers/PortalProvider";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { IconButton } from "@/components/ui/buttons";
+import { FC, memo, useCallback, useEffect } from "react";
 import { component, reusableStyle } from "@/theme/reusables";
 import { MapDirectionsResponse } from "react-native-maps-directions";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Animated, { Easing, SlideInDown, SlideOutDown } from "react-native-reanimated";
 
 
 type ContentProps = {
   itineraryReady: MapDirectionsResponse;
+  showTargetItinerary?: boolean;
+  closeItinerary: () => void;
+  moveToTargetItinerary: () => void;
+  closeTargetItinerary: () => void;
 }
 
 type ArrivedProps = {
@@ -33,11 +38,15 @@ export const ItineraryNavigation: FC = memo(function ItineraryNavigation() {
       name={'itinerary-navigation'}
     >
       {isArrived ?
-        <ItineraryArrived 
+        <ItineraryArrived
           closeItinerary={map.closeItinerary}
         /> :
         <ItineraryNavigationContent
           itineraryReady={map.itineraryResult[0]}
+          closeItinerary={map.closeItinerary}
+          showTargetItinerary={map.showTargetItinerary}
+          moveToTargetItinerary={map.moveToTargetItinerary}
+          closeTargetItinerary={map.closeTargetItinerary}
         />
       }
     </Portal>
@@ -103,7 +112,7 @@ const ItineraryArrived: FC<ArrivedProps> = memo(function ItineraryArrived(props)
 
 
 const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavigation(props) {
-  const { itineraryReady } = props;
+  const { itineraryReady, showTargetItinerary, closeItinerary, closeTargetItinerary, moveToTargetItinerary } = props;
 
   const { colors } = useTheme();
 
@@ -112,6 +121,16 @@ const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavi
 
   const travelModeIcon = currentStep.travel_mode === 'WALKING' ? 'walk' : 'car';
   const directionIcon = maneuvers[currentStep.maneuver as keyof typeof maneuvers || 'dots-horizontal'];
+
+
+  const onPressTarget = useCallback(() => {
+    if (showTargetItinerary) {
+      closeTargetItinerary();
+    } else {
+      moveToTargetItinerary();
+    }
+  }, [showTargetItinerary]);
+
 
   return (
     <Animated.View
@@ -161,6 +180,20 @@ const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavi
         </Text> :
         null
       }
+      <IconButton
+        icon={'close'}
+        variant={'error'}
+        backgroundColor={'card'}
+        onPress={closeItinerary}
+        styleContainer={styles.iconClose}
+      />
+      <IconButton
+        backgroundColor={'card'}
+        onPress={onPressTarget}
+        icon={'trail-sign-outline'}
+        styleContainer={styles.iconTarget}
+        variant={showTargetItinerary ? 'primary' : 'text'}
+      />
     </Animated.View>
   );
 });
@@ -170,7 +203,6 @@ const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavi
 const styles = StyleSheet.create({
   container: {
     zIndex: 2,
-    bottom: spacing.l,
     rowGap: spacing.xs,
     ...component.shadow,
     alignSelf: 'center',
@@ -179,6 +211,9 @@ const styles = StyleSheet.create({
     borderRadius: spacing.m,
     width: spacing.width * .35,
     paddingVertical: spacing.m,
+    transform: [
+      { translateY: spacing.height - 175 }
+    ],
   },
   content1: {
     ...reusableStyle.row,
@@ -186,6 +221,15 @@ const styles = StyleSheet.create({
   },
   textArrived: {
     textAlign: 'center',
+  },
+  iconClose: {
+    left: -spacing.xxl,
+    position: 'absolute',
+  },
+  iconTarget: {
+    top: 45,
+    left: -spacing.xxl,
+    position: 'absolute',
   }
 })
 

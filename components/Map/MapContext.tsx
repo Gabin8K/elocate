@@ -28,6 +28,7 @@ type MapState = {
   loading: boolean;
   radius: number;
   currentCamera?: Camera;
+  showTargetItinerary?: boolean;
 }
 
 interface MapContextType {
@@ -41,6 +42,9 @@ interface MapContextType {
   radius: number;
   places: PlaceDoc[];
   loadingPlaces: boolean;
+  showTargetItinerary?: boolean;
+  moveToTargetItinerary: () => void;
+  closeTargetItinerary: () => void;
   onItineraryReady: (...result: MapDirectionsResponse[]) => void;
   addPlace: (place: PlaceDoc, location: Coordinate) => void;
   closePlace: () => void;
@@ -75,6 +79,8 @@ const initialValue: MapContextType = {
   requestItinerary: () => { },
   confirmRequestItinerary: () => { },
   onItineraryReady: () => { },
+  moveToTargetItinerary: () => { },
+  closeTargetItinerary: () => { },
 }
 
 
@@ -196,7 +202,6 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
   }, []);
 
 
-
   const addPlace = useCallback((place: PlaceDoc, location: Coordinate) => {
     if (geocoding.calculateDistance(location, place.coordinate) <= state.radius) {
       near.setPlaces((places) => [...places, place]);
@@ -209,6 +214,22 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
     setState(state => ({
       ...state,
       itineraryResult,
+    }));
+  }, []);
+
+
+  const moveToTargetItinerary = useCallback(() => {
+    setState(state => ({
+      ...state,
+      showTargetItinerary: true,
+    }));
+  }, []);
+
+
+  const closeTargetItinerary = useCallback(() => {
+    setState(state => ({
+      ...state,
+      showTargetItinerary: false,
     }));
   }, []);
 
@@ -236,6 +257,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
         loadingPlaces: near.loading,
         currentCamera: state.currentCamera,
         itineraryResult: state.itineraryResult,
+        showTargetItinerary: state.showTargetItinerary,
         confirmRequestPlace,
         requestAddPlace,
         closePlace,
@@ -247,6 +269,8 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
         requestItinerary,
         confirmRequestItinerary,
         onItineraryReady,
+        moveToTargetItinerary,
+        closeTargetItinerary,
       }}
     >
       {children}
