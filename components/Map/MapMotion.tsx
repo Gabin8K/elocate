@@ -5,10 +5,12 @@ import { Coordinate } from "@/services/types";
 import { useHeading, useLocation } from "@/hooks/useLocation";
 
 
+
 type ContentProps = {
   mapRef: RefObject<MapView>;
   itineraryTarget: Coordinate;
   showTargetItinerary?: boolean;
+  refreshingOrienteeringValue?: boolean;
 }
 
 
@@ -22,6 +24,7 @@ export const MapMotion: FC = memo(function MapMotion() {
       mapRef={map.mapRef}
       showTargetItinerary={map.showTargetItinerary}
       itineraryTarget={map.itinerary.place.coordinate}
+      refreshingOrienteeringValue={map.refreshOrienteeringValue}
     />
   );
 })
@@ -31,9 +34,10 @@ export const MapMotion: FC = memo(function MapMotion() {
 
 
 const MapMotionContent: FC<ContentProps> = memo(function MapMotionContent(props) {
-  const { mapRef, showTargetItinerary, itineraryTarget } = props;
+  const { mapRef, showTargetItinerary, itineraryTarget, refreshingOrienteeringValue } = props;
+  
   const location = useLocation();
-  const heading = useHeading(30);
+  const heading = useHeading(refreshingOrienteeringValue);
 
   if (!location) return null;
 

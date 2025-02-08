@@ -29,6 +29,7 @@ type MapState = {
   radius: number;
   currentCamera?: Camera;
   showTargetItinerary?: boolean;
+  refreshOrienteeringValue?: boolean;
 }
 
 interface MapContextType {
@@ -43,6 +44,7 @@ interface MapContextType {
   places: PlaceDoc[];
   loadingPlaces: boolean;
   showTargetItinerary?: boolean;
+  refreshOrienteeringValue?: boolean;
   moveToTargetItinerary: () => void;
   closeTargetItinerary: () => void;
   onItineraryReady: (...result: MapDirectionsResponse[]) => void;
@@ -57,6 +59,7 @@ interface MapContextType {
   confirmRequestPlace: () => void;
   confirmRequestItinerary: () => void;
   setCurrentCamera: (currentCamera: Camera) => void;
+  refreshOrienteering: () => void;
 }
 
 
@@ -81,6 +84,7 @@ const initialValue: MapContextType = {
   onItineraryReady: () => { },
   moveToTargetItinerary: () => { },
   closeTargetItinerary: () => { },
+  refreshOrienteering: () => { },
 }
 
 
@@ -235,6 +239,14 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
   }, []);
 
 
+  const refreshOrienteering = useCallback(() => {
+    setState(state => ({
+      ...state,
+      refreshOrienteering: !state.refreshOrienteeringValue,
+    }));
+  }, []);
+
+
 
   useMapParamsEffect((params) => {
     if (params.itinerary) {
@@ -272,6 +284,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
         onItineraryReady,
         moveToTargetItinerary,
         closeTargetItinerary,
+        refreshOrienteering,
       }}
     >
       {children}

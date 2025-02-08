@@ -1,7 +1,6 @@
 import { Camera } from "react-native-maps";
 import { FC, memo, ReactNode } from "react";
-import { useHeading } from "@/hooks/useLocation";
-import { StyleProp, ViewStyle } from "react-native";
+import { StyleProp, StyleSheet, ViewStyle, View } from "react-native";
 import Animated, { useAnimatedStyle, useDerivedValue, withTiming } from "react-native-reanimated";
 
 type ContentProps = {
@@ -52,26 +51,25 @@ export const Marker3DContent: FC<ContentProps> = memo(function Marker3DContent(p
 export const Marker3DContentItinerary: FC<ContentItineraryProps> = memo(function Marker3DContentItinerary(props) {
   const { style, children } = props;
 
-  const rotation = useHeading(0);
-
-  const uas = useAnimatedStyle(() => {
-    return {
-      transform: [
-        { rotateX: '60deg' },
-        { rotate: `${rotation}deg` },
-      ],
-    }
-  }, []);
-
-
   return (
-    <Animated.View
+    <View
       style={[
-        uas,
         style,
+        styles.container,
       ]}
     >
       {children}
-    </Animated.View>
+    </View>
   );
 });
+
+
+
+
+const styles = StyleSheet.create({
+  container: {
+    transform: [
+      { rotateX: '60deg' }
+    ]
+  }
+})

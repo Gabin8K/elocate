@@ -35,8 +35,9 @@ export function useLocation() {
 
 
 
-export function useHeading(intialHeading: number = 30) {
-  const [heading, setHeading] = useState(intialHeading);
+export function useHeading(refresh?: boolean) {
+
+  const [heading, setHeading] = useState(30);
   const headingHistory = useRef<number[]>([]).current;
 
   useEffect(() => {
@@ -44,7 +45,7 @@ export function useHeading(intialHeading: number = 30) {
     (async () => {
       subscribe = await Location.watchHeadingAsync(({ trueHeading }) => {
         headingHistory.push(trueHeading);
-        if (headingHistory.length > 4) headingHistory.shift();
+        if (headingHistory.length > 5) headingHistory.shift();
 
         const smoothHeading = headingHistory.reduce((acc, curr) => acc + curr, 0) / headingHistory.length;
         setHeading(smoothHeading);
@@ -54,7 +55,7 @@ export function useHeading(intialHeading: number = 30) {
     return () => {
       subscribe?.remove();
     }
-  }, []);
+  }, [refresh]);
 
   return heading;
 }
