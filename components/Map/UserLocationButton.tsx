@@ -8,18 +8,21 @@ import { FC, memo, RefObject, useCallback } from "react";
 
 type UserLocationButtonProps = {
   camera: Camera;
+  hasItinerary: boolean;
   mapRef: RefObject<MapView>;
 }
 
 
 export const UserLocationButton: FC<UserLocationButtonProps> = memo(function UserLocationButton(props) {
-  const { mapRef, camera } = props;
+  const { mapRef, camera, hasItinerary } = props;
 
   const { colors } = useTheme();
 
   const onPress = useCallback(() => {
     mapRef.current?.animateCamera(camera, { duration: 500 });
   }, [camera]);
+
+  if (hasItinerary) return null;
 
 
   return (

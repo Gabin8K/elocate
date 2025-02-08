@@ -3,9 +3,9 @@ import { Itinerary } from "../MapContext";
 import { Coordinate } from "@/services/types";
 import { reusableStyle } from "@/theme/reusables";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Animated, StyleSheet } from "react-native";
+import { Camera, Circle, Marker } from "react-native-maps";
+import { Animated, Easing, StyleSheet } from "react-native";
 import { FC, memo, useCallback, useEffect, useRef } from "react";
-import { Camera, Circle, MarkerAnimated } from "react-native-maps";
 import { Marker3DContent, Marker3DContentItinerary } from "./Marker3DContent";
 
 type MarkerCurrentPositionProps = {
@@ -24,22 +24,25 @@ type RadiusCurrentPositionProps = {
 
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
-const AnimatedMarker = Animated.createAnimatedComponent(MarkerAnimated);
+const AnimatedMarker = Animated.createAnimatedComponent(Marker);
 
 
 
 export const MarkerCurrentPosition: FC<MarkerCurrentPositionProps> = memo(function MarkerCurrentPosition(props) {
   const { itinerary, coordinate, currentCamera } = props;
 
-  const animateCoord = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
+  const animateLatitude = useRef(new Animated.Value(0)).current;
+  const animateLongitude = useRef(new Animated.Value(0)).current;
 
   const animate = useCallback(() => {
-    Animated.timing(animateCoord, {
-      toValue: {
-        x: coordinate?.latitude || 0,
-        y: coordinate?.longitude || 0
-      },
-      duration: 100,
+    Animated.timing(animateLatitude, {
+      toValue: 0,
+      duration: 1000,
+      useNativeDriver: false
+    }).start();
+    Animated.timing(animateLongitude, {
+      toValue: 0,
+      duration: 1000,
       useNativeDriver: false
     }).start();
   }, [coordinate]);
@@ -61,8 +64,8 @@ export const MarkerCurrentPosition: FC<MarkerCurrentPositionProps> = memo(functi
   return (
     <AnimatedMarker
       coordinate={{
-        latitude: animateCoord.x,
-        longitude: animateCoord.y,
+        latitude: coordinate.latitude,
+        longitude: coordinate.longitude,
       }}
     >
       {itinerary?.confirm ?
@@ -92,23 +95,28 @@ export const RadiusCurrentPosition: FC<RadiusCurrentPositionProps> = memo(functi
   const radiusInKm = radius * 1000;
 
   const progress = useRef(new Animated.Value(0)).current;
-  const progresCenter = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
+  const progressLatitude = useRef(new Animated.Value(0)).current;
+  const progressLongitude = useRef(new Animated.Value(0)).current;
 
   const animate = useCallback(() => {
     Animated.timing(progress, {
       toValue: radiusInKm,
-      duration: 100,
+      duration: 1000,
       useNativeDriver: false
     }).start();
   }, [radiusInKm]);
 
   const animateCoordinate = useCallback(() => {
-    Animated.timing(progresCenter, {
-      toValue: {
-        x: coordinate?.latitude || 0,
-        y: coordinate?.longitude || 0
-      },
-      duration: 300,
+    Animated.timing(progressLatitude, {
+      toValue: 0,
+      duration: 1000,
+      easing: Easing.linear,
+      useNativeDriver: false
+    }).start();
+    Animated.timing(progressLongitude, {
+      toValue: 0,
+      duration: 1000,
+      easing: Easing.linear,
       useNativeDriver: false
     }).start();
   }, [coordinate]);
@@ -126,8 +134,8 @@ export const RadiusCurrentPosition: FC<RadiusCurrentPositionProps> = memo(functi
   return (
     <AnimatedCircle
       center={{
-        latitude: progresCenter.x,
-        longitude: progresCenter.y
+        latitude: coordinate.latitude,
+        longitude: coordinate.longitude,
       }}
       radius={progress}
       strokeWidth={1.5}

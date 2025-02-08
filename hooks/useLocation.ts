@@ -18,7 +18,7 @@ export function useLocation() {
 
       subscribe = await Location.watchPositionAsync({
         accuracy: Location.Accuracy.BestForNavigation,
-        timeInterval: 1500,
+        timeInterval: 1000,
       }, (location) => {
         setLocation(location);
       });

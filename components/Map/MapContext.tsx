@@ -198,6 +198,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
     setState(state => ({
       ...state,
       itinerary: undefined,
+      showTargetItinerary: false,
     }));
   }, []);
 

@@ -29,7 +29,7 @@ export const NearMeComponent: FC = memo(function NearMeComponent() {
     map.mapRef.current?.animateCamera({ ...camera, zoom }, { duration: 500 });
   }, []);
 
-  if (map.loading) return null;
+  if (map.loading || map.itinerary?.confirm) return null;
 
   return (
     <NearMeProvider>

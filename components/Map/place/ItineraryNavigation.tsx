@@ -227,8 +227,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   iconTarget: {
-    top: 45,
-    left: -spacing.xxl,
+    right: -spacing.xxl,
     position: 'absolute',
   }
 })

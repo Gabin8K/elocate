@@ -97,6 +97,7 @@ export const Map: FC = memo(function Map() {
       <UserLocationButton
         mapRef={map.mapRef}
         camera={initialCamera}
+        hasItinerary={!!map.itinerary?.confirm}
       />
       <LoadingMap
         loading={map.loading}
