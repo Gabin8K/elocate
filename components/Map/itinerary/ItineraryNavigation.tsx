@@ -123,7 +123,7 @@ const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavi
   const { distance, duration } = itineraryReady.legs[0];
 
   const travelModeIcon = travelMode === 'WALKING' ? 'walk' : 'car';
-  const directionIcon = maneuvers[currentStep.maneuver as keyof typeof maneuvers || 'dots-horizontal'];
+  const directionIcon = maneuvers[currentStep?.maneuver as keyof typeof maneuvers || 'dots-horizontal'];
 
 
 
@@ -141,7 +141,10 @@ const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavi
       }
       style={[
         styles.container,
-        { backgroundColor: colors.card }
+        {
+          height: spacing.xl * 3.4,
+          backgroundColor: colors.card,
+        }
       ]}
     >
       <View
@@ -167,7 +170,7 @@ const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavi
           color={colors.primary}
         />
       </Animated.View>
-      {currentStep.maneuver ?
+      {currentStep?.maneuver ?
         <Text
           color={'primary'}
           variant={'body2_eb'}

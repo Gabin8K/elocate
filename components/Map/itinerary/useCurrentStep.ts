@@ -8,18 +8,19 @@ export function useCurrentStep(steps: MapDirectionsResponse['legs'][number]['ste
   const location = useLocation();
 
   const currentStep = useMemo(() => {
-    if (!location) return steps[0];
-    const value = steps.find(step => geocoding.calculateDistanceMeter(
-      location.coords,
-      {
-        latitude: step.end_location.lat,
-        longitude: step.end_location.lng,
-      }
-    ) < 50
-    );
-    return value || steps[0];
+    if (!location) return;
+    const value = steps.find(step => {
+      const distance = geocoding.calculateDistanceMeter(
+        location.coords,
+        {
+          latitude: step.end_location.lat,
+          longitude: step.end_location.lng,
+        }
+      );
+      return distance >= 50 && distance <= 100;
+    });
+    return value;
   }, [location, steps]);
-
 
   return currentStep;
 }

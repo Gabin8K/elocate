@@ -1,5 +1,6 @@
 import { useToast } from "./useToast";
 import * as Location from 'expo-location';
+import { DeviceMotion } from "expo-sensors";
 import { useEffect, useRef, useState } from "react";
 
 
@@ -56,6 +57,37 @@ export function useHeading() {
 
     return () => {
       subscribe?.remove();
+    }
+  }, []);
+
+  return heading;
+}
+
+
+
+
+
+
+
+
+export function useHeadingSensor() {
+
+  const [heading, setHeading] = useState(0);
+
+  useEffect(() => {
+    const subscribe = DeviceMotion.addListener((event) => {
+      const { alpha } = event.rotation;
+
+      let heading = 360 - (alpha * (180 / Math.PI));
+      if(heading < 0) heading += 360;
+      if(heading > 360) heading -= 360;
+
+      setHeading(heading);
+
+    });
+
+    return () => {
+      subscribe.remove();
     }
   }, []);
 

@@ -8,7 +8,7 @@ export const INITIAL_CAMERA: Camera = {
     latitude: 0,
     longitude: 0,
   },
-  heading: 30,
+  heading: 0,
   pitch: 60,
   zoom: 17,
 }
