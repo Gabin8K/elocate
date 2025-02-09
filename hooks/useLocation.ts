@@ -35,9 +35,11 @@ export function useLocation() {
 
 
 
-export function useHeading(refresh?: boolean) {
 
-  const [heading, setHeading] = useState(30);
+
+export function useHeading() {
+
+  const [heading, setHeading] = useState(0);
   const headingHistory = useRef<number[]>([]).current;
 
   useEffect(() => {
@@ -55,7 +57,7 @@ export function useHeading(refresh?: boolean) {
     return () => {
       subscribe?.remove();
     }
-  }, [refresh]);
+  }, []);
 
   return heading;
 }

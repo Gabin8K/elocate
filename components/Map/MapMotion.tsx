@@ -10,7 +10,6 @@ type ContentProps = {
   mapRef: RefObject<MapView>;
   itineraryTarget: Coordinate;
   showTargetItinerary?: boolean;
-  refreshingOrienteeringValue?: boolean;
 }
 
 
@@ -24,7 +23,6 @@ export const MapMotion: FC = memo(function MapMotion() {
       mapRef={map.mapRef}
       showTargetItinerary={map.showTargetItinerary}
       itineraryTarget={map.itinerary.place.coordinate}
-      refreshingOrienteeringValue={map.refreshOrienteeringValue}
     />
   );
 })
@@ -34,10 +32,10 @@ export const MapMotion: FC = memo(function MapMotion() {
 
 
 const MapMotionContent: FC<ContentProps> = memo(function MapMotionContent(props) {
-  const { mapRef, showTargetItinerary, itineraryTarget, refreshingOrienteeringValue } = props;
+  const { mapRef, showTargetItinerary, itineraryTarget } = props;
   
   const location = useLocation();
-  const heading = useHeading(refreshingOrienteeringValue);
+  const heading = useHeading();
 
   if (!location) return null;
 
@@ -52,7 +50,7 @@ const MapMotionContent: FC<ContentProps> = memo(function MapMotionContent(props)
         },
       heading,
       pitch: 60,
-      zoom: 18,
+      zoom: 19,
     },
     { duration: 300 }
   );

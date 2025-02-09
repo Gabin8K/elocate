@@ -3,17 +3,20 @@ import { Coordinate } from "@/services/types";
 import { Camera, Region } from "react-native-maps";
 
 
+export const INITIAL_CAMERA: Camera = {
+  center: {
+    latitude: 0,
+    longitude: 0,
+  },
+  heading: 30,
+  pitch: 60,
+  zoom: 17,
+}
+
+
 
 export function useInitialCamera(location?: Coordinate) {
-  const [camera, setCamera] = useState<Camera>({
-    center: {
-      latitude: 0,
-      longitude: 0,
-    },
-    heading: 30,
-    pitch: 60,
-    zoom: 17,
-  });
+  const [camera, setCamera] = useState<Camera>(INITIAL_CAMERA);
 
   if ((camera.center.latitude === 0 || camera.center.longitude === 0) && location) {
     setCamera({

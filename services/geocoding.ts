@@ -31,7 +31,16 @@ async function getAddressFromCoords(coords: Coordinate, language: string) {
 
 
 
-function calculateDistance(pos1: Coordinate, pos2: Coordinate) {
+
+function calculateDistanceMeter(pos1: Coordinate, pos2: Coordinate) {
+ const distance = calculateDistanceKm(pos1, pos2);
+  return distance * 1000;
+}
+
+
+
+
+function calculateDistanceKm(pos1: Coordinate, pos2: Coordinate) {
   const dLat = degreesToRadians(pos2.latitude - pos1.latitude);
   const dLon = degreesToRadians(pos2.longitude - pos1.longitude);
   const lat1 = degreesToRadians(pos1.latitude);
@@ -83,7 +92,7 @@ async function getCoordsWithinRadiusDirectly(location: Coordinate, radius: numbe
 
 
   return places.filter((place) =>
-    calculateDistance(location, place.coordinate) <= radius
+    calculateDistanceKm(location, place.coordinate) <= radius
   );
 }
 
@@ -124,7 +133,8 @@ async function checkIfPlaceExists(location: Coordinate) {
 export const geocoding = {
   getAddressFromCoords,
   checkIfPlaceExists,
-  calculateDistance,
+  calculateDistanceKm,
+  calculateDistanceMeter,
   getCoordsWithinRadiusDirectly,
   getPlacesWithinRadiusDirectly,
 }

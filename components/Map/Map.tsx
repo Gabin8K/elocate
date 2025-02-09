@@ -26,6 +26,7 @@ export const Map: FC = memo(function Map() {
 
 
   const onLongPress = useCallback(({ nativeEvent }: LongPressEvent) => {
+    if(map.itinerary?.place) return;
     const { coordinate } = nativeEvent;
     const camera: Camera = {
       ...initialCamera,
@@ -36,7 +37,7 @@ export const Map: FC = memo(function Map() {
     };
     map.mapRef.current?.animateCamera(camera, { duration: 500 });
     map.requestAddPlace({ coordinate });
-  }, []);
+  }, [map.itinerary?.place]);
 
 
 
@@ -87,11 +88,11 @@ export const Map: FC = memo(function Map() {
           requestItinerary={map.requestItinerary}
         />
         <ItineraryComponent
-          radius={map.radius}
           itinerary={map.itinerary}
           location={location?.coords}
           closeItinerary={map.closeItinerary}
           onItineraryReady={map.onItineraryReady}
+          travelMode={map.itineraryResult?.travelMode || 'DRIVING'}
         />
       </MapView>
       <UserLocationButton

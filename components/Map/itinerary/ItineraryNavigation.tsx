@@ -1,24 +1,26 @@
-import { useMap } from "../MapContext";
 import { Text } from "@/components/ui";
 import { maneuvers } from "../map.styles";
 import { spacing } from "@/theme/spacing";
+import { FC, memo, useEffect } from "react";
 import { useLocale, useTheme } from "@/hooks";
 import { StyleSheet, View } from "react-native";
+import { useCurrentStep } from "./useCurrentStep";
 import { Portal } from "@/providers/PortalProvider";
 import { IconButton } from "@/components/ui/buttons";
-import { FC, memo, useCallback, useEffect } from "react";
+import { ItineraryResult, useMap } from "../MapContext";
 import { component, reusableStyle } from "@/theme/reusables";
 import { MapDirectionsResponse } from "react-native-maps-directions";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import Animated, { Easing, SlideInDown, SlideOutDown } from "react-native-reanimated";
+import Animated, { Easing, SlideInDown, SlideOutDown, ZoomIn, ZoomOut } from "react-native-reanimated";
 
 
 type ContentProps = {
+  travelMode: ItineraryResult['travelMode'];
   itineraryReady: MapDirectionsResponse;
   showTargetItinerary?: boolean;
   closeItinerary: () => void;
-  moveToTargetItinerary: () => void;
-  closeTargetItinerary: () => void;
+  toggleTargetItinerary: () => void;
+  toggleTravelMode: () => void;
 }
 
 type ArrivedProps = {
@@ -29,9 +31,9 @@ type ArrivedProps = {
 export const ItineraryNavigation: FC = memo(function ItineraryNavigation() {
   const map = useMap();
 
-  if (map.itineraryResult.length === 0 || !map.itinerary?.confirm) return null;
+  if (!map.itineraryResult?.result || !map.itinerary?.confirm) return null;
 
-  const isArrived = map.itineraryResult[0].legs[0].distance.value <= 50;
+  const isArrived = map.itineraryResult.result.legs[0].distance.value <= 50;
 
   return (
     <Portal
@@ -42,11 +44,12 @@ export const ItineraryNavigation: FC = memo(function ItineraryNavigation() {
           closeItinerary={map.closeItinerary}
         /> :
         <ItineraryNavigationContent
-          itineraryReady={map.itineraryResult[0]}
+          travelMode={map.itineraryResult.travelMode}
+          itineraryReady={map.itineraryResult.result}
           closeItinerary={map.closeItinerary}
           showTargetItinerary={map.showTargetItinerary}
-          moveToTargetItinerary={map.moveToTargetItinerary}
-          closeTargetItinerary={map.closeTargetItinerary}
+          toggleTargetItinerary={map.toggleTargetItinerary}
+          toggleTravelMode={map.toggleTravelMode}
         />
       }
     </Portal>
@@ -112,24 +115,16 @@ const ItineraryArrived: FC<ArrivedProps> = memo(function ItineraryArrived(props)
 
 
 const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavigation(props) {
-  const { itineraryReady, showTargetItinerary, closeItinerary, closeTargetItinerary, moveToTargetItinerary } = props;
+  const { itineraryReady, showTargetItinerary, travelMode, closeItinerary, toggleTargetItinerary, toggleTravelMode } = props;
 
   const { colors } = useTheme();
+  const currentStep = useCurrentStep(itineraryReady.legs[0].steps);
 
-  const currentStep = itineraryReady.legs[0].steps[0];
   const { distance, duration } = itineraryReady.legs[0];
 
-  const travelModeIcon = currentStep.travel_mode === 'WALKING' ? 'walk' : 'car';
+  const travelModeIcon = travelMode === 'WALKING' ? 'walk' : 'car';
   const directionIcon = maneuvers[currentStep.maneuver as keyof typeof maneuvers || 'dots-horizontal'];
 
-
-  const onPressTarget = useCallback(() => {
-    if (showTargetItinerary) {
-      closeTargetItinerary();
-    } else {
-      moveToTargetItinerary();
-    }
-  }, [showTargetItinerary]);
 
 
   return (
@@ -157,20 +152,21 @@ const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavi
         >
           {duration.text}
         </Text>
-        <MaterialCommunityIcons
-          size={20}
-          name={travelModeIcon}
-          color={colors.text}
-        />
       </View>
       <Text>
         {distance.text}
       </Text>
-      <MaterialCommunityIcons
-        size={30}
-        name={directionIcon as any}
-        color={colors.primary}
-      />
+      <Animated.View
+        key={directionIcon}
+        entering={ZoomIn.springify()}
+        exiting={ZoomOut}
+      >
+        <MaterialCommunityIcons
+          size={30}
+          name={directionIcon as any}
+          color={colors.primary}
+        />
+      </Animated.View>
       {currentStep.maneuver ?
         <Text
           color={'primary'}
@@ -189,11 +185,22 @@ const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavi
       />
       <IconButton
         backgroundColor={'card'}
-        onPress={onPressTarget}
+        onPress={toggleTargetItinerary}
         icon={'trail-sign-outline'}
         styleContainer={styles.iconTarget}
         variant={showTargetItinerary ? 'primary' : 'text'}
       />
+      <IconButton
+        backgroundColor={'card'}
+        onPress={toggleTravelMode}
+        styleContainer={styles.iconTravelMode}
+      >
+        <MaterialCommunityIcons
+          size={spacing.l}
+          name={travelModeIcon}
+          color={colors.primary}
+        />
+      </IconButton>
     </Animated.View>
   );
 });
@@ -227,6 +234,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   iconTarget: {
+    right: -spacing.xxl,
+    position: 'absolute',
+  },
+  iconTravelMode: {
+    top: 45,
     right: -spacing.xxl,
     position: 'absolute',
   }

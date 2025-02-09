@@ -1,6 +1,7 @@
 import { geocoding } from "@/services";
 import MapView, { Camera } from "react-native-maps";
 import { useGetPlacesAround } from "@/services/hooks";
+import { INITIAL_CAMERA } from "./useInitialMapConfig";
 import { Coordinate, PlaceDoc } from "@/services/types";
 import { useMapParamsEffect } from "./useMapParamsEffect";
 import { MapDirectionsResponse } from "react-native-maps-directions";
@@ -20,16 +21,21 @@ export type Itinerary = {
 }
 
 
+export type ItineraryResult = {
+  result?: MapDirectionsResponse;
+  travelMode: 'DRIVING' | 'WALKING';
+}
+
+
 type MapState = {
   newPlace?: Place;
   itinerary?: Itinerary;
-  itineraryResult: MapDirectionsResponse[];
+  itineraryResult?: ItineraryResult;
   openModal?: boolean;
   loading: boolean;
   radius: number;
   currentCamera?: Camera;
   showTargetItinerary?: boolean;
-  refreshOrienteeringValue?: boolean;
 }
 
 interface MapContextType {
@@ -37,16 +43,15 @@ interface MapContextType {
   newPlace?: Place;
   openModal?: boolean;
   itinerary?: Itinerary;
-  itineraryResult: MapDirectionsResponse[];
+  itineraryResult?: ItineraryResult;
   currentCamera?: Camera;
   mapRef: React.RefObject<MapView>;
   radius: number;
   places: PlaceDoc[];
   loadingPlaces: boolean;
   showTargetItinerary?: boolean;
-  refreshOrienteeringValue?: boolean;
-  moveToTargetItinerary: () => void;
-  closeTargetItinerary: () => void;
+  toggleTravelMode: () => void;
+  toggleTargetItinerary: () => void;
   onItineraryReady: (...result: MapDirectionsResponse[]) => void;
   addPlace: (place: PlaceDoc, location: Coordinate) => void;
   closePlace: () => void;
@@ -59,7 +64,6 @@ interface MapContextType {
   confirmRequestPlace: () => void;
   confirmRequestItinerary: () => void;
   setCurrentCamera: (currentCamera: Camera) => void;
-  refreshOrienteering: () => void;
 }
 
 
@@ -69,7 +73,7 @@ const initialValue: MapContextType = {
   radius: 1,
   places: [],
   mapRef: {} as MapContextType['mapRef'],
-  itineraryResult: [],
+  itineraryResult: { travelMode: 'DRIVING' },
   addPlace: () => { },
   requestAddPlace: () => { },
   closePlace: () => { },
@@ -82,9 +86,8 @@ const initialValue: MapContextType = {
   requestItinerary: () => { },
   confirmRequestItinerary: () => { },
   onItineraryReady: () => { },
-  moveToTargetItinerary: () => { },
-  closeTargetItinerary: () => { },
-  refreshOrienteering: () => { },
+  toggleTargetItinerary: () => { },
+  toggleTravelMode: () => { },
 }
 
 
@@ -198,7 +201,9 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
   }, []);
 
 
-  const closeItinerary = useCallback(() => {
+  const closeItinerary = useCallback(async () => {
+    const camera = await mapRef.current?.getCamera();
+    mapRef.current?.animateCamera({ ...camera, zoom: INITIAL_CAMERA.zoom });
     setState(state => ({
       ...state,
       itinerary: undefined,
@@ -208,43 +213,43 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
 
 
   const addPlace = useCallback((place: PlaceDoc, location: Coordinate) => {
-    if (geocoding.calculateDistance(location, place.coordinate) <= state.radius) {
+    if (geocoding.calculateDistanceKm(location, place.coordinate) <= state.radius) {
       near.setPlaces((places) => [...places, place]);
     }
   }, [state.radius]);
 
 
 
-  const onItineraryReady = useCallback((...itineraryResult: MapDirectionsResponse[]) => {
+  const onItineraryReady = useCallback((itineraryResult: MapDirectionsResponse) => {
     setState(state => ({
       ...state,
-      itineraryResult,
+      itineraryResult:{
+        ...(state.itineraryResult || {} as ItineraryResult),
+        result: itineraryResult,
+      },
     }));
   }, []);
 
 
-  const moveToTargetItinerary = useCallback(() => {
+  const toggleTargetItinerary = useCallback(() => {
     setState(state => ({
       ...state,
-      showTargetItinerary: true,
+      showTargetItinerary: !state.showTargetItinerary,
     }));
   }, []);
 
 
-  const closeTargetItinerary = useCallback(() => {
+  const toggleTravelMode = useCallback(() => {
     setState(state => ({
       ...state,
-      showTargetItinerary: false,
+      itineraryResult: {
+        ...(state.itineraryResult || {} as ItineraryResult),
+        travelMode: state.itineraryResult?.travelMode === 'DRIVING' ? 'WALKING' : 'DRIVING',
+      },
     }));
   }, []);
 
 
-  const refreshOrienteering = useCallback(() => {
-    setState(state => ({
-      ...state,
-      refreshOrienteering: !state.refreshOrienteeringValue,
-    }));
-  }, []);
 
 
 
@@ -282,9 +287,8 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
         requestItinerary,
         confirmRequestItinerary,
         onItineraryReady,
-        moveToTargetItinerary,
-        closeTargetItinerary,
-        refreshOrienteering,
+        toggleTargetItinerary,
+        toggleTravelMode,
       }}
     >
       {children}
