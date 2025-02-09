@@ -19,7 +19,7 @@ export function useMediaFile() {
     if (hasPermission === undefined) {
       const result = await requestPermission()
       if (!result.granted) {
-        throw new Error('Sorry, we need camera roll permissions to make this work!')
+        throw new Error(t('error-file-permission'))
       }
       setHasPermission(result.granted)
     }
@@ -34,7 +34,7 @@ export function useMediaFile() {
       ],
     })
     if (document.canceled) {
-      throw new Error(t('error-file-canceled'));
+      return null;
     }
     const size = (document.assets[0].fileSize ?? 0) / 1024 / 1024;
     if (size > 3.5) {

@@ -8,7 +8,7 @@ export default {
   "no": "Non",
   "elocate-share-title": "Itinéraire Easy Locate (Elocate)",
   "error-sharing": "Erreur lors du partage:",
-  "error-file-canceled": "Ajout du media annulé!",
+  "error-file-permission": "Désolé, nous avons besoin d'autorisations pour la galerie pour que cela fonctionne!",
   "error-file-size": "Taille de fichier trop grande (max 2.3MB)",
 
   // --Drawer--
@@ -38,6 +38,7 @@ export default {
   "login-content-required-account": "Compte requis",
   "login-content-login-to-add-place": "Vous devez vous connecter pour ajouter un lieu.",
   "login-content-login-with": "Se connecter avec",
+  "login-content-login-error": "Impossible de se connecter à votre compte.",
   // Itinerary Content
   "maneuver-turn-in":"dans",
 

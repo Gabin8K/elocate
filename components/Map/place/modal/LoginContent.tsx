@@ -27,8 +27,8 @@ export const LoginContent: FC<LoginContentProps> = memo(function LoginContent(pr
     authService
       .onGoogleSignin()
       .finally(() => setLoading(false))
-      .catch((err) => toast.show(String(err || err.message)));
-  }, []);
+      .catch((err) => toast.show(t('login-content-login-error')));
+  }, [t]);
 
   return (
     <Fragment>

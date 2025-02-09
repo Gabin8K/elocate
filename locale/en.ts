@@ -8,7 +8,7 @@ export default {
   "no": "No",
   "elocate-share-title": "Easy Locate Itinerary (Elocate)",
   "error-sharing": "Error sharing:",
-  "error-file-canceled": "Media addition canceled!",
+  "error-file-permission": "Sorry, we need camera roll permissions to make this work!",
   "error-file-size": "File size too large (max 2.3MB)",
 
   // --Drawer--
@@ -38,6 +38,7 @@ export default {
   "login-content-required-account": "Account required",
   "login-content-login-to-add-place": "You must log in to add a place.",
   "login-content-login-with": "Log in with",
+  "login-content-login-error": "Could not log in to your account.",
   // Itinerary Content
   "maneuver-turn-in":"in",
 
