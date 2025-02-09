@@ -117,6 +117,7 @@ const ItineraryArrived: FC<ArrivedProps> = memo(function ItineraryArrived(props)
 const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavigation(props) {
   const { itineraryReady, showTargetItinerary, travelMode, closeItinerary, toggleTargetItinerary, toggleTravelMode } = props;
 
+  const { t } = useLocale();
   const { colors } = useTheme();
   const currentStep = useCurrentStep(itineraryReady.legs[0].steps);
 
@@ -175,7 +176,7 @@ const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavi
           color={'primary'}
           variant={'body2_eb'}
         >
-          {currentStep.maneuver}
+          {currentStep.maneuver} {t('maneuver-turn-in')} {currentStep.distance.text.replaceAll(' ', '')}
         </Text> :
         null
       }
@@ -219,7 +220,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     borderRadius: spacing.m,
-    width: spacing.width * .35,
+    width: spacing.width * .45,
     paddingVertical: spacing.m,
     transform: [
       { translateY: spacing.height - 175 }

@@ -38,6 +38,8 @@ export default {
   "login-content-required-account": "Compte requis",
   "login-content-login-to-add-place": "Vous devez vous connecter pour ajouter un lieu.",
   "login-content-login-with": "Se connecter avec",
+  // Itinerary Content
+  "maneuver-turn-in":"dans",
 
   // --Places Screen--
   "places-screen-title": "Lieux",

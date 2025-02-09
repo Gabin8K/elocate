@@ -38,6 +38,8 @@ export default {
   "login-content-required-account": "Account required",
   "login-content-login-to-add-place": "You must log in to add a place.",
   "login-content-login-with": "Log in with",
+  // Itinerary Content
+  "maneuver-turn-in":"in",
 
   // --Places Screen--
   "places-screen-title": "Places",
