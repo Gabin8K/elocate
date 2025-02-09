@@ -2,6 +2,7 @@ import { useMap } from "./MapContext";
 import { FC, memo, RefObject } from "react";
 import MapView, { } from "react-native-maps";
 import { Coordinate } from "@/services/types";
+import { INITIAL_CAMERA } from "./useInitialMapConfig";
 import { useHeading, useLocation } from "@/hooks/useLocation";
 
 
@@ -49,7 +50,7 @@ const MapMotionContent: FC<ContentProps> = memo(function MapMotionContent(props)
           longitude
         },
       heading,
-      pitch: 60,
+      pitch: INITIAL_CAMERA.pitch,
       zoom: 19,
     },
     { duration: 300 }

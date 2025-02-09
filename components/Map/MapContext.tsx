@@ -223,7 +223,7 @@ export const MapProvider: FunctionComponent<PropsWithChildren> = ({ children }) 
   const onItineraryReady = useCallback((itineraryResult: MapDirectionsResponse) => {
     setState(state => ({
       ...state,
-      itineraryResult:{
+      itineraryResult: {
         ...(state.itineraryResult || {} as ItineraryResult),
         result: itineraryResult,
       },
