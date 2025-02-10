@@ -128,6 +128,7 @@ const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavi
   const { distance, duration } = itineraryReady.legs[0];
 
   const travelModeIcon = travelMode === 'WALKING' ? 'walk' : 'car';
+  const height = currentStep?.maneuver ? spacing.xl * 3.4 : spacing.xl * 2.6;
   const directionIcon = maneuvers[currentStep?.maneuver as keyof typeof maneuvers || 'dots-horizontal'];
 
 
@@ -147,7 +148,7 @@ const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavi
       style={[
         styles.container,
         {
-          height: spacing.xl * 3.4,
+          height,
           backgroundColor: colors.card,
         }
       ]}
