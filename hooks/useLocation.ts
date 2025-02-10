@@ -2,10 +2,12 @@ import { useToast } from "./useToast";
 import * as Location from 'expo-location';
 import { DeviceMotion } from "expo-sensors";
 import { useEffect, useRef, useState } from "react";
+import { useLocale } from "./useLocale";
 
 
 export function useLocation() {
   const toast = useToast();
+  const { t } = useLocale();
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
 
   useEffect(() => {
@@ -13,7 +15,7 @@ export function useLocation() {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        toast.show('Permission to access location was denied');
+        toast.show(t('error-location-permission'));
         return;
       }
 
@@ -28,7 +30,40 @@ export function useLocation() {
     return () => {
       subscribe?.remove();
     }
-  }, []);
+  }, [t]);
+
+  return location;
+}
+
+
+
+
+
+
+export function useCurrentLocation() {
+
+  const toast = useToast();
+  const { t } = useLocale();
+  const [location, setLocation] = useState<Location.LocationObject | null>(null);
+
+  useEffect(() => {
+    async function getCurrentLocation() {
+
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        toast.show(t('error-location-permission'));
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.BestForNavigation,
+        timeInterval: 1000,
+      });
+      setLocation(location);
+    }
+
+    getCurrentLocation();
+  }, [t]);
 
   return location;
 }
@@ -78,8 +113,8 @@ export function useHeadingSensor() {
       const { alpha } = event.rotation;
 
       let heading = 360 - (alpha * (180 / Math.PI));
-      if(heading < 0) heading += 360;
-      if(heading > 360) heading -= 360;
+      if (heading < 0) heading += 360;
+      if (heading > 360) heading -= 360;
 
       setHeading(heading);
 

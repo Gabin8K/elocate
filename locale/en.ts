@@ -10,6 +10,7 @@ export default {
   "error-sharing": "Error sharing:",
   "error-file-permission": "Sorry, we need camera roll permissions to make this work!",
   "error-file-size": "File size too large (max 2.3MB)",
+  "error-location-permission": "Sorry, we need location permissions to make this work!",
 
   // --Drawer--
   "drawer-user-status": "Not connected",

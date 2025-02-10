@@ -4,9 +4,9 @@ import { PlaceDoc } from "@/services/types";
 import { LoginContent } from "./LoginContent";
 import { StyleSheet, View } from "react-native";
 import { Place, useMap } from "../../MapContext";
-import { useLocation } from "@/hooks/useLocation";
 import { useAuth } from "@/providers/AuthProvider";
 import { FC, memo, useCallback, useRef } from "react";
+import { useCurrentLocation } from "@/hooks/useLocation";
 import { ModalSheetRef, ModalSheet } from "@/components/ui/modal";
 
 
@@ -20,7 +20,7 @@ type ContentProps = {
 
 export const RequestPlaceModal: FC = memo(function RequestPlaceModal() {
   const map = useMap();
-  const location = useLocation();
+  const location = useCurrentLocation();
   const modalRef = useRef<ModalSheetRef>(null);
 
   const onClose = useCallback(() => {

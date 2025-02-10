@@ -10,6 +10,7 @@ export default {
   "error-sharing": "Erreur lors du partage:",
   "error-file-permission": "Désolé, nous avons besoin d'autorisations pour la galerie pour que cela fonctionne!",
   "error-file-size": "Taille de fichier trop grande (max 2.3MB)",
+  "error-location-permission": "Désolé, nous avons besoin d'autorisations de localisation pour que cela fonctionne!",
 
   // --Drawer--
   "drawer-user-status": "Non connecté",

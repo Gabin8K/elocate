@@ -4,10 +4,10 @@ import { Place } from "@/components/Map";
 import { experience } from "./experience";
 import { useNavigation } from "expo-router";
 import { useLocale, useToast } from "@/hooks";
-import { useLocation } from "@/hooks/useLocation";
 import { useAuth } from "@/providers/AuthProvider";
 import { DropdownItem } from "@/components/ui/dropdown";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useCurrentLocation, useLocation } from "@/hooks/useLocation";
 import { FormPlace } from "@/components/Map/place/modal/useFormPlace";
 import { CommentDoc, CommentField, Coordinate, PlaceDoc } from "./types";
 
@@ -86,7 +86,7 @@ export function useFormPlaceSubmit() {
 
 export function useGetPlacesAround(radius: number) {
   const toast = useToast();
-  const location = useLocation();
+  const location = useCurrentLocation();
 
   const [places, setPlaces] = useState<PlaceDoc[]>([]);
   const [loading, setLoading] = useState(true);
