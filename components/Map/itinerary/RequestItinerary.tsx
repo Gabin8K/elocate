@@ -5,6 +5,7 @@ import { StyleSheet, View, } from "react-native";
 import { Button } from "@/components/ui/buttons";
 import { Itinerary, useMap } from "../MapContext";
 import { Portal } from "@/providers/PortalProvider";
+import { useDrawer } from "@/components/layout/drawer";
 import { component, reusableStyle } from "@/theme/reusables";
 import { useBackhandler, useLocale, useTheme } from "@/hooks";
 import Animated, { Easing, SlideInDown, SlideOutDown } from "react-native-reanimated";
@@ -20,8 +21,13 @@ type RenderRequestItineraryProps = {
 
 export const RequestItinerary: FC = memo(function RequestItinerary() {
   const map = useMap();
+  const drawer = useDrawer();
 
   useBackhandler(() => {
+    if(drawer.open) {
+      drawer.setOpen(false);
+      return true;
+    }
     if (map.itinerary?.open) {
       map.closeItinerary();
       return true;
