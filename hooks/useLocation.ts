@@ -30,7 +30,7 @@ export function useLocation() {
     return () => {
       subscribe?.remove();
     }
-  }, [t]);
+  }, []);
 
   return location;
 }
@@ -63,7 +63,7 @@ export function useCurrentLocation() {
     }
 
     getCurrentLocation();
-  }, [t]);
+  }, []);
 
   return location;
 }
