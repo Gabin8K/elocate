@@ -1,3 +1,4 @@
+import { API_KEY } from "./keys";
 import { Coordinate, PlaceDoc } from "./types";
 import storage from '@react-native-firebase/storage';
 import firestore, { getDocs, query, where } from "@react-native-firebase/firestore";
@@ -8,7 +9,7 @@ const R = 6371;
 
 async function getAddressFromCoords(coords: Coordinate, language: string) {
   const { latitude, longitude } = coords;
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&language=${language}&key=${process.env.EXPO_PUBLIC_GOOGLE_MAP_API_KEY}`;
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&language=${language}&key=${API_KEY}`;
 
   const response = await fetch(url);
   const data = await response.json();
@@ -33,7 +34,7 @@ async function getAddressFromCoords(coords: Coordinate, language: string) {
 
 
 function calculateDistanceMeter(pos1: Coordinate, pos2: Coordinate) {
- const distance = calculateDistanceKm(pos1, pos2);
+  const distance = calculateDistanceKm(pos1, pos2);
   return distance * 1000;
 }
 

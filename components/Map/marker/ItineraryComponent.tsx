@@ -1,3 +1,4 @@
+import { API_KEY } from "@/services";
 import { palette } from "@/theme/palette";
 import { Polyline } from "react-native-maps";
 import { Coordinate } from "@/services/types";
@@ -69,7 +70,7 @@ const RenderItitnerary: FC<RenderItitneraryProps> = memo(function RenderItitnera
         onReady={onReady}
         strokeColor={palette.light.primary}
         destination={itinerary.place.coordinate}
-        apikey={process.env.EXPO_PUBLIC_GOOGLE_MAP_API_KEY as string}
+        apikey={API_KEY}
       />
       {route.length > 0 ?
         < Polyline

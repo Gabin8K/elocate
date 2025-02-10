@@ -3,7 +3,7 @@ import { ExpoConfig, ConfigContext } from 'expo/config';
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: config.name || 'Elocate CMR',
-  slug: config.slug || 'elocate-cmr',
+  slug: config.slug || 'elocate',
   android: {
     ...(config.android || {}),
     config: {
