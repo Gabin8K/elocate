@@ -55,10 +55,7 @@ export function useCurrentLocation() {
         return;
       }
 
-      const location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.BestForNavigation,
-        timeInterval: 1000,
-      });
+      const location = await Location.getCurrentPositionAsync({});
       setLocation(location);
     }
 
