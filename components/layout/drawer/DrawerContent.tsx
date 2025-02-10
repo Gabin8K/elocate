@@ -20,8 +20,6 @@ export const DrawerContent: FC = memo(function DrawerLayout() {
   const { auth } = useAuth();
   const { mode } = useTheme();
 
-  const year = new Date().getFullYear();
-
   const buttons: DrawerButtonProps[] = [
     {
       children: t('drawer-experience'),
