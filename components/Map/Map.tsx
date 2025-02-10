@@ -1,5 +1,6 @@
 import { useTheme } from "@/hooks";
 import { useMap } from "./MapContext";
+import { MapMotion } from "./MapMotion";
 import { mapStyles } from "./map.styles";
 import { LoadingMap } from "./LoadingMap";
 import { useLocation } from "@/hooks/useLocation";
@@ -26,7 +27,7 @@ export const Map: FC = memo(function Map() {
 
 
   const onLongPress = useCallback(({ nativeEvent }: LongPressEvent) => {
-    if(map.itinerary?.place) return;
+    if (map.itinerary?.place) return;
     const { coordinate } = nativeEvent;
     const camera: Camera = {
       ...initialCamera,
@@ -99,6 +100,13 @@ export const Map: FC = memo(function Map() {
         mapRef={map.mapRef}
         camera={initialCamera}
         hasItinerary={!!map.itinerary?.confirm}
+      />
+      <MapMotion 
+        mapRef={map.mapRef}
+        location={location?.coords}
+        itineraryTarget={map.itinerary}
+        travelMode={map.itineraryResult?.travelMode}
+        showTargetItinerary={map.showTargetItinerary}
       />
       <LoadingMap
         loading={map.loading}

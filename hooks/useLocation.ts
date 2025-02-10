@@ -71,7 +71,6 @@ export function useHeading() {
 
 
 export function useHeadingSensor() {
-
   const [heading, setHeading] = useState(0);
 
   useEffect(() => {

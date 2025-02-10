@@ -1,36 +1,46 @@
-import { useMap } from "./MapContext";
-import MapView, { } from "react-native-maps";
+import MapView from "react-native-maps";
 import { Coordinate } from "@/services/types";
 import { FC, Fragment, memo, RefObject } from "react";
 import { INITIAL_CAMERA } from "./useInitialMapConfig";
-import { useHeading, useHeadingSensor, useLocation } from "@/hooks/useLocation";
+import { Itinerary, ItineraryResult } from "./MapContext";
+import { useHeading, useHeadingSensor } from "@/hooks/useLocation";
 
 
+type MapMotionProps = {
+  location?: Coordinate;
+  mapRef: RefObject<MapView>;
+  travelMode?: ItineraryResult['travelMode'];
+  showTargetItinerary?: boolean;
+  itineraryTarget?: Itinerary;
+}
 
 type ContentProps = {
+  location?: Coordinate;
   mapRef: RefObject<MapView>;
   itineraryTarget: Coordinate;
   showTargetItinerary?: boolean;
 }
 
 
-export const MapMotion: FC = memo(function MapMotion() {
-  const map = useMap();
+export const MapMotion: FC<MapMotionProps> = memo(function MapMotion(props) {
+  const { mapRef, location, travelMode, itineraryTarget, showTargetItinerary } = props;
 
-  if (!map.itinerary?.confirm) return null;
+  if (!itineraryTarget?.confirm) return null;
 
   return (
     <Fragment>
-      {map.itineraryResult?.travelMode === 'WALKING' ?
+      {travelMode === 'WALKING' ?
         <MapMotionContentWalking
-          mapRef={map.mapRef}
-          showTargetItinerary={map.showTargetItinerary}
-          itineraryTarget={map.itinerary.place.coordinate}
+          mapRef={mapRef}
+          location={location}
+          showTargetItinerary={showTargetItinerary}
+          itineraryTarget={itineraryTarget.place.coordinate}
         /> :
         <MapMotionContentDriving
-          mapRef={map.mapRef}
-          showTargetItinerary={map.showTargetItinerary}
-          itineraryTarget={map.itinerary.place.coordinate}
+          mapRef={mapRef}
+          location={location}
+          showTargetItinerary={showTargetItinerary}
+          itineraryTarget={itineraryTarget.place.coordinate}
         />
       }
     </Fragment>
@@ -43,14 +53,13 @@ export const MapMotion: FC = memo(function MapMotion() {
 
 
 const MapMotionContentWalking: FC<ContentProps> = memo(function MapMotionContentWalking(props) {
-  const { mapRef, showTargetItinerary, itineraryTarget } = props;
+  const { mapRef, location, showTargetItinerary, itineraryTarget } = props;
 
-  const location = useLocation();
   const heading = useHeading();
 
   if (!location) return null;
 
-  const { latitude, longitude } = location.coords;
+  const { latitude, longitude } = location;
   mapRef.current?.animateCamera(
     {
       center: showTargetItinerary ?
@@ -76,14 +85,13 @@ const MapMotionContentWalking: FC<ContentProps> = memo(function MapMotionContent
 
 
 const MapMotionContentDriving: FC<ContentProps> = memo(function MapMotionContentDriving(props) {
-  const { mapRef, showTargetItinerary, itineraryTarget } = props;
+  const { mapRef, location, showTargetItinerary, itineraryTarget } = props;
 
-  const location = useLocation();
   const heading = useHeadingSensor();
 
   if (!location) return null;
 
-  const { latitude, longitude } = location.coords;
+  const { latitude, longitude } = location;
   mapRef.current?.animateCamera(
     {
       center: showTargetItinerary ?

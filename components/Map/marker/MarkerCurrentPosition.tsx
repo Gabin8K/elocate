@@ -24,7 +24,6 @@ type RadiusCurrentPositionProps = {
 
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
-const AnimatedMarker = Animated.createAnimatedComponent(Marker);
 
 
 
@@ -62,7 +61,7 @@ export const MarkerCurrentPosition: FC<MarkerCurrentPositionProps> = memo(functi
   )
 
   return (
-    <AnimatedMarker
+    <Marker.Animated
       coordinate={{
         latitude: coordinate.latitude,
         longitude: coordinate.longitude,
@@ -81,7 +80,7 @@ export const MarkerCurrentPosition: FC<MarkerCurrentPositionProps> = memo(functi
           {children}
         </Marker3DContent>
       }
-    </AnimatedMarker>
+    </Marker.Animated>
   );
 });
 
