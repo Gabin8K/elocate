@@ -119,7 +119,11 @@ const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavi
 
   const { t } = useLocale();
   const { colors } = useTheme();
-  const currentStep = useCurrentStep(itineraryReady.legs[0].steps);
+
+  const currentStep = useCurrentStep({
+    steps: itineraryReady.legs[0].steps,
+    travelMode,
+  });
 
   const { distance, duration } = itineraryReady.legs[0];
 

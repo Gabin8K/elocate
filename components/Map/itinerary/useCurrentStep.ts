@@ -1,10 +1,19 @@
 import { useMemo } from "react";
 import { geocoding } from "@/services";
 import { useLocation } from "@/hooks/useLocation";
+import { ItineraryResult } from "../MapContext";
 import { MapDirectionsResponse } from "react-native-maps-directions";
 
 
-export function useCurrentStep(steps: MapDirectionsResponse['legs'][number]['steps']) {
+type CurrentStepProps = {
+  steps: MapDirectionsResponse['legs'][number]['steps'];
+  travelMode: ItineraryResult['travelMode'];
+}
+
+
+export function useCurrentStep(props: CurrentStepProps) {
+  const { steps, travelMode } = props;
+
   const location = useLocation();
 
   const currentStep = useMemo(() => {
@@ -17,10 +26,14 @@ export function useCurrentStep(steps: MapDirectionsResponse['legs'][number]['ste
           longitude: step.end_location.lng,
         }
       );
-      return distance >= 50 && distance <= 100;
+      if (travelMode === 'WALKING') {
+        return distance >= 50 && distance <= 100;
+      } else {
+        return distance >= 100 && distance <= 200;
+      }
     });
     return value;
-  }, [location, steps]);
+  }, [location, steps, travelMode]);
 
   return currentStep;
 }
