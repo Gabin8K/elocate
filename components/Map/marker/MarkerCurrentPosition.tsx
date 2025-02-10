@@ -5,7 +5,7 @@ import { reusableStyle } from "@/theme/reusables";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Camera, Circle, Marker } from "react-native-maps";
 import { Animated, Easing, StyleSheet } from "react-native";
-import { FC, memo, useCallback, useEffect, useRef } from "react";
+import { FC, memo, useCallback, useEffect, useMemo, useRef } from "react";
 import { Marker3DContent, Marker3DContentItinerary } from "./Marker3DContent";
 
 type MarkerCurrentPositionProps = {
@@ -30,18 +30,21 @@ const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 export const MarkerCurrentPosition: FC<MarkerCurrentPositionProps> = memo(function MarkerCurrentPosition(props) {
   const { itinerary, coordinate, currentCamera } = props;
 
-  const animateLatitude = useRef(new Animated.Value(0)).current;
-  const animateLongitude = useRef(new Animated.Value(0)).current;
+  const progressLatitude = useRef(new Animated.Value(0)).current;
+  const progressLongitude = useRef(new Animated.Value(0)).current;
 
   const animate = useCallback(() => {
-    Animated.timing(animateLatitude, {
-      toValue: 0,
-      duration: 1000,
+    if (!coordinate) return;
+    Animated.timing(progressLatitude, {
+      toValue: coordinate.latitude,
+      duration: 900,
+      easing: Easing.linear,
       useNativeDriver: false
     }).start();
-    Animated.timing(animateLongitude, {
-      toValue: 0,
-      duration: 1000,
+    Animated.timing(progressLongitude, {
+      toValue: coordinate.longitude,
+      duration: 900,
+      easing: Easing.linear,
       useNativeDriver: false
     }).start();
   }, [coordinate]);
@@ -50,21 +53,23 @@ export const MarkerCurrentPosition: FC<MarkerCurrentPositionProps> = memo(functi
     animate()
   }, [coordinate])
 
-  if (!coordinate) return null;
 
-  const children = (
+  const children = useMemo(() => (
     <MaterialIcons
       size={20}
       name={'navigation'}
       color={palette.light.primary}
     />
-  )
+  ), []);
+
+
+  if (!coordinate) return null;
 
   return (
     <Marker.Animated
       coordinate={{
-        latitude: coordinate.latitude,
-        longitude: coordinate.longitude,
+        latitude: progressLatitude,
+        longitude: progressLongitude,
       }}
     >
       {itinerary?.confirm ?
@@ -106,15 +111,16 @@ export const RadiusCurrentPosition: FC<RadiusCurrentPositionProps> = memo(functi
   }, [radiusInKm]);
 
   const animateCoordinate = useCallback(() => {
+    if (!coordinate) return;
     Animated.timing(progressLatitude, {
-      toValue: 0,
-      duration: 1000,
+      toValue: coordinate.latitude,
+      duration: 900,
       easing: Easing.linear,
       useNativeDriver: false
     }).start();
     Animated.timing(progressLongitude, {
-      toValue: 0,
-      duration: 1000,
+      toValue: coordinate.longitude,
+      duration: 900,
       easing: Easing.linear,
       useNativeDriver: false
     }).start();
