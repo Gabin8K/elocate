@@ -1,12 +1,13 @@
 import { Text } from "@/components/ui";
 import { maneuvers } from "../map.styles";
 import { spacing } from "@/theme/spacing";
-import { FC, memo, useEffect } from "react";
 import { useLocale, useTheme } from "@/hooks";
+import { decodeHtml } from "@/utils/formater";
 import { StyleSheet, View } from "react-native";
 import { useCurrentStep } from "./useCurrentStep";
 import { Portal } from "@/providers/PortalProvider";
 import { IconButton } from "@/components/ui/buttons";
+import { FC, Fragment, memo, useEffect } from "react";
 import { ItineraryResult, useMap } from "../MapContext";
 import { component, reusableStyle } from "@/theme/reusables";
 import { MapDirectionsResponse } from "react-native-maps-directions";
@@ -85,7 +86,7 @@ const ItineraryArrived: FC<ArrivedProps> = memo(function ItineraryArrived(props)
           .easing(Easing.ease)
       }
       style={[
-        styles.container,
+        styles.container1,
         {
           width: '65%',
           backgroundColor: colors.card,
@@ -129,94 +130,116 @@ const ItineraryNavigationContent: FC<ContentProps> = memo(function ItineraryNavi
 
   const travelModeIcon = travelMode === 'WALKING' ? 'walk' : 'car';
   const directionIcon = maneuvers[currentStep?.maneuver as keyof typeof maneuvers || 'dots-horizontal'];
-
+  const { instruction, address } = decodeHtml(currentStep?.html_instructions || '');
+  const distanceText = currentStep?.distance?.text?.replaceAll(' ', '') || '';
 
 
   return (
-    <Animated.View
-      entering={
-        SlideInDown
-          .springify()
-          .damping(50)
-      }
-      exiting={
-        SlideOutDown
-          .duration(1000)
-          .easing(Easing.ease)
-      }
-      style={[
-        styles.container,
-        {
-          height: spacing.xl * 3.4,
-          backgroundColor: colors.card,
-        }
-      ]}
-    >
-      <View
-        style={styles.content1}
-      >
-        <Text
-          variant={'body1_b'}
+    <Fragment>
+      {currentStep?.maneuver && address ?
+        <View
+          style={styles.container2}
         >
-          {duration.text}
-        </Text>
-      </View>
-      <Text>
-        {distance.text}
-      </Text>
-      <Animated.View
-        key={directionIcon}
-        entering={ZoomIn.springify()}
-        exiting={ZoomOut}
-      >
-        <MaterialCommunityIcons
-          size={30}
-          name={directionIcon as any}
-          color={colors.primary}
-        />
-      </Animated.View>
-      {currentStep?.maneuver ?
-        <Text
-          color={'primary'}
-          variant={'body2_eb'}
-        >
-          {currentStep.maneuver} {t('maneuver-turn-in')} {currentStep.distance.text.replaceAll(' ', '')}
-        </Text> :
+          <Text
+            variant={'body2_b'}
+            style={{ lineHeight: 24 }}
+          >
+            {instruction}
+            <Text
+              color={'primary'}
+              variant={'title_eb'}
+              style={{ textTransform: 'capitalize' }}
+            >
+              {address}
+            </Text>
+            {` ${t('maneuver-turn-in')} `}
+            <Text
+              color={'primary'}
+              variant={'body1_b'}
+            >
+              {distanceText}
+            </Text>
+          </Text>
+        </View> :
         null
       }
-      <IconButton
-        icon={'close'}
-        variant={'error'}
-        backgroundColor={'card'}
-        onPress={closeItinerary}
-        styleContainer={styles.iconClose}
-      />
-      <IconButton
-        backgroundColor={'card'}
-        onPress={toggleTargetItinerary}
-        icon={'trail-sign-outline'}
-        styleContainer={styles.iconTarget}
-        variant={showTargetItinerary ? 'primary' : 'text'}
-      />
-      <IconButton
-        backgroundColor={'card'}
-        onPress={toggleTravelMode}
-        styleContainer={styles.iconTravelMode}
+      <Animated.View
+        entering={
+          SlideInDown
+            .springify()
+            .damping(50)
+        }
+        exiting={
+          SlideOutDown
+            .duration(1000)
+            .easing(Easing.ease)
+        }
+        style={[
+          styles.container1,
+          {
+            height: spacing.xl * 2.6,
+            backgroundColor: colors.card,
+          }
+        ]}
       >
-        <MaterialCommunityIcons
-          size={spacing.l}
-          name={travelModeIcon}
-          color={colors.primary}
+        <View
+          style={styles.content1}
+        >
+          <Text
+            variant={'body1_b'}
+          >
+            {duration.text}
+          </Text>
+        </View>
+        <Text>
+          {distance.text}
+        </Text>
+        <Animated.View
+          key={directionIcon}
+          entering={ZoomIn.springify()}
+          exiting={ZoomOut}
+        >
+          <MaterialCommunityIcons
+            size={30}
+            name={directionIcon as any}
+            color={colors.primary}
+          />
+        </Animated.View>
+        <IconButton
+          icon={'close'}
+          variant={'error'}
+          backgroundColor={'card'}
+          onPress={closeItinerary}
+          styleContainer={styles.iconClose}
         />
-      </IconButton>
-    </Animated.View>
+        <IconButton
+          backgroundColor={'card'}
+          onPress={toggleTargetItinerary}
+          icon={'trail-sign-outline'}
+          styleContainer={styles.iconTarget}
+          variant={showTargetItinerary ? 'primary' : 'text'}
+        />
+        <IconButton
+          backgroundColor={'card'}
+          onPress={toggleTravelMode}
+          styleContainer={styles.iconTravelMode}
+        >
+          <MaterialCommunityIcons
+            size={spacing.l}
+            name={travelModeIcon}
+            color={colors.primary}
+          />
+        </IconButton>
+      </Animated.View>
+    </Fragment>
   );
 });
 
 
 
+
 const styles = StyleSheet.create({
-  container: {
+  container1: {
     zIndex: 2,
     rowGap: spacing.xs,
     ...component.shadow,
@@ -224,11 +247,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     borderRadius: spacing.m,
-    width: spacing.width * .45,
+    width: spacing.width * .42,
     paddingVertical: spacing.m,
     transform: [
-      { translateY: spacing.height - 175 }
+      { translateY: spacing.height - 145 }
     ],
+  },
+  container2: {
+    width: '65%',
+    alignSelf: 'center',
+    position: 'absolute',
+    bottom: spacing.xl * 3.5,
   },
   content1: {
     ...reusableStyle.row,
@@ -250,6 +279,4 @@ const styles = StyleSheet.create({
     right: -spacing.xxl,
     position: 'absolute',
   }
-})
-
-
+});

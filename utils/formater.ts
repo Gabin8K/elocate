@@ -33,3 +33,19 @@ export function date(date: any, locale: string = 'en'): string {
   }
 }
 
+
+
+export function decodeHtml(html: string) {
+  const parser = html
+    .replace('<b>', '')
+    .replace('</b>', '')
+    .replace('</b>', '');
+
+  const [instruction, address] = parser.split('<b>');
+
+  return {
+    instruction,
+    address,
+  };
+}
+
