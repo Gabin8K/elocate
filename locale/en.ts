@@ -18,6 +18,7 @@ export default {
   "drawer-experience": "Experiences",
   "drawer-setting": "Settings",
   "drawer-not-login": "Not connected",
+  "drawer-app-developer-mail": "Developer:",
 
   // Slider Component
   "slider-showing": "Showing",

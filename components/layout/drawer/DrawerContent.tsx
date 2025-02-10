@@ -5,6 +5,7 @@ import { palette } from "@/theme/palette";
 import { useLocale, useTheme } from "@/hooks";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, View } from "react-native";
+import { DrawerDevInfo } from "./DrawerDevInfo";
 import { Button } from "@/components/ui/buttons";
 import { reusableStyle } from "@/theme/reusables";
 import { useAuth } from "@/providers/AuthProvider";
@@ -18,6 +19,8 @@ export const DrawerContent: FC = memo(function DrawerLayout() {
   const { t } = useLocale();
   const { auth } = useAuth();
   const { mode } = useTheme();
+
+  const year = new Date().getFullYear();
 
   const buttons: DrawerButtonProps[] = [
     {
@@ -94,6 +97,7 @@ export const DrawerContent: FC = memo(function DrawerLayout() {
         </Button> :
         null
       }
+      <DrawerDevInfo />
     </Fragment>
   );
 })
@@ -116,8 +120,8 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '90%',
-    bottom: spacing.m,
     alignSelf: 'center',
     position: 'absolute',
+    bottom: spacing.xxl * 1.5,
   }
 })

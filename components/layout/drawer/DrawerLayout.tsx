@@ -16,7 +16,7 @@ type ContentProps = {
 
 
 const height = spacing.height * 0.7;
-const width = spacing.width * 0.75;
+const width = spacing.width * 0.79;
 const right = 0;
 
 const velocity = 300;
