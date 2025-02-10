@@ -6,8 +6,8 @@ import { useNavigation } from "expo-router";
 import { useLocale, useToast } from "@/hooks";
 import { useAuth } from "@/providers/AuthProvider";
 import { DropdownItem } from "@/components/ui/dropdown";
+import { useCurrentLocation } from "@/hooks/useLocation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useCurrentLocation, useLocation } from "@/hooks/useLocation";
 import { FormPlace } from "@/components/Map/place/modal/useFormPlace";
 import { CommentDoc, CommentField, Coordinate, PlaceDoc } from "./types";
 
@@ -151,8 +151,8 @@ export function useValidationPlace(place: Place) {
 
 export function useGetPlacesMappedAround(radius: number) {
   const toast = useToast();
-  const location = useLocation();
   const navigation = useNavigation();
+  const location = useCurrentLocation();
 
   const isFocused = navigation.isFocused();
 

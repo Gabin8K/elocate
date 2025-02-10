@@ -72,7 +72,7 @@ export const PlacesProvider: FunctionComponent<PropsWithChildren> = ({ children 
     }));
   }, []);
 
-
+console.log('places', places.length)
   return (
     <PlacesContext.Provider
       value={{
