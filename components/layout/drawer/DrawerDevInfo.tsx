@@ -34,6 +34,7 @@ export const DrawerDevInfo: FC = memo(function DrawerDevInfo() {
           {t('drawer-app-developer-mail')} {' '}
         </Text>
         <Text
+          selectable
           color={'gray3'}
           variant={'caption_m'}
         >
