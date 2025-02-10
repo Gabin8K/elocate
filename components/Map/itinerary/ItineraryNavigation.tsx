@@ -3,12 +3,12 @@ import { maneuvers } from "../map.styles";
 import { spacing } from "@/theme/spacing";
 import { useLocale, useTheme } from "@/hooks";
 import { decodeHtml } from "@/utils/formater";
-import { StyleSheet, View } from "react-native";
 import { useCurrentStep } from "./useCurrentStep";
 import { Portal } from "@/providers/PortalProvider";
 import { IconButton } from "@/components/ui/buttons";
 import { FC, Fragment, memo, useEffect } from "react";
 import { ItineraryResult, useMap } from "../MapContext";
+import { StyleSheet, View, Platform } from "react-native";
 import { component, reusableStyle } from "@/theme/reusables";
 import { MapDirectionsResponse } from "react-native-maps-directions";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
     width: spacing.width * .42,
     paddingVertical: spacing.m,
     transform: [
-      { translateY: spacing.height - 145 }
+      { translateY: spacing.height - (Platform.OS === 'android' ? 145 : 210) }
     ],
   },
   container2: {
