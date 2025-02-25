@@ -13,8 +13,10 @@ expo-env.d.ts
 android/
 ios/
 .env
+env.ts
 google-services.json
 GoogleService-Info.plist
+service-account.json
 
 # Native
 *.orig.*

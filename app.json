@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Elocate CMR",
+    "name": "Elocate",
     "slug": "elocate",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -47,26 +47,17 @@
       "googleServicesFile": "./google-services.json",
       "intentFilters": [
         {
-          "action": "VIEW",
-          "autoVerify": true,
-          "data": [
-            {
-              "scheme": "elocate"
-            }
-          ],
+          "action": "MAIN",
           "category": [
-            "BROWSABLE",
-            "DEFAULT"
+            "LAUNCHER"
           ]
         },
         {
           "action": "SEND",
-          "data": {
-            "mimeType": "text/plain",
-            "scheme": "elocate"
-          },
-          "category": [
-            "DEFAULT"
+          "data": [
+            {
+              "mimeType": "text/plain"
+            }
           ]
         }
       ]
@@ -82,6 +73,9 @@
         {
           "ios": {
             "useFrameworks": "static"
+          },
+          "android": {
+            "enableProguardInReleaseBuilds": true
           }
         }
       ],
